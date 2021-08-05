@@ -1,0 +1,9 @@
+SOLVER:
+  BASE_LR: 0.01
+
+WANDB:
+  RUN_NAME: "Test run"
+  TAGS: ["ToTTo", "T5"]
+
+INPUT:
+  SIZE_TRAIN: 64
