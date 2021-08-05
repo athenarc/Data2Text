@@ -18,6 +18,10 @@ _C = CN()
 
 _C.MODEL = CN()
 _C.MODEL.DEVICE = "cuda"
+_C.MODEL.MAX_INPUT_TOKENS = 512
+_C.MODEL.MAX_OUTPUT_TOKENS = 512
+_C.MODEL.TOKENIZER_NAME = "t5-small"
+_C.MODEL.PRETRAINED_MODEL_NAME = "t5-small"
 
 # -----------------------------------------------------------------------------
 # INPUT
@@ -33,9 +37,9 @@ _C.INPUT.SIZE_TEST = 32
 # -----------------------------------------------------------------------------
 _C.DATASET = CN()
 # List of the dataset names for training
-_C.DATASET.TRAIN = ""
+_C.DATASET.TRAIN = "storage/datasets/totto/filtered/train.json"
 # List of the dataset names for validation
-_C.DATASET.VALIDATION = ""
+_C.DATASET.VALIDATION = "storage/datasets/totto/filtered/dev.json"
 # List of the dataset names for testing
 _C.DATASET.TEST = ""
 

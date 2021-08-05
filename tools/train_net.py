@@ -2,14 +2,27 @@ import argparse
 import os
 import wandb
 import sys
-from os import mkdir
 
+from os import mkdir
 from config import cfg
 from utils.logger import setup_logger
+from transformers import (
+    T5ForConditionalGeneration,
+    T5Tokenizer,
+)
+
+from data.build import get_train_dataloader, get_validation_dataloader
 
 
-def train():
-    pass
+def train(cfg):
+    # Get the T5 tokenizer
+    tokenizer = T5Tokenizer.from_pretrained(cfg.MODEL.TOKENIZER_NAME)
+
+    # Get train and validation data loaders
+    train_dataloader = get_train_dataloader(tokenizer, cfg)
+    validation_dataloader = get_validation_dataloader(tokenizer, cfg)
+
+
 
 
 def main():
@@ -30,20 +43,22 @@ def main():
     logger.info(f"Using {num_gpus} GPUS")
     logger.info(args)
 
-    if args.config_file != "":
-        logger.info("Loaded configuration file {}".format(args.config_file))
-        with open(args.config_file, 'r') as cf:
-            config_str = "\n" + cf.read()
-            logger.info(config_str)
+    # if args.config_file != "":
+    #     logger.info("Loaded configuration file {}".format(args.config_file))
+    #     with open(args.config_file, 'r') as cf:
+    #         config_str = "\n" + cf.read()
+    #         logger.info(config_str)
 
     logger.info(f"Running with config:\n{cfg}")
 
     # Initialization of the wandb for experiment orchestration
-    wandb.init(project="data2text",
-               dir=cfg.OUTPUT.WANDB_LOGS_DIR,
-               name=cfg.WANDB.RUN_NAME,
-               tags=cfg.WANDB.TAGS,
-               config=cfg)
+    # wandb.init(project="data2text",
+    #            dir=cfg.OUTPUT.WANDB_LOGS_DIR,
+    #            name=cfg.WANDB.RUN_NAME,
+    #            tags=cfg.WANDB.TAGS,
+    #            config=cfg)
+
+    train(cfg)
 
 
 if __name__ == '__main__':
