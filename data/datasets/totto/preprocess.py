@@ -1,14 +1,12 @@
 import copy
-import json
 import glob
-from tqdm import tqdm
-
-from absl import app
-from absl import flags
-
-from data.datasets.totto import utils as preprocess_utils
+import json
 
 import six
+from absl import app, flags
+from tqdm import tqdm
+
+from data.datasets.totto import utils as preprocess_utils
 
 flags.DEFINE_string("input_dir_path", "storage/datasets/totto/linearized/", "Input dir containing totto raw files.")
 

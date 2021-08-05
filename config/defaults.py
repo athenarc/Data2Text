@@ -18,6 +18,7 @@ _C = CN()
 
 _C.MODEL = CN()
 _C.MODEL.DEVICE = "cuda"
+_C.MODEL.GPUS_NUMB = 0
 _C.MODEL.MAX_INPUT_TOKENS = 512
 _C.MODEL.MAX_OUTPUT_TOKENS = 512
 _C.MODEL.TOKENIZER_NAME = "t5-small"
@@ -28,9 +29,9 @@ _C.MODEL.PRETRAINED_MODEL_NAME = "t5-small"
 # -----------------------------------------------------------------------------
 _C.INPUT = CN()
 # Batch size during training
-_C.INPUT.SIZE_TRAIN = 32
+_C.INPUT.SIZE_TRAIN = 4
 # Batch size during testing
-_C.INPUT.SIZE_TEST = 32
+_C.INPUT.SIZE_TEST = 4
 
 # -----------------------------------------------------------------------------
 # Dataset
@@ -73,8 +74,8 @@ _C.SOLVER.WARMUP_FACTOR = 1.0 / 3
 _C.SOLVER.WARMUP_ITERS = 500
 _C.SOLVER.WARMUP_METHOD = "linear"
 
-_C.SOLVER.CHECKPOINT_PERIOD = 10
-_C.SOLVER.LOG_PERIOD = 100
+_C.SOLVER.CHECKPOINT_PERIOD = 1
+_C.SOLVER.LOG_PERIOD = 50
 
 # ---------------------------------------------------------------------------- #
 # Output paths
@@ -84,6 +85,7 @@ _C.OUTPUT.LOGGER_DIR = "storage/logs/runtime/"
 _C.OUTPUT.MODEL_LOGS_DIR = "storage/logs/model/"
 _C.OUTPUT.WANDB_LOGS_DIR = "storage/logs/"
 _C.OUTPUT.PLOTS_DIR = "storage/plots/"
+_C.OUTPUT.CHECKPOINTS_DIR = "storage/plots/checkpoints"
 
 # ---------------------------------------------------------------------------- #
 # Wandb options
@@ -97,4 +99,3 @@ _C.WANDB.RUN_NAME = None
 # ---------------------------------------------------------------------------- #
 _C.MISC = CN()
 _C.MISC.LOGGER_LEVEL = "INFO"
-
