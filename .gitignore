@@ -1,6 +1,8 @@
 ### User defined
-/storage/
+/storage/*
 .idea/
+./storage
+/storage/logs/wandb/latest-run
 
 ### Python template
 # Byte-compiled / optimized / DLL files
