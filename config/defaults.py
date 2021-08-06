@@ -18,7 +18,7 @@ _C = CN()
 
 _C.MODEL = CN()
 _C.MODEL.DEVICE = "cuda"
-_C.MODEL.GPUS_NUMB = 0
+_C.MODEL.GPUS_NUMB = 1
 _C.MODEL.MAX_INPUT_TOKENS = 512
 _C.MODEL.MAX_OUTPUT_TOKENS = 512
 _C.MODEL.TOKENIZER_NAME = "t5-small"
@@ -91,6 +91,7 @@ _C.OUTPUT.CHECKPOINTS_DIR = "storage/plots/checkpoints"
 # Wandb options
 # ---------------------------------------------------------------------------- #
 _C.WANDB = CN()
+_C.WANDB.MODE = "online"
 _C.WANDB.TAGS = None
 _C.WANDB.RUN_NAME = None
 

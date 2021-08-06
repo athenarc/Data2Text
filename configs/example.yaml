@@ -1,9 +1,14 @@
+MODEL:
+  MAX_INPUT_TOKENS: 512
+  MAX_OUTPUT_TOKENS: 128
+
 SOLVER:
-  BASE_LR: 0.0001
+  BASE_LR: 0.001
 
 WANDB:
   RUN_NAME: "Training run"
   TAGS: ["ToTTo", "T5"]
+  MODE: "offline"
 
-INPUT:
-  SIZE_TRAIN: 2
+#INPUT:
+#  SIZE_TRAIN: 2

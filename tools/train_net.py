@@ -1,6 +1,8 @@
 import argparse
+import os
 
 import wandb
+import yaml
 from transformers import T5Tokenizer
 
 from config import cfg
@@ -38,11 +40,16 @@ def main():
 
     logger.info(f"Running with config:\n{cfg}")
 
+    # Read the wandb API key from secrets
+    os.environ["WANDB_API_KEY"] = yaml.load(open('configs/secrets.yaml'),
+                                            Loader=yaml.SafeLoader)['WANDB_API_KEY']
+
     # Initialization of the wandb for experiment orchestration
     wandb.init(project="data2text",
                dir=cfg.OUTPUT.WANDB_LOGS_DIR,
                name=cfg.WANDB.RUN_NAME,
                tags=cfg.WANDB.TAGS,
+               mode=cfg.WANDB.MODE,
                config=cfg)
 
     train(cfg)
