@@ -50,6 +50,7 @@ def main():
                name=cfg.WANDB.RUN_NAME,
                tags=cfg.WANDB.TAGS,
                mode=cfg.WANDB.MODE,
+               notes=cfg.WANDB.NOTES,
                config=cfg)
 
     train(cfg)

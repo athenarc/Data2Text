@@ -14,6 +14,7 @@ class Totto(Dataset):
 
         with open(dataset_path, encoding="utf-8") as f:
             self.dataset = json.load(f)
+            self.dataset = self.dataset[:int(len(self.dataset) * 0.01)]
 
         self.input_length = cfg.MODEL.MAX_INPUT_TOKENS
         self.output_length = cfg.MODEL.MAX_OUTPUT_TOKENS
@@ -22,25 +23,18 @@ class Totto(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-    # def clean_text(self, text):
-    #     text = text.replace('Example of text:', '')
-    #     text = text.replace('Example of Summary:', '')
-    #     text = text.replace('\n', '')
-    #     text = text.replace('``', '')
-    #     text = text.replace('"', '')
-    #
-    #     return text
-
     def convert_to_features(self, example_batch):
         # Tokenize contexts and questions (as pairs of inputs)
         input_ = example_batch['subtable_and_metadata']
         target_ = example_batch['final_sentence']
 
         source = self.tokenizer.batch_encode_plus([input_], max_length=self.input_length,
-                                                  padding='max_length', truncation=True, return_tensors="pt")
+                                                  padding='max_length', truncation=True,
+                                                  add_special_tokens=True, return_tensors="pt")
 
         targets = self.tokenizer.batch_encode_plus([target_], max_length=self.output_length,
-                                                   padding='max_length', truncation=True, return_tensors="pt")
+                                                   padding='max_length', truncation=True,
+                                                   add_special_tokens=True, return_tensors="pt")
 
         return source, targets
 

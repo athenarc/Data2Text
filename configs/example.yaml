@@ -1,14 +1,17 @@
 MODEL:
   MAX_INPUT_TOKENS: 512
-  MAX_OUTPUT_TOKENS: 128
+  MAX_OUTPUT_TOKENS: 64
+  TOKENIZER_NAME: "t5-small"
+  PRETRAINED_MODEL_NAME: "t5-small"
 
 SOLVER:
   BASE_LR: 0.001
 
 WANDB:
   RUN_NAME: "Training run"
-  TAGS: ["ToTTo", "T5"]
-  MODE: "offline"
+  TAGS: ["DEBUG", "ToTTo", "T5", "small"]
+  MODE: "online"
+  NOTES: "Testing validation set run on small dataset"
 
-#INPUT:
-#  SIZE_TRAIN: 2
+INPUT:
+  TRAIN_BATCH_SIZE: 8

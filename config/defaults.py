@@ -29,9 +29,9 @@ _C.MODEL.PRETRAINED_MODEL_NAME = "t5-small"
 # -----------------------------------------------------------------------------
 _C.INPUT = CN()
 # Batch size during training
-_C.INPUT.SIZE_TRAIN = 4
+_C.INPUT.TRAIN_BATCH_SIZE = 4
 # Batch size during testing
-_C.INPUT.SIZE_TEST = 4
+_C.INPUT.TEST_BATCH_SIZE = 4
 
 # -----------------------------------------------------------------------------
 # Dataset
@@ -94,6 +94,7 @@ _C.WANDB = CN()
 _C.WANDB.MODE = "online"
 _C.WANDB.TAGS = None
 _C.WANDB.RUN_NAME = None
+_C.WANDB.NOTES = "No description provided."
 
 # ---------------------------------------------------------------------------- #
 # Misc. options

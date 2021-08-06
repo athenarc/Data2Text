@@ -28,5 +28,5 @@ def start_trainer(cfg, train_dataloader, validation_dataloader, tokenizer):
                          logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
 
     trainer.fit(model,
-                train_dataloader=train_dataloader,
+                train_dataloaders=train_dataloader,
                 val_dataloaders=validation_dataloader)
