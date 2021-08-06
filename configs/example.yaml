@@ -10,7 +10,7 @@ SOLVER:
 WANDB:
   RUN_NAME: "Training run"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
-  MODE: "online"
+  MODE: "offline"
   NOTES: "Testing validation set run on small dataset"
 
 INPUT:
