@@ -1,10 +1,11 @@
 from transformers import T5Tokenizer
+from yacs.config import CfgNode  # Typing
 
 from data.build import get_train_dataloader, get_validation_dataloader
 from engine.train import start_trainer
 
 
-def train(cfg):
+def train(cfg: CfgNode) -> None:
     # Get the T5 tokenizer
     tokenizer = T5Tokenizer.from_pretrained(cfg.MODEL.TOKENIZER_NAME)
 

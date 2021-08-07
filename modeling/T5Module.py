@@ -1,8 +1,12 @@
+from typing import Any, Dict, List, Optional  # Typing
+
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from nlp import load_metric
-from transformers import T5ForConditionalGeneration
+from nlp import Metric, load_metric
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
+from yacs.config import CfgNode  # Typing
 
 from utils.model import ids_to_clean_text
 
@@ -21,19 +25,19 @@ from utils.model import ids_to_clean_text
 
 
 class T5System(pl.LightningModule):
-    def __init__(self, cfg, tokenizer):
+    def __init__(self, cfg: CfgNode, tokenizer: T5Tokenizer):
         super().__init__()
-        self.model = T5ForConditionalGeneration.from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
-        self.lr = cfg.SOLVER.BASE_LR
-        self.max_generated_size = cfg.MODEL.MAX_OUTPUT_TOKENS
-        self.tokenizer = tokenizer
-        self.bleu_metric = load_metric('bleu')
+        self.model: T5ForConditionalGeneration = T5ForConditionalGeneration.from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
+        self.lr: float = cfg.SOLVER.BASE_LR
+        self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
+        self.tokenizer: T5Tokenizer = tokenizer
+        self.bleu_metric: Metric = load_metric('bleu')
 
-    def _step(self, batch):
+    def _step(self, batch: Dict[str, Any]) -> float:
         # In order for our T5 model to return a loss we must pass labels
         labels = batch["target_ids"]
 
-        # Label the padding with -100 so as to be ignored when calcualting the loss
+        # Label the padding with -100 so as to be ignored when calculating the loss
         labels[labels[:, :] == self.tokenizer.pad_token_id] = -100
 
         outputs = self(
@@ -46,7 +50,7 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generative_step(self, batch):
+    def _generative_step(self, batch: Dict[str, Any]) -> Dict[str, float]:
 
         generated_ids = self.model.generate(
             batch["source_ids"],
@@ -76,9 +80,12 @@ class T5System(pl.LightningModule):
         return base_metrics
 
     def forward(
-            self, input_ids, attention_mask=None, decoder_input_ids=None,
-            decoder_attention_mask=None, labels=None
-    ):
+            self, input_ids: List[List[int]],
+            attention_mask: Optional[List[List[int]]] = None,
+            decoder_input_ids: Optional[List[List[int]]] = None,
+            decoder_attention_mask: Optional[List[List[int]]] = None,
+            labels: Optional[List[List[int]]] = None
+    ) -> Seq2SeqModelOutput:
         return self.model(
             input_ids,
             attention_mask=attention_mask,
@@ -87,18 +94,18 @@ class T5System(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, batch: Dict[str, Any], batch_idx: int) -> Dict[str, float]:
         loss = self._step(batch)
         self.log('train_loss', loss)
         return {"loss": loss}
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch: Dict[str, Any], batch_idx: int) -> Dict[str, float]:
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
         self.log('bleu', base_metrics['bleu'], on_epoch=True)
 
         return base_metrics
 
-    def configure_optimizers(self):
+    def configure_optimizers(self) -> torch.optim.Optimizer:
         optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         return optimizer

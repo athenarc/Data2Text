@@ -3,7 +3,7 @@ import os
 import sys
 
 
-def setup_logger(name, save_dir, level_str, distributed_rank):
+def setup_logger(name: str, save_dir: str, level_str: str, distributed_rank: int) -> logging.Logger:
     if level_str == "NOTSET":
         level = logging.NOTSET
     elif level_str == "DEBUG":

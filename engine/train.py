@@ -4,11 +4,15 @@ import pytorch_lightning as pl
 import torch
 from pytorch_lightning import loggers as pl_loggers
 from pytorch_lightning.callbacks import ModelCheckpoint
+from torch.utils.data import DataLoader  # Typing
+from transformers import T5Tokenizer  # Typing
+from yacs.config import CfgNode  # Typing
 
 from modeling.T5Module import T5System
 
 
-def start_trainer(cfg, train_dataloader, validation_dataloader, tokenizer):
+def start_trainer(cfg: CfgNode, train_dataloader: DataLoader,
+                  validation_dataloader: DataLoader, tokenizer: T5Tokenizer) -> None:
     model = T5System(cfg, tokenizer)
 
     # Callbacks
