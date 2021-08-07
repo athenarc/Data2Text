@@ -56,7 +56,7 @@ class T5System(pl.LightningModule):
             batch["source_ids"],
             attention_mask=batch["source_mask"],
             use_cache=True,
-            decoder_attention_mask=batch['target_mask'],
+            # decoder_attention_mask=batch['target_mask'],
             max_length=self.max_generated_size,
             num_beams=2,
             repetition_penalty=2.5,
