@@ -3,6 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/epoch=0-step=151.ckpt"
 
 SOLVER:
   BASE_LR: 0.001
@@ -15,3 +16,4 @@ WANDB:
 
 INPUT:
   TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8

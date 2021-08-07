@@ -1,15 +1,10 @@
 import json
-from enum import IntEnum
 from typing import Any, Dict, List, Tuple  # Typing
 
+from enums import Mode
 from torch.utils.data import Dataset
 from transformers import BatchEncoding, T5Tokenizer  # Typing
 from yacs.config import CfgNode  # Typing
-
-
-class Mode(IntEnum):
-    TRAIN = 0
-    VALIDATION = 1
 
 
 class Totto(Dataset):

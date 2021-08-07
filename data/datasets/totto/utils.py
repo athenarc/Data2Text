@@ -1,4 +1,5 @@
 import copy
+import json
 
 
 def _add_adjusted_col_offsets(table):
@@ -151,3 +152,12 @@ def linearize_subtable(subtable, table_page_title, table_section_title):
 
     table_str += "</table>"
     return table_str
+
+
+def retrieve_table_source(path, inds):
+    with open(path, encoding="utf-8") as f:
+        dataset = json.load(f)
+
+    selected_datapoints = [dataset[ind]["subtable_and_metadata"] for ind in inds]
+
+    return selected_datapoints

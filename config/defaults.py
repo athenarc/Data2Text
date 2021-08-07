@@ -23,6 +23,7 @@ _C.MODEL.MAX_INPUT_TOKENS = 512
 _C.MODEL.MAX_OUTPUT_TOKENS = 512
 _C.MODEL.TOKENIZER_NAME = "t5-small"
 _C.MODEL.PRETRAINED_MODEL_NAME = "t5-small"
+_C.MODEL.PATH_TO_CHECKPOINT = ""
 
 # -----------------------------------------------------------------------------
 # INPUT
@@ -85,7 +86,7 @@ _C.OUTPUT.LOGGER_DIR = "storage/logs/runtime/"
 _C.OUTPUT.MODEL_LOGS_DIR = "storage/logs/model/"
 _C.OUTPUT.WANDB_LOGS_DIR = "storage/logs/"
 _C.OUTPUT.PLOTS_DIR = "storage/plots/"
-_C.OUTPUT.CHECKPOINTS_DIR = "storage/plots/checkpoints"
+_C.OUTPUT.CHECKPOINTS_DIR = "storage/checkpoints"
 
 # ---------------------------------------------------------------------------- #
 # Wandb options

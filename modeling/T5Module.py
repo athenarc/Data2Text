@@ -50,8 +50,7 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generative_step(self, batch: Dict[str, Any]) -> Dict[str, float]:
-
+    def _generate_text(self, batch: Dict[str, Any]):
         generated_ids = self.model.generate(
             batch["source_ids"],
             attention_mask=batch["source_mask"],
@@ -66,6 +65,10 @@ class T5System(pl.LightningModule):
         preds = ids_to_clean_text(self.tokenizer, generated_ids)
         target = ids_to_clean_text(self.tokenizer, batch["target_ids"])
 
+        return preds, target, generated_ids
+
+    def _generative_step(self, batch: Dict[str, Any]) -> Dict[str, float]:
+        preds, target, generated_ids = self._generate_text(batch)
         loss = self._step(batch)
 
         # Transform target since BLEU expects a list of a list of candidate references
@@ -109,3 +112,8 @@ class T5System(pl.LightningModule):
     def configure_optimizers(self) -> torch.optim.Optimizer:
         optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         return optimizer
+
+    def inference(self, x):
+        preds, target, _ = self._generate_text(x)
+
+        return preds, target

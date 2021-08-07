@@ -1,4 +1,4 @@
-from datasets.totto.totto import Mode
+from enums import Mode
 from torch.utils.data import DataLoader
 from transformers import T5Tokenizer  # Typing
 from yacs.config import CfgNode  # Typing
