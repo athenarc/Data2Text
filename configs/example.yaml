@@ -9,10 +9,10 @@ SOLVER:
   BASE_LR: 0.001
 
 WANDB:
-  RUN_NAME: "Debug evaluation run"
-  GROUP: "Debug T5 Group"
+  RUN_NAME: "Debug evaluation run V3"
+  GROUP: "Debug T5 Group V3"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
-  MODE: "online"
+  MODE: "offline"
   NOTES: "Testing validation set run on small dataset"
 
 INPUT:
