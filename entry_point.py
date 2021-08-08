@@ -37,6 +37,7 @@ def main():
     # Initialization of the wandb for experiment orchestration
     run = wandb.init(project="data2text",
                      job_type=args.job_type,
+                     group=cfg.WANDB.GROUP,
                      dir=cfg.OUTPUT.WANDB_LOGS_DIR,
                      name=cfg.WANDB.RUN_NAME,
                      tags=cfg.WANDB.TAGS,

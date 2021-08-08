@@ -95,6 +95,7 @@ _C.WANDB = CN()
 _C.WANDB.MODE = "online"
 _C.WANDB.TAGS = None
 _C.WANDB.RUN_NAME = None
+_C.WANDB.GROUP = None
 _C.WANDB.NOTES = "No description provided."
 
 # ---------------------------------------------------------------------------- #

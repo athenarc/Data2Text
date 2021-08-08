@@ -27,11 +27,12 @@ from utils.model import ids_to_clean_text
 class T5System(pl.LightningModule):
     def __init__(self, cfg: CfgNode, tokenizer: T5Tokenizer):
         super().__init__()
-        self.model: T5ForConditionalGeneration = T5ForConditionalGeneration.from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
+        self.model: T5ForConditionalGeneration = T5ForConditionalGeneration\
+            .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
         self.lr: float = cfg.SOLVER.BASE_LR
         self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
         self.tokenizer: T5Tokenizer = tokenizer
-        self.bleu_metric: Metric = load_metric('bleu')
+        self.bleu_metric: Metric = load_metric('bleu', experiment_id="validation")
 
     def _step(self, batch: Dict[str, Any]) -> float:
         # In order for our T5 model to return a loss we must pass labels
@@ -116,4 +117,5 @@ class T5System(pl.LightningModule):
     def inference(self, x):
         preds, target, _ = self._generate_text(x)
 
+        # Care: We return a list even if we perform inference on one target
         return preds, target
