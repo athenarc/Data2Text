@@ -56,24 +56,9 @@ _C.DATALOADER.NUM_WORKERS = 6
 # Solver
 # ---------------------------------------------------------------------------- #
 _C.SOLVER = CN()
-_C.SOLVER.OPTIMIZER_NAME = "SGD"
-
+_C.SOLVER.OPTIMIZER_NAME = "Adam"  # Possible values Adam, AdaFactor (case sensitive)
 _C.SOLVER.MAX_EPOCHS = 50
-
 _C.SOLVER.BASE_LR = 0.001
-_C.SOLVER.BIAS_LR_FACTOR = 2
-
-_C.SOLVER.MOMENTUM = 0.9
-
-_C.SOLVER.WEIGHT_DECAY = 0.0005
-_C.SOLVER.WEIGHT_DECAY_BIAS = 0
-
-_C.SOLVER.GAMMA = 0.1
-_C.SOLVER.STEPS = (30000,)
-
-_C.SOLVER.WARMUP_FACTOR = 1.0 / 3
-_C.SOLVER.WARMUP_ITERS = 500
-_C.SOLVER.WARMUP_METHOD = "linear"
 
 _C.SOLVER.CHECKPOINT_PERIOD = 1
 _C.SOLVER.LOG_PERIOD = 50

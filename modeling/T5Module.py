@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional  # Typing
+from typing import Any, Dict, List, Optional, Tuple  # Typing
 
 import numpy as np
 import pytorch_lightning as pl
@@ -8,6 +8,7 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
 from yacs.config import CfgNode  # Typing
 
+from solver.build import get_ada_factor_optimizer, get_adam_optimizer
 from utils.model import ids_to_clean_text
 
 # class T5(torch.nn.Module):
@@ -29,6 +30,7 @@ class T5System(pl.LightningModule):
         super().__init__()
         self.model: T5ForConditionalGeneration = T5ForConditionalGeneration\
             .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
+        self.optimizer_name = cfg.SOLVER.OPTIMIZER_NAME
         self.lr: float = cfg.SOLVER.BASE_LR
         self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
         self.tokenizer: T5Tokenizer = tokenizer
@@ -51,7 +53,8 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generate_text(self, batch: Dict[str, Any]):
+    def _generate_text(self, batch: Dict[str, torch.LongTensor])\
+            -> Tuple[List[str], List[str], torch.LongTensor]:
         generated_ids = self.model.generate(
             batch["source_ids"],
             attention_mask=batch["source_mask"],
@@ -64,11 +67,11 @@ class T5System(pl.LightningModule):
             early_stopping=True
         )
         preds = ids_to_clean_text(self.tokenizer, generated_ids)
-        target = ids_to_clean_text(self.tokenizer, batch["target_ids"])
+        targets = ids_to_clean_text(self.tokenizer, batch["target_ids"])
 
-        return preds, target, generated_ids
+        return preds, targets, generated_ids
 
-    def _generative_step(self, batch: Dict[str, Any]) -> Dict[str, float]:
+    def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
         preds, target, generated_ids = self._generate_text(batch)
         loss = self._step(batch)
 
@@ -98,12 +101,12 @@ class T5System(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch: Dict[str, Any], batch_idx: int) -> Dict[str, float]:
+    def training_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
         loss = self._step(batch)
         self.log('train_loss', loss)
         return {"loss": loss}
 
-    def validation_step(self, batch: Dict[str, Any], batch_idx: int) -> Dict[str, float]:
+    def validation_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
         self.log('bleu', base_metrics['bleu'], on_epoch=True)
@@ -111,11 +114,16 @@ class T5System(pl.LightningModule):
         return base_metrics
 
     def configure_optimizers(self) -> torch.optim.Optimizer:
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
-        return optimizer
+        if self.optimizer_name == "Adam":
+            return get_adam_optimizer(self.parameters(), self.lr)
+        elif self.optimizer_name == "AdaFactor":
+            return get_ada_factor_optimizer(self.parameters(), self.lr)
+        else:
+            raise ValueError(f"Optimizer {self.optimizer_name} not known. "
+                             f"Available: Adam, AdaFactor (case sensitive)")
 
     def inference(self, x):
-        preds, target, _ = self._generate_text(x)
+        preds, targets, _ = self._generate_text(x)
 
         # Care: We return a list even if we perform inference on one target
-        return preds, target
+        return preds, targets
