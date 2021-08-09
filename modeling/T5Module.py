@@ -30,7 +30,7 @@ class T5System(pl.LightningModule):
         super().__init__()
         self.model: T5ForConditionalGeneration = T5ForConditionalGeneration\
             .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
-        self.optimizer_name = cfg.SOLVER.OPTIMIZER_NAME
+        self.optimizer_name: str = cfg.SOLVER.OPTIMIZER_NAME
         self.lr: float = cfg.SOLVER.BASE_LR
         self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
         self.tokenizer: T5Tokenizer = tokenizer
@@ -72,12 +72,12 @@ class T5System(pl.LightningModule):
         return preds, targets, generated_ids
 
     def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
-        preds, target, generated_ids = self._generate_text(batch)
+        preds, targets, generated_ids = self._generate_text(batch)
         loss = self._step(batch)
 
-        # Transform target since BLEU expects a list of a list of candidate references
-        target = list(map(lambda x: [x], target))
-        bleu_score = self.bleu_metric.compute(preds, target)['bleu']
+        # Transform targets since BLEU expects a list of a list of candidate references
+        targets = list(map(lambda x: [x], targets))
+        bleu_score = self.bleu_metric.compute(preds, targets)['bleu']
 
         gen_len = np.mean(list(map(len, generated_ids)))
 

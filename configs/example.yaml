@@ -10,10 +10,10 @@ SOLVER:
   BASE_LR: 0.001
 
 WANDB:
-  RUN_NAME: "DEBUG AdaFactor train run"
+  RUN_NAME: "DEBUG AdaFactor evaluation run"
   GROUP: "DEBUG AdaFactor"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
-  MODE: "offline"
+  MODE: "online"
   NOTES: ""
 
 INPUT:

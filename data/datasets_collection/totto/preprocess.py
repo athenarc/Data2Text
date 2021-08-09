@@ -6,11 +6,11 @@ import six
 from absl import app, flags
 from tqdm import tqdm
 
-from data.datasets.totto import utils as preprocess_utils
+from data.datasets_collection.totto import utils as preprocess_utils
 
-flags.DEFINE_string("input_dir_path", "storage/datasets/totto/linearized/", "Input dir containing totto raw files.")
+flags.DEFINE_string("input_dir_path", "storage/datasets_collection/totto/linearized/", "Input dir containing totto raw files.")
 
-flags.DEFINE_string("output_dir_path", "storage/datasets/totto/filtered/",
+flags.DEFINE_string("output_dir_path", "storage/datasets_collection/totto/filtered/",
                     "Output dir that linearized tables will be stored.")
 
 # flags.DEFINE_integer("examples_to_visualize", 100,

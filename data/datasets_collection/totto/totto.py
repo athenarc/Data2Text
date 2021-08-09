@@ -19,7 +19,7 @@ class Totto(Dataset):
         self.mode = type_path
         with open(dataset_path, encoding="utf-8") as f:
             self.dataset: List[Dict] = json.load(f)
-            # self.dataset = self.dataset[:int(len(self.dataset) * 0.01)]
+            self.dataset = self.dataset[:int(len(self.dataset) * 0.01)]
 
         self.input_length: int = cfg.MODEL.MAX_INPUT_TOKENS
         self.output_length: int = cfg.MODEL.MAX_OUTPUT_TOKENS
