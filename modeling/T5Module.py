@@ -75,8 +75,10 @@ class T5System(pl.LightningModule):
         preds, targets, generated_ids = self._generate_text(batch)
         loss = self._step(batch)
 
-        # Transform targets since BLEU expects a list of a list of candidate references
-        targets = list(map(lambda x: [x], targets))
+        # We have to re-tokenize our texts so as to calculate BLEU
+        targets = list(map(lambda x: [self.tokenizer.tokenize(x)], targets))
+        preds = list(map(lambda x: self.tokenizer.tokenize(x), preds))
+
         bleu_score = self.bleu_metric.compute(preds, targets)['bleu']
 
         gen_len = np.mean(list(map(len, generated_ids)))

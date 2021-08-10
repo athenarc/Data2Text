@@ -3,15 +3,15 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/epoch=0-step=151.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/epoch=1-step=303.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
   BASE_LR: 0.001
 
 WANDB:
-  RUN_NAME: "DEBUG AdaFactor evaluation run"
-  GROUP: "DEBUG AdaFactor"
+  RUN_NAME: "AdaFactor train run"
+  GROUP: "AdaFactor 1% dataset"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
   MODE: "online"
   NOTES: ""
