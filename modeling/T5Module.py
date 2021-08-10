@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, Tuple  # Typing
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from nlp import Metric, load_metric
+from datasets import Metric, load_metric
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
 from yacs.config import CfgNode  # Typing
@@ -79,7 +79,8 @@ class T5System(pl.LightningModule):
         targets = list(map(lambda x: [self.tokenizer.tokenize(x)], targets))
         preds = list(map(lambda x: self.tokenizer.tokenize(x), preds))
 
-        bleu_score = self.bleu_metric.compute(preds, targets)['bleu']
+        bleu_score = self.bleu_metric.compute(
+            predictions=preds, references=targets)['bleu']
 
         gen_len = np.mean(list(map(len, generated_ids)))
 

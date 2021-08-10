@@ -13,7 +13,7 @@ WANDB:
   RUN_NAME: "AdaFactor train run"
   GROUP: "AdaFactor 1% dataset"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
-  MODE: "online"
+  MODE: "offline"
   NOTES: ""
 
 INPUT:
