@@ -8,6 +8,7 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
 from yacs.config import CfgNode  # Typing
 
+from modeling.Exceptions import OptimizerNotFound
 from solver.build import get_ada_factor_optimizer, get_adam_optimizer
 from utils.model import ids_to_clean_text
 
@@ -117,13 +118,14 @@ class T5System(pl.LightningModule):
         return base_metrics
 
     def configure_optimizers(self) -> torch.optim.Optimizer:
-        if self.optimizer_name == "Adam":
-            return get_adam_optimizer(self.parameters(), self.lr)
-        elif self.optimizer_name == "AdaFactor":
-            return get_ada_factor_optimizer(self.parameters(), self.lr)
-        else:
-            raise ValueError(f"Optimizer {self.optimizer_name} not known. "
-                             f"Available: Adam, AdaFactor (case sensitive)")
+        optimizer_creators = {
+            'Adam': get_adam_optimizer,
+            'AdaFactor': get_ada_factor_optimizer
+        }
+        try:
+            return optimizer_creators[self.optimizer_name](self.parameters(), self.lr)
+        except KeyError:
+            raise OptimizerNotFound(f"Optimizer {self.optimizer_name} is not implemented.")
 
     def inference(self, x):
         preds, targets, _ = self._generate_text(x)

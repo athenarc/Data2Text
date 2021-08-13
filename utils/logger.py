@@ -3,22 +3,26 @@ import os
 import sys
 
 
+class LoggerLevelNotFound(KeyError):
+    pass
+
+
 def setup_logger(name: str, save_dir: str, level_str: str, distributed_rank: int) -> logging.Logger:
-    if level_str == "NOTSET":
-        level = logging.NOTSET
-    elif level_str == "DEBUG":
-        level = logging.DEBUG
-    elif level_str == "INFO":
-        level = logging.INFO
-    elif level_str == "WARNING":
-        level = logging.WARNING
-    elif level_str == "ERROR":
-        level = logging.ERROR
-    elif level_str == "CRITICAL":
-        level = logging.CRITICAL
-    else:
-        raise ValueError("Logger level is not valid, valid levels: "
-                         "https://docs.python.org/3/library/logging.html#levels")
+    levels = {
+        "NOTSET": logging.NOTSET,
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL
+    }
+
+    try:
+        level = levels[level_str]
+    except KeyError:
+        raise LoggerLevelNotFound(f"Logger level {level_str} is not valid, valid levels: "
+                                  "https://docs.python.org/3/library/logging.html#levels")
+
     logger = logging.getLogger(name)
 
     logger.setLevel(level)

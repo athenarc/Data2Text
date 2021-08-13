@@ -14,10 +14,7 @@ from utils.model import add_batch_dim
 from visualizing.wandb_table import create_inference_examples_table
 
 
-def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
-    # Get the inference device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+def get_eval_model_and_tokenizer(cfg: CfgNode, device):
     # Get the T5 tokenizer
     tokenizer = T5Tokenizer.from_pretrained(cfg.MODEL.TOKENIZER_NAME)
 
@@ -26,6 +23,15 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
                                           cfg=cfg, tokenizer=tokenizer)
     model.to(device)
     model.eval()
+
+    return tokenizer, model
+
+
+def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
+    # Get the inference device
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    tokenizer, model = get_eval_model_and_tokenizer(cfg, device)
 
     # Get the validation dataset
     validation_dataset = list(Totto(cfg, Mode.VALIDATION, tokenizer))
