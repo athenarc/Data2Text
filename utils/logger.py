@@ -2,6 +2,8 @@ import logging
 import os
 import sys
 
+global_logger = None
+
 
 class LoggerLevelNotFound(KeyError):
     pass
@@ -41,5 +43,8 @@ def setup_logger(name: str, save_dir: str, level_str: str, distributed_rank: int
         fh.setLevel(level)
         fh.setFormatter(formatter)
         logger.addHandler(fh)
+
+    global global_logger
+    global_logger = logger
 
     return logger

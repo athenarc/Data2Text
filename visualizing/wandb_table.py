@@ -1,4 +1,3 @@
-import warnings
 from dataclasses import InitVar, dataclass, field
 from typing import List, Tuple  # Typing
 
@@ -7,12 +6,14 @@ import nltk
 import wandb
 from wandb.wandb_run import Run  # Typing
 
+from visualizing.totto_table_parse import to_valid_html
+
 
 @dataclass
 class TableRow:
     predicted: str
     target: str
-    source: str
+    source: wandb.Html
     bleu: float = field(init=False)
     bertscore: float = field(init=False)
 
@@ -49,7 +50,7 @@ def create_inference_examples_table(run: Run, inferences_targets: List[List[str]
 
     # Populate the table
     for inference, target, source in zipped_inf_target_source:
-        table_row = TableRow(inference, target, source,
+        table_row = TableRow(inference, target, wandb.Html(to_valid_html(source)),
                              bleu_calculator=bleu_calculator,
                              bertscore_calculator=bertscore_calculator)
         inf_table.add_data(*table_row.to_tuple())
