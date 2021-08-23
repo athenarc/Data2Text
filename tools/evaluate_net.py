@@ -47,4 +47,4 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
     inferences_targets = [model.inference(datapoint) for datapoint in datapoints]
     inferences_targets = [[inf[0], target[0]] for inf, target in inferences_targets]
 
-    create_inference_examples_table(wandb_run, inferences_targets, table_sources)
+    create_inference_examples_table(wandb_run, inferences_targets, table_sources, tokenizer)

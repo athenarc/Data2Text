@@ -23,10 +23,10 @@ def parse_totto_format(source: str) -> Dict[str, str]:
 
 def html_table_creator(headers, values):
     headers_list = [f"<th>{header}</th>" for header in headers]
-    headers_html = "<tr>" + "\n".join(headers_list) + "</tr>"
+    headers_html = "<tr>" + "".join(headers_list) + "</tr>"
 
     values_list = [f"<td>{value}</td>" for value in values]
-    values_html = "<tr>" + "\n".join(values_list) + "</tr>"
+    values_html = "<tr>" + "".join(values_list) + "</tr>"
 
     return "<table style=\"width:100%\">\n" + headers_html + values_html + "</table"
 
