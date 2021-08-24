@@ -1,10 +1,11 @@
 import json
 from typing import Any, Dict, List, Tuple  # Typing
 
-from enums import Mode
 from torch.utils.data import Dataset
 from transformers import BatchEncoding, T5Tokenizer  # Typing
 from yacs.config import CfgNode  # Typing
+
+from tools.enums import Mode
 
 
 class Totto(Dataset):

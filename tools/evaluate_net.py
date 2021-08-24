@@ -2,7 +2,6 @@ import random
 
 import numpy as np
 import torch
-from enums import Mode
 from transformers import T5Tokenizer
 from wandb.wandb_run import Run  # Typing
 from yacs.config import CfgNode  # Typing
@@ -10,6 +9,7 @@ from yacs.config import CfgNode  # Typing
 from data.datasets_collection.totto.totto import Totto
 from data.datasets_collection.totto.utils import retrieve_table_source
 from modeling.T5Module import T5System
+from tools.enums import Mode
 from utils.model import add_batch_dim
 from visualizing.wandb_table import create_inference_examples_table
 

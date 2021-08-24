@@ -12,19 +12,6 @@ from modeling.Exceptions import OptimizerNotFound
 from solver.build import get_ada_factor_optimizer, get_adam_optimizer
 from utils.model import ids_to_clean_text
 
-# class T5(torch.nn.Module):
-#     def __init__(self, cfg):
-#         super(T5, self).__init__()
-#
-#         self.T5_encoder_decoder = T5ForConditionalGeneration\
-#             .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
-#
-#     def forward(
-#             self, input_ids, attention_mask=None, decoder_input_ids=None,
-#             decoder_attention_mask=None, lm_labels=None
-#     ):
-#         return self.T5_encoder_decoder()
-
 
 class T5System(pl.LightningModule):
     def __init__(self, cfg: CfgNode, tokenizer: T5Tokenizer):
