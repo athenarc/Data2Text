@@ -2,6 +2,7 @@ import sqlite3
 
 import pandas as pd
 from annotator import Annotation, Annotator
+from pyfiglet import Figlet
 from termcolor import colored
 
 
@@ -37,8 +38,12 @@ class AnnotatorView:
                 if user_confirm_output(full_table):
                     break
 
-            # Step 2: Ask the user to write a query
-            print(colored("####### Step 2: Query Proposal #######", color='cyan'))
+            # Step 2: Ask the user to suggest a table name
+            print(colored("####### Step 2: Table Name #######", color='cyan'))
+            table_name = input("> Suggested table name: ")
+
+            # Step 3: Ask the user to write a query
+            print(colored("####### Step 3: Query Proposal #######", color='cyan'))
             self.show_query_suggestions(self.annotator.get_query_suggestions(table_id))
             while True:
                 select_col_inds = input("> Selected columns (eg. 0, 1, 4): ")
@@ -54,27 +59,21 @@ class AnnotatorView:
                 if user_confirm_output(res):
                     break
 
-            # Step 3: Ask the user to describe the query
-            print(colored("####### Step 3: Query Description #######", color='cyan'))
-            while True:
-                desc_query = input("> Query description: ")
-                if user_confirm_output(desc_query):
-                    break
+            # Step 4: Ask the user to describe the query
+            print(colored("####### Step 4: Query Description #######", color='cyan'))
+            desc_query = input("> Query description: ")
 
-            # Step 4: Ask the user to describe the results of the query
-            print(colored("####### Step 4: Results Description #######", color='cyan'))
-            while True:
-                desc_results = input("> Results description: ")
-                if user_confirm_output(desc_results):
-                    break
+            # Step 5: Ask the user to describe the results of the query
+            print(colored("####### Step 5: Results Description #######", color='cyan'))
+            desc_results = input("> Results description: ")
 
-            # Step 5: Create and save the annotation
-            print(colored("####### Step 5: Save Annotation #######", color='cyan'))
-            annotation = Annotation(table_id, query, desc_query, desc_results, res)
-            self.show_annotation(table_id, query, desc_query, desc_results, res)
+            # Step 6: Create and save the annotation
+            print(colored("####### Step 6: Save Annotation #######", color='cyan'))
+            annotation = Annotation(table_id, query, table_name, desc_query, desc_results, res)
+            self.show_annotation(table_id, query, table_name, desc_query, desc_results, res)
             self.annotator.save_annotations(annotation)
 
-            # Step 6: Check if finished
+            # Step 7: Check if finished
             exit_msg = input(colored(f"Total annotations: {self.annotator.get_annotations_numb()}. "
                                      f"Would you like to exit? (y/n)", color='red'))
             exit_annotation = exit_msg == "y"
@@ -98,11 +97,13 @@ class AnnotatorView:
 
     @staticmethod
     def show_welcome_message():
-        print(colored("\n"
-                      "############################################\n"
-                      "              WikiSQL Annotator             \n"
-                      "############################################\n"
-                      , color="green"))
+        # print(colored("\n"
+        #               "############################################\n"
+        #               "              WikiSQL Annotator             \n"
+        #               "############################################\n"
+        #               , color="green"))
+        f = Figlet(font='big')
+        print(colored(f.renderText('WIKISQL ANNOTATOR'), 'green'))
 
     def show_settings(self, db_path, table_info_path, queries_path, json_save_path):
         print(colored("> Annotator configuration:", color='yellow'))
@@ -114,9 +115,10 @@ class AnnotatorView:
         print()
 
     @staticmethod
-    def show_annotation(table_id, query, desc_query, desc_results, res):
+    def show_annotation(table_id, query, table_name, desc_query, desc_results, res):
         print("> The following annotation will be stored:")
         print(f"\t* Table Id: {table_id}")
+        print(f"\t* Table Name: {table_name}")
         print(f"\t* Query: {query}")
         print(f"\t* Query Description: {desc_query}")
         print(f"\t* Results Description: {desc_results}")

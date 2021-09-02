@@ -11,6 +11,7 @@ from db_interface import WikiSqlController
 class Annotation:
     table_id: str
     query: str
+    table_name: str
     query_description: str
     results_description: str
     result: Any
