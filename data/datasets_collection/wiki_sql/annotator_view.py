@@ -1,7 +1,7 @@
 import sqlite3
 
 import pandas as pd
-from annotator import Annotator
+from annotator import Annotation, Annotator
 from termcolor import colored
 
 
@@ -40,6 +40,7 @@ class AnnotatorView:
 
             # Step 2: Ask the user to write a query
             print(colored("####### Step 2: Query Proposal #######", color='cyan'))
+            self.show_query_suggestions(self.annotator.get_query_suggestions(table_id))
             while True:
                 query = input("> Query (use col indexes and table_id): ")
                 query = query.replace("table_id", sql_table_id)
@@ -67,10 +68,11 @@ class AnnotatorView:
                 if user_confirm_output(desc_results):
                     break
 
-            # Step 5: Save the annotation
+            # Step 5: Create and save the annotation
             print(colored("####### Step 5: Save Annotation #######", color='cyan'))
+            annotation = Annotation(table_id, query, desc_query, desc_results, res)
             self.show_annotation(table_id, query, desc_query, desc_results, res)
-            self.annotator.save_annotations(table_id, query, desc_query, desc_results, res)
+            self.annotator.save_annotations(annotation)
 
             # Step 6: Check if finished
             exit_msg = input(colored(f"Total annotations: {self.annotator.get_annotations_numb()}. "
@@ -103,6 +105,13 @@ class AnnotatorView:
         print(f"\t* Results Description: {desc_results}")
         print(f"\t* Result rows: {len(res)}")
         input("> Press enter to save...")
+
+    @staticmethod
+    def show_query_suggestions(suggestions):
+        print("WikiSQL original queries:")
+        for suggestion in suggestions:
+            print(f"\t* {suggestion}")
+        print()
 
 
 if __name__ == '__main__':
