@@ -14,6 +14,7 @@ class Annotation:
     query_description: str
     results_description: str
     result: Any
+    difficulty: int = 1
 
     def __post_init__(self):
         # Transform the result pd.DataFrame to string
@@ -26,9 +27,11 @@ class Annotator:
         self.query_suggestions = self.initialize_query_suggestions(queries_path)
         self.table_pool = self.initialize_table_pool(table_info_path)
         self.json_save_path = json_save_path
-
-        with open(json_save_path, "r") as fp:
-            self.annotations = json.load(fp)
+        try:
+            with open(json_save_path, "r") as fp:
+                self.annotations = json.load(fp)
+        except FileNotFoundError:
+            self.annotations = []
 
     @staticmethod
     def initialize_table_pool(table_info_path):

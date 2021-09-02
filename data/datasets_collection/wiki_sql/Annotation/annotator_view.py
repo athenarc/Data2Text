@@ -34,7 +34,6 @@ class AnnotatorView:
             print(colored("####### Step 1: Table Proposal #######", color='cyan'))
             while True:
                 table_id, full_table = self.annotator.propose_table()
-                sql_table_id = f"table_{table_id.replace('-', '_')}"
                 if user_confirm_output(full_table):
                     break
 
@@ -42,8 +41,9 @@ class AnnotatorView:
             print(colored("####### Step 2: Query Proposal #######", color='cyan'))
             self.show_query_suggestions(self.annotator.get_query_suggestions(table_id))
             while True:
-                query = input("> Query (use col indexes and table_id): ")
-                query = query.replace("table_id", sql_table_id)
+                select_col_inds = input("> Selected columns (eg. 0, 1, 4): ")
+                where_clause = input("> Where cause (eg. col0=\"value\"): ")
+                query = self.form_query(select_col_inds, table_id, where_clause)
 
                 print(f"> Running query: {query}")
                 try:
@@ -76,8 +76,25 @@ class AnnotatorView:
 
             # Step 6: Check if finished
             exit_msg = input(colored(f"Total annotations: {self.annotator.get_annotations_numb()}. "
-                                     f"Would you like to exit? (y/n)", color='green'))
+                                     f"Would you like to exit? (y/n)", color='red'))
             exit_annotation = exit_msg == "y"
+
+    @staticmethod
+    def form_query(sel_inds_str, table_id, where_clause):
+        # SELECT clause
+        sel_inds = sel_inds_str.replace(' ', '').split(',')
+        sel_clause = f"SELECT col{sel_inds[0]}"  # We assume that at least one column is selected
+        for sel_ind in sel_inds[1:]:
+            sel_clause += f", col{sel_ind}"
+
+        # FROM clause
+        sql_table_id = f"table_{table_id.replace('-', '_')}"
+        from_clause = f"FROM {sql_table_id}"
+
+        # WHERE clause
+        where_clause = f"WHERE {where_clause}"
+
+        return f"{sel_clause} {from_clause} {where_clause}"
 
     @staticmethod
     def show_welcome_message():
@@ -116,9 +133,9 @@ class AnnotatorView:
 
 if __name__ == '__main__':
     # Paths will work if working directory is the directory of this file
-    WIKISQL_DB_PATH = "../../../storage/datasets/wiki_sql/raw/train.db"
-    WIKISQL_JSON_PATH = "../../../storage/datasets/wiki_sql/raw/train.tables.jsonl"
-    QUERIES_PATH = "../../../storage/datasets/wiki_sql/raw/train.jsonl"
-    ANNOTATION_STORAGE_PATH = "../../../storage/datasets/wiki_sql/annotations/train.json"
+    WIKISQL_DB_PATH = "../../../../storage/datasets/wiki_sql/raw/train.db"
+    WIKISQL_JSON_PATH = "../../../../storage/datasets/wiki_sql/raw/train.tables.jsonl"
+    QUERIES_PATH = "../../../../storage/datasets/wiki_sql/raw/train.jsonl"
+    ANNOTATION_STORAGE_PATH = "../../../../storage/datasets/wiki_sql/annotations/train.json"
     annotator = AnnotatorView(WIKISQL_DB_PATH, WIKISQL_JSON_PATH, QUERIES_PATH, ANNOTATION_STORAGE_PATH)
     annotator.annotation_loop()

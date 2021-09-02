@@ -77,9 +77,9 @@ class WikiSqlController:
 
 if __name__ == '__main__':
     # Paths will work if working directory is the directory of this file
-    WIKISQL_DB_PATH = "../../../storage/datasets/wiki_sql/raw/train.db"
-    WIKISQL_JSON_PATH = "../../../storage/datasets/wiki_sql/raw/train.tables.jsonl"
-    QUERIES_PATH = "../../../storage/datasets/wiki_sql/raw/train.jsonl"
+    WIKISQL_DB_PATH = "../../../../storage/datasets/wiki_sql/raw/train.db"
+    WIKISQL_JSON_PATH = "../../../../storage/datasets/wiki_sql/raw/train.tables.jsonl"
+    QUERIES_PATH = "../../../../storage/datasets/wiki_sql/raw/train.jsonl"
 
     wiki_sql = WikiSqlController(WIKISQL_DB_PATH, WIKISQL_JSON_PATH)
     # print(wiki_sql.query_with_col_names("SELECT col1 FROM table_1_10007452_3;"))
