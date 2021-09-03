@@ -34,14 +34,20 @@ class Annotator:
         except FileNotFoundError:
             self.annotations = []
 
-    @staticmethod
-    def initialize_table_pool(table_info_path):
+    def initialize_table_pool(self, table_info_path):
         tables = []
         with open(table_info_path) as file_in:
             for line in file_in:
                 tables.append(json.loads(line))
+        return [table['id'] for table in tables if self.keep_non_sports_table(table)]
 
-        return [table['id'] for table in tables]
+    @staticmethod
+    def keep_non_sports_table(table):
+        SPORTS_WORDS = ["game", "manufacturer", "position", "winner", "driver", "captain",
+                        "player", "pick", "round", "tournament", "club", "result", "crowd",
+                        "goals", "points", "lane"]
+        col_names_concatenated = " ".join(table['header']).lower()
+        return not any(x in col_names_concatenated for x in SPORTS_WORDS)
 
     @staticmethod
     def initialize_query_suggestions(queries_path):
