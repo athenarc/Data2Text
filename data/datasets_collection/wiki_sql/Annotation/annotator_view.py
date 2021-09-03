@@ -3,6 +3,7 @@ import sqlite3
 import pandas as pd
 from annotator import Annotation, Annotator
 from pyfiglet import Figlet
+from table_filters import is_movie, is_sport
 from termcolor import colored
 
 
@@ -21,7 +22,9 @@ def user_confirm_output(output):
 
 class AnnotatorView:
     def __init__(self, db_path, table_info_path, queries_path, json_save_path):
-        self.annotator = Annotator(db_path, table_info_path, queries_path, json_save_path)
+        self.annotator = Annotator(db_path, table_info_path,
+                                   queries_path, json_save_path,
+                                   filters=[is_movie, is_sport])
 
         # Initial logging to make sure that the configuration is correct
         self.show_welcome_message()

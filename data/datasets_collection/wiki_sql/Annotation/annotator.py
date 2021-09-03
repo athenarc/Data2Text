@@ -23,10 +23,10 @@ class Annotation:
 
 
 class Annotator:
-    def __init__(self, db_path, table_info_path, queries_path, json_save_path):
+    def __init__(self, db_path, table_info_path, queries_path, json_save_path, filters=None):
         self.wiki_interface = WikiSqlController(db_path, table_info_path)
         self.query_suggestions = self.initialize_query_suggestions(queries_path)
-        self.table_pool = self.initialize_table_pool(table_info_path)
+        self.table_pool = self.initialize_table_pool(table_info_path, filters)
         self.json_save_path = json_save_path
         try:
             with open(json_save_path, "r") as fp:
@@ -34,20 +34,25 @@ class Annotator:
         except FileNotFoundError:
             self.annotations = []
 
-    def initialize_table_pool(self, table_info_path):
+    @staticmethod
+    def initialize_table_pool(table_info_path, filters=None):
         tables = []
         with open(table_info_path) as file_in:
             for line in file_in:
                 tables.append(json.loads(line))
-        return [table['id'] for table in tables if self.keep_non_sports_table(table)]
 
-    @staticmethod
-    def keep_non_sports_table(table):
-        SPORTS_WORDS = ["game", "manufacturer", "position", "winner", "driver", "captain",
-                        "player", "pick", "round", "tournament", "club", "result", "crowd",
-                        "goals", "points", "lane"]
-        col_names_concatenated = " ".join(table['header']).lower()
-        return not any(x in col_names_concatenated for x in SPORTS_WORDS)
+        if filters is None:
+            return tables
+
+        final_table_pool = tables
+        print(len(final_table_pool))
+
+        # We want to avoid specific WikiSQL table categories to dominate the dataset
+        for table_filter in filters:
+            final_table_pool = [table['id'] for table in tables if not table_filter(table)]
+
+        print(len(final_table_pool))
+        return final_table_pool
 
     @staticmethod
     def initialize_query_suggestions(queries_path):
