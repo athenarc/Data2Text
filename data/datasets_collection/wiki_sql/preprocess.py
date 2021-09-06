@@ -23,7 +23,11 @@ def extract_cells_from_df(table_df: pd.DataFrame) -> List[Dict[str, str]]:
     cell_list = []
     for _, row in table_df.iterrows():
         for name, val in row.items():
-            cell_list.append({"col_header": name, "col_val": str(val)})
+            try:
+                added_value = int(val) if int(val) == val else val
+            except ValueError:
+                added_value = val
+            cell_list.append({"col_header": name, "col_val": str(added_value)})
 
     return cell_list
 
@@ -62,7 +66,7 @@ def transform_wikisql_to_totto(annotations_path: str, save_path: str, use_query:
 if __name__ == '__main__':
     # The paths below expect the sys.path to be the project root
     WIKISQL_ANNOTATIONS_PATH = "storage/datasets/wiki_sql/annotations/train.json"
-    TOTTO_SAVE_PATH = "storage/datasets/totto/wikisql_to_totto/diff1_wikisql_no_query.json"
-    USE_QUERY = False
+    TOTTO_SAVE_PATH = "storage/datasets/totto/wikisql_to_totto/diff1_wikisql_with_query.json"
+    USE_QUERY = True
 
     transform_wikisql_to_totto(WIKISQL_ANNOTATIONS_PATH, TOTTO_SAVE_PATH, USE_QUERY)
