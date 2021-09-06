@@ -4,7 +4,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any
 
-from db_interface import WikiSqlController
+from data.datasets_collection.wiki_sql.Annotation.db_interface import \
+    WikiSqlController
 
 
 @dataclass
@@ -14,12 +15,12 @@ class Annotation:
     table_name: str
     query_description: str
     results_description: str
-    result: Any
+    result: str
     difficulty: int = 1
-
-    def __post_init__(self):
-        # Transform the result pd.DataFrame to string
-        self.result = self.result.to_csv()
+    #
+    # def __post_init__(self):
+    #     # Transform the result pd.DataFrame to string
+    #     self.result = self.result.to_csv()
 
 
 class Annotator:

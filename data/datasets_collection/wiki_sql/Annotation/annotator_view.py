@@ -1,10 +1,13 @@
 import sqlite3
 
 import pandas as pd
-from annotator import Annotation, Annotator
 from pyfiglet import Figlet
-from table_filters import is_movie, is_sport
 from termcolor import colored
+
+from data.datasets_collection.wiki_sql.Annotation.annotator import (Annotation,
+                                                                    Annotator)
+from data.datasets_collection.wiki_sql.Annotation.table_filters import (
+    is_movie, is_sport)
 
 
 def user_confirm_output(output):
@@ -72,7 +75,7 @@ class AnnotatorView:
 
             # Step 6: Create and save the annotation
             print(colored("####### Step 6: Save Annotation #######", color='cyan'))
-            annotation = Annotation(table_id, query, table_name, desc_query, desc_results, res)
+            annotation = Annotation(table_id, query, table_name, desc_query, desc_results, res.to_csv())
             self.show_annotation(table_id, query, table_name, desc_query, desc_results, res)
             self.annotator.save_annotations(annotation)
 
