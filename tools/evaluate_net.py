@@ -11,7 +11,7 @@ from data.datasets_collection.totto.utils import retrieve_table_source
 from modeling.T5Module import T5System
 from tools.enums import Mode
 from utils.model import add_batch_dim
-from visualizing.wandb_table import create_inference_examples_table
+from visualizing.wandb_inference_report import create_inference_report_on_wandb
 
 
 def get_eval_model_and_tokenizer(cfg: CfgNode, device):
@@ -37,7 +37,7 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
     validation_dataset = list(Totto(cfg, Mode.VALIDATION, tokenizer))
 
     # We need the indexes in order to retrieve the source input without having to decode
-    validation_sample_inds = random.sample(list(np.arange(len(validation_dataset))), 50)
+    validation_sample_inds = random.sample(list(np.arange(len(validation_dataset))), 100)
 
     # Prepare both the table sources
     table_sources = retrieve_table_source(cfg.DATASET.VALIDATION, validation_sample_inds)
@@ -47,4 +47,4 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
     inferences_targets = [model.inference(datapoint) for datapoint in datapoints]
     inferences_targets = [[inf[0], target[0]] for inf, target in inferences_targets]
 
-    create_inference_examples_table(wandb_run, inferences_targets, table_sources, tokenizer)
+    create_inference_report_on_wandb(wandb_run, inferences_targets, table_sources, tokenizer)
