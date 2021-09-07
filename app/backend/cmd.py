@@ -1,6 +1,6 @@
 import argparse
 
-from app.backend.inference import InferenceController
+from app.backend.query_explainer import QueryExplainer
 from config import cfg
 
 
@@ -15,11 +15,11 @@ def main():
         cfg.merge_from_file(args.config_file)
     cfg.freeze()
 
-    inference_controller = InferenceController(cfg)
+    query_explainer = QueryExplainer("storage/datasets/wiki_sql/raw/train.db", cfg)
 
     while True:
-        input_table = input("Linearized table: ")
-        print(inference_controller.inference(input_table))
+        query = input("Query: ")
+        print(query_explainer.explain_query(query))
 
 
 if __name__ == '__main__':
