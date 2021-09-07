@@ -30,9 +30,7 @@ def get_eval_model_and_tokenizer(cfg: CfgNode, device):
 def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
     # Get the inference device
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
     tokenizer, model = get_eval_model_and_tokenizer(cfg, device)
-
     # Get the validation dataset
     validation_dataset = list(Totto(cfg, Mode.VALIDATION, tokenizer))
 
@@ -44,7 +42,7 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
     datapoints = [validation_dataset[ind] for ind in validation_sample_inds]
     datapoints = add_batch_dim(datapoints, device)  # The inference method expects a batch of datapoints
 
-    inferences_targets = [model.inference(datapoint) for datapoint in datapoints]
+    inferences_targets = [model.inference_with_target(datapoint) for datapoint in datapoints]
     inferences_targets = [[inf[0], target[0]] for inf, target in inferences_targets]
 
     create_inference_report_on_wandb(wandb_run, inferences_targets, table_sources, tokenizer)

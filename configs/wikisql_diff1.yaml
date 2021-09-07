@@ -13,7 +13,7 @@ WANDB:
   RUN_NAME: "Evaluate on WikiSQL Difficulty 1 | WITH QUERY INFO"
   GROUP: "Filtered Entities"
   TAGS: ["Evaluate", "WikiSQLtoToTTo", "t5-small"]
-  MODE: "online"
+  MODE: "offline"
   NOTES: "This run uses as page title and the query description as the table name."
 
 DATASET:

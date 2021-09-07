@@ -42,7 +42,7 @@ class T5System(pl.LightningModule):
         return loss
 
     def _generate_text(self, batch: Dict[str, torch.LongTensor])\
-            -> Tuple[List[str], List[str], torch.LongTensor]:
+            -> torch.LongTensor:
         generated_ids = self.model.generate(
             batch["source_ids"],
             attention_mask=batch["source_mask"],
@@ -54,13 +54,14 @@ class T5System(pl.LightningModule):
             length_penalty=1.0,
             early_stopping=True
         )
+
+        return generated_ids
+
+    def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
+        generated_ids = self._generate_text(batch)
         preds = ids_to_clean_text(self.tokenizer, generated_ids)
         targets = ids_to_clean_text(self.tokenizer, batch["target_ids"])
 
-        return preds, targets, generated_ids
-
-    def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
-        preds, targets, generated_ids = self._generate_text(batch)
         loss = self._step(batch)
 
         # We have to re-tokenize our texts so as to calculate BLEU
@@ -114,8 +115,17 @@ class T5System(pl.LightningModule):
         except KeyError:
             raise OptimizerNotFound(f"Optimizer {self.optimizer_name} is not implemented.")
 
-    def inference(self, x):
-        preds, targets, _ = self._generate_text(x)
+    def inference_with_target(self, x):
+        generated_ids = self._generate_text(x)
+        preds = ids_to_clean_text(self.tokenizer, generated_ids)
+        targets = ids_to_clean_text(self.tokenizer, x["target_ids"])
+        # preds, targets, _ = self._generate_text(x)
 
         # Care: We return a list even if we perform inference on one target
         return preds, targets
+
+    def inference_without_target(self, x):
+        generated_ids = self._generate_text(x)
+        preds = ids_to_clean_text(self.tokenizer, generated_ids)
+
+        return preds
