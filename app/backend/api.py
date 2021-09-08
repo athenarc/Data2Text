@@ -7,7 +7,7 @@ from app.backend.query_results_explainer import QueryResultsExplainer
 
 app = FastAPI()
 cfg = get_model_config(name="FastAPI Data2Text Endpoint")
-query_explainer = QueryResultsExplainer("storage/datasets/wiki_sql/raw/train.db", cfg)
+query_explainer = QueryResultsExplainer("storage/app_data/tables.db", cfg)
 
 
 class Query(BaseModel):
