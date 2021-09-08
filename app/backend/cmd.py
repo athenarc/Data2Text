@@ -1,6 +1,6 @@
 import argparse
 
-from app.backend.query_explainer import QueryExplainer
+from app.backend.query_results_explainer import QueryResultsExplainer
 from config import cfg
 
 
@@ -15,11 +15,11 @@ def main():
         cfg.merge_from_file(args.config_file)
     cfg.freeze()
 
-    query_explainer = QueryExplainer("storage/datasets/wiki_sql/raw/train.db", cfg)
+    query_explainer = QueryResultsExplainer("storage/datasets/wiki_sql/raw/train.db", cfg)
 
     while True:
         query = input("Query: ")
-        print(query_explainer.explain_query(query))
+        print(query_explainer.explain_query_results(query))
 
 
 if __name__ == '__main__':
