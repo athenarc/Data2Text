@@ -1,19 +1,9 @@
-import argparse
-
+from app.backend.arg_parsing import get_model_config
 from app.backend.query_results_explainer import QueryResultsExplainer
-from config import cfg
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Data2Text CMD.")
-    parser.add_argument(
-        "--config_file", default="", help="path to config file", type=str
-    )
-    args = parser.parse_args()
-
-    if args.config_file != "":
-        cfg.merge_from_file(args.config_file)
-    cfg.freeze()
+    cfg = get_model_config("CMD Data2Text")
 
     query_explainer = QueryResultsExplainer("storage/datasets/wiki_sql/raw/train.db", cfg)
 
