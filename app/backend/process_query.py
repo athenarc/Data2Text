@@ -113,5 +113,5 @@ def difficulty_check_query(query: str) -> bool:
 
 if __name__ == '__main__':
     sqlite_con = SqliteController("../../storage/datasets/wiki_sql/raw/train.db")
-    query_res2 = execute_query_with_added_sel_cols(sqlite_con, 'SELECT Name FROM titanic WHERE PassengerId=1')
+    query_res2 = execute_query_with_added_sel_cols(sqlite_con, 'SELECT Name FROM Titanic WHERE PassengerId=1')
     print(query_results_to_totto(query_res2))
