@@ -1,6 +1,7 @@
 import pytest
 
 from app.backend import process_query
+from app.backend.sqlite_interface import SqliteController
 
 
 class TestQueryProcessing:
@@ -52,3 +53,60 @@ class TestQueryProcessing:
             "table",
             ""
         )
+
+    def test_difficulty_check_group_by(self):
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT col1, col2 FROM table WHERE col1=2 GROUP BY col2")
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT col1, col2 FROM table WHERE col1=2 group by col2")
+
+    def test_difficulty_check_aggregation(self):
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT COUNT(col1), col2 FROM table WHERE col1=2")
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT min(col1), col2 FROM table WHERE col1=2")
+
+    def test_difficulty_check_nested(self):
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT col1, col2 FROM table WHERE col1=in (SELECT col1 FROM table)")
+        with pytest.raises(process_query.DifficultyNotImplemented):
+            process_query.difficulty_check_query("SELECT col1, col2 FROM table WHERE col1=in (select col1 FROM table)")
+
+    def test_difficulty_check_expected(self):
+        assert process_query.difficulty_check_query(
+            "SELECT col1, col2 FROM table WHERE col1=5")
+
+
+@pytest.fixture(autouse=True, scope='class')
+def get_db_interface():
+    db_test_path = "resources/test_tables.db"
+    return SqliteController(db_test_path)
+
+
+class TestSqliteInterface:
+    def test_get_tables_no_sqlite_master(self, get_db_interface):
+        assert "sqlite_master" not in get_db_interface.get_table_names()
+
+    def test_get_tables_titanic_included(self, get_db_interface):
+        assert "titanic" in get_db_interface.get_table_names()
+
+    def test_number_of_returned(self, get_db_interface):
+        assert len(get_db_interface.get_table_names()) == 1
+
+    def test_get_table_cols_expected_length(self, get_db_interface):
+        assert len(get_db_interface.get_table_cols('titanic')) == 7
+
+    def test_get_table_cols_expected_values(self, get_db_interface):
+        assert get_db_interface.get_table_cols('titanic') \
+               == ["PassengerId", "Survived", "Name", "Sex", "Age",
+                   "Ticket", "Fare"]
+
+    def test_preview_table_rows_len(self, get_db_interface):
+        assert len(get_db_interface.preview_table('titanic')['row']) == 10
+
+    def test_preview_table_rows_values(self, get_db_interface):
+        rows_cols = get_db_interface.preview_table('titanic')
+        first_row = rows_cols['row'][0]
+        cols = rows_cols['header']
+        assert cols == ["PassengerId", "Survived", "Name", "Sex", "Age", "Ticket", "Fare"]
+        assert first_row == (1, 'Survived', 'Karina Davis', 'male', 22, 'A/5 21171', 7.25)
