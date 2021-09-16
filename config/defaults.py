@@ -39,11 +39,12 @@ _C.INPUT.TEST_BATCH_SIZE = 4
 # -----------------------------------------------------------------------------
 _C.DATASET = CN()
 # List of the dataset names for training
-_C.DATASET.TRAIN = "storage/datasets/totto/filtered/train.json"
+_C.DATASET.TRAIN = ""
 # List of the dataset names for validation
-_C.DATASET.VALIDATION = "storage/datasets/totto/filtered/dev.json"
+_C.DATASET.VALIDATION = ""
 # List of the dataset names for testing
 _C.DATASET.TEST = ""
+_C.DATASET.EVALUATION = ""
 
 # -----------------------------------------------------------------------------
 # DataLoader

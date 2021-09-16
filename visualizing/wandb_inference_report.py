@@ -1,9 +1,9 @@
+import random
 from collections import defaultdict
 from dataclasses import InitVar, dataclass, field
 from typing import Dict, List, Tuple  # Typing
 
 import datasets
-import nltk
 import transformers
 import wandb
 from wandb.wandb_run import Run  # Typing
@@ -14,7 +14,7 @@ from visualizing.totto_table_parse import to_valid_html
 @dataclass
 class InferenceEvaluation:
     predicted: str
-    target: str
+    targets: List[str]
     html_source: wandb.Html
     bleu: float = field(init=False)
     bertscore: float = field(init=False)
@@ -27,12 +27,13 @@ class InferenceEvaluation:
 
     def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
-                                            references=[[tokenizer.tokenize(self.target)]])['bleu']
+                                            references=[[tokenizer.tokenize(targ) for targ in self.targets]])['bleu']
         self.bertscore = bertscore_calculator.compute(predictions=[self.predicted],
-                                                      references=[self.target], lang="en")['f1'][0]
+                                                      references=[self.targets], lang="en")['f1'][0]
 
     def to_tuple(self):
-        return self.predicted, self.target, self.html_source, self.bleu, self.bertscore, self.source
+        return self.predicted, " | ".join(self.targets), \
+               self.html_source, self.bleu, self.bertscore, self.source
 
     @staticmethod
     def get_field_names_in_order() -> List[str]:
@@ -40,7 +41,7 @@ class InferenceEvaluation:
         return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "Source"]
 
     def get_float_metrics(self) -> Dict[str, float]:
-        """ Returns the metrics that can be aggregated """
+        """ Returns the metrics that can then be aggregated """
         return {"bleu": self.bleu, "bertscore": self.bertscore}
 
 
@@ -62,17 +63,16 @@ def calculate_aggregated_metrics(inference_evaluations: List[InferenceEvaluation
     return {k: v / len(inference_evaluations) for k, v in aggregated_metrics_dict.items()}
 
 
-def create_inferences_evaluations(zipped_inf_target_source: List[List[str]],
+def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, List[str], str]],
                                   tokenizer: transformers.PreTrainedTokenizer) \
         -> List[InferenceEvaluation]:
     # Initialize 🤗 datasets metrics
     bleu_calculator = datasets.load_metric('bleu', experiment_id="debug")
     bertscore_calculator = datasets.load_metric('bertscore', experiment_id="debug")
 
-    # Populate the table
     inference_evaluations = []
-    for inference, target, source in zipped_inf_target_source:
-        inference_eval = InferenceEvaluation(inference, target,
+    for inference, targets, source in zipped_inf_targets_source:
+        inference_eval = InferenceEvaluation(inference, targets,
                                              wandb.Html(to_valid_html(source)),
                                              source,
                                              tokenizer=tokenizer,
@@ -83,16 +83,18 @@ def create_inferences_evaluations(zipped_inf_target_source: List[List[str]],
     return inference_evaluations
 
 
-def create_inference_report_on_wandb(run: Run, inferences_targets: List[List[str]],
+def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: List[List[str]],
                                      sources: List[str],
                                      tokenizer: transformers.PreTrainedTokenizer) -> None:
-    # Create a list of [inference, target, source]
-    zipped_inf_target_source = [[*inf_target, source]
-                                for inf_target, source in zip(inferences_targets, sources)]
-    inference_evaluations = create_inferences_evaluations(zipped_inf_target_source, tokenizer)
+    # Create a list of (inference, targets, source)
+    zipped_inf_targets_source = list(zip(inferences, targets, sources))
+    inference_evaluations = create_inferences_evaluations(zipped_inf_targets_source, tokenizer)
 
-    # Generate the objects we want to log
-    inference_examples_on_table = create_inference_examples_table(inference_evaluations)
+    # Table example inferences on a sample of size 100
+    sample_inferences_stored = random.sample(inference_evaluations, 100)
+    inference_examples_on_table = create_inference_examples_table(sample_inferences_stored)
+
+    # Aggregated metrics on the whole evaluation set
     aggregated_metrics = calculate_aggregated_metrics(inference_evaluations)
 
     # Log the results on wandb

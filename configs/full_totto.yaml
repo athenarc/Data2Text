@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-#  PATH_TO_CHECKPOINT: "storage/checkpoints/epoch=1-step=303.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_small/epoch=3-step=60579.ckpt"
 
 OUTPUT:
   CHECKPOINTS_DIR: "storage/checkpoints/full_entities/t5_small"
@@ -15,11 +15,12 @@ SOLVER:
 DATASET:
   TRAIN: "storage/datasets/totto/filtered/train.json"
   VALIDATION: "storage/datasets/totto/filtered/dev.json"
+  EVALUATION: "storage/datasets/totto/filtered/evaluation.json"
 
 WANDB:
-  RUN_NAME: "Train run"
+  RUN_NAME: "Inference Full ToTTo"
   GROUP: "Full ToTTo Dataset | T5-small"
-  TAGS: ["ToTTo", "t5-small"]
+  TAGS: ["Evaluation", "ToTTo", "t5-small"]
   MODE: "online"
   NOTES: ""
 

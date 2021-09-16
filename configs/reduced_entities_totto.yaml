@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/epoch=4-step=12499.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_small/epoch=3-step=60579.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
@@ -11,7 +11,7 @@ SOLVER:
 
 WANDB:
   RUN_NAME: "Evaluate | AdaFactor | T5-small"
-  GROUP: "Filtered Entities"
+  GROUP: "DEBUG"
   TAGS: ["DEBUG", "ToTTo", "T5", "small"]
   MODE: "online"
   NOTES: ""
@@ -19,6 +19,7 @@ WANDB:
 DATASET:
   VALIDATION: "storage/datasets/totto/filtered_sampled/dev.json"
   TRAIN: "storage/datasets/totto/filtered_sampled/train.json"
+  EVALUATION: "storage/datasets/totto/filtered_sampled/evaluation.json"
 
 
 
