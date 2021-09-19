@@ -1,9 +1,9 @@
 MODEL:
   MAX_INPUT_TOKENS: 512
   MAX_OUTPUT_TOKENS: 64
-  TOKENIZER_NAME: "t5-small"
-  PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_small/epoch=3-step=60579.ckpt"
+  TOKENIZER_NAME: "t5-base"
+  PRETRAINED_MODEL_NAME: "t5-base"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_base/epoch=2-step=90866.ckpt"
 
 OUTPUT:
   CHECKPOINTS_DIR: "storage/checkpoints/full_entities/t5_small"
@@ -19,8 +19,8 @@ DATASET:
 
 WANDB:
   RUN_NAME: "Inference Full ToTTo"
-  GROUP: "Full ToTTo Dataset | T5-small"
-  TAGS: ["Evaluation", "ToTTo", "t5-small"]
+  GROUP: "Full Entities ToTTo Dataset | T5-base"
+  TAGS: ["Evaluation", "ToTTo", "t5-base"]
   MODE: "online"
   NOTES: ""
 
