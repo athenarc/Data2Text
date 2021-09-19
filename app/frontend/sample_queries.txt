@@ -1,0 +1,3 @@
+SELECT Name, Rating FROM books WHERE Author="Mitch Albom"
+SELECT title, director, release_year FROM Netflix_shows WHERE show_id="s6306"
+Select Survived, Name, Age from titanic where PassengerId=1

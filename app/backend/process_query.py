@@ -103,9 +103,9 @@ def difficulty_check_query(query: str) -> bool:
     """ Currently we do not allow aggregating, group, nested queries """
     if "group by" in lowered_query:
         raise DifficultyNotImplemented("GROUP BY difficulty not implemented yet.")
-    elif "count" in lowered_query or "avg" in lowered_query \
-            or "max" in lowered_query or "min" in lowered_query:
-        raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
+    # elif "count" in lowered_query or "avg" in lowered_query \
+    #         or "max" in lowered_query or "min" in lowered_query:
+    #     raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
     elif len(lowered_query.split("select")) > 2:
         raise DifficultyNotImplemented("Nested queries difficulty not implemented yet.")
     return True
