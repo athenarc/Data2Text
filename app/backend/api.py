@@ -1,3 +1,5 @@
+import logging
+
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -8,6 +10,9 @@ from app.backend.query_results_explainer import QueryResultsExplainer
 app = FastAPI()
 cfg = get_model_config(name="FastAPI Data2Text Endpoint")
 query_explainer = QueryResultsExplainer("storage/app_data/tables.db", cfg)
+
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Query(BaseModel):

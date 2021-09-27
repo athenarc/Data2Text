@@ -1,9 +1,10 @@
+import logging
 import sqlite3
 
 from app.backend.inference import InferenceController
 from app.backend.process_query import (DifficultyNotImplemented,
-                                       execute_query_with_added_sel_cols,
-                                       query_results_to_totto)
+                                       execute_query_with_added_sel_cols)
+from app.backend.process_query_results import query_results_to_totto
 from app.backend.sqlite_interface import SqliteController
 
 
@@ -22,7 +23,7 @@ class QueryResultsExplainer:
         except DifficultyNotImplemented as e:
             return f"ERROR, Difficulty not implemented: {e}"
 
-        print(query_res_in_totto)
+        logging.debug(query_res_in_totto)
         nl_explanation = self.inference_controller.inference(query_res_in_totto)
 
         return nl_explanation

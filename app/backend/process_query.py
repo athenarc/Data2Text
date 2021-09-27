@@ -1,5 +1,8 @@
-import re
-from typing import Dict, List, Tuple
+import json
+import logging
+from typing import Dict, List, Set
+
+import mo_sql_parsing
 
 from app.backend.sqlite_interface import SqliteController
 
@@ -8,110 +11,103 @@ class DifficultyNotImplemented(NotImplementedError):
     pass
 
 
-def find_cols(clause: str, all_cols: List[str]) -> List[str]:
-    return [col for col in all_cols if re.search(f"{col}(?!\\w)", clause)]
-
-
-def cols_added_to_sel(sel_cols: List[str], where_cols: List[str]) -> List[str]:
-    sel_cols = set(sel_cols)
-    where_cols = set(where_cols)
-
-    return list(where_cols.difference(sel_cols))
-
-
-def find_query_clauses(query: str) -> Tuple[str, str, str]:
-    lowered_query = query.lower()
-    sel_clause_start = lowered_query.index("select") + len("select") + 1
-    sel_clause_end = lowered_query.index("from") - 1
-
-    from_clause_start = lowered_query.index("from") + len("from") + 1
-    try:
-        # The query might not have a where clause
-        from_clause_end = lowered_query.index("where") - 1
-    except ValueError:
-        return query[sel_clause_start:sel_clause_end], query[from_clause_start:], ""
-
-    where_clause_start = lowered_query.index("where") + len("where") + 1
-
-    return query[sel_clause_start:sel_clause_end], query[from_clause_start:from_clause_end], \
-           query[where_clause_start:]
-
-
-def add_where_cols_to_sel(sel_clause, where_clause, all_cols) -> str:
+def add_where_cols_to_sel(query: Dict, added_cols: Set[str]) -> Dict:
     # We assume that we are in the easy case of having just one table
-    if len(all_cols) > 1:
-        raise DifficultyNotImplemented("JOIN difficulty not yet implemented.")
-    first_table_cols: List[str] = all_cols[0]
+    query_copy = query.copy()
+    for col in added_cols:
+        query_copy['select'].append({'value': col})
 
-    added_cols = cols_added_to_sel(find_cols(sel_clause, first_table_cols),
-                                   find_cols(where_clause, first_table_cols))
-
-    for added_col in added_cols:
-        sel_clause += f", {added_col}"
-
-    return sel_clause
+    return query_copy
 
 
-def execute_query_with_added_sel_cols(sqlite_controller: SqliteController, query):
-    # This call will raise a DifficultyNotImplemented error if we do not pass the check
-    difficulty_check_query(query)
-
-    sel_clause, from_clause, where_clause = find_query_clauses(query)
-    tables = from_clause.replace(' ', '').split(',')
-
-    if "*" not in sel_clause:  # Case where we SELECT * FROM ... (does not take into account aggregating, COUNT(*))
-        all_table_cols = [sqlite_controller.get_table_cols(table_name) for table_name in tables]
-        new_sel_clause = add_where_cols_to_sel(sel_clause, where_clause, all_table_cols)
-        new_query = f"SELECT {new_sel_clause} FROM {from_clause} "
-        new_query += f"WHERE {where_clause}" if where_clause != "" else ""
-        print(new_query)
-    else:
-        new_query = query
-
-    query_res = sqlite_controller.connect_and_query_with_desc(new_query)
+def execute_query_with_added_sel_cols(sqlite_controller: SqliteController, raw_query):
+    new_query_str, tables = transform_query(raw_query)
+    query_res = sqlite_controller.connect_and_query_with_desc(new_query_str)
 
     return {"tables_name": tables, "col_names": query_res[1], "rows": query_res[0]}
 
 
-def create_metadata(table_name, nl_query="") -> str:
-    page_title = f"<page_title> {table_name} </page_title>"
-    section_title = f"<section_title> {nl_query if nl_query != '' else table_name} </section_title>"
+def transform_query(raw_query):
+    logging.debug(f"Original query: {raw_query}")
+    query = mo_sql_parsing.parse(raw_query)
+    if not isinstance(query['select'], List):
+        query['select'] = [query['select']]
 
-    return page_title + " " + section_title
+    # This call will raise a DifficultyNotImplemented error if we do not pass the check
+    difficulty_check_query(query)
+
+    sel_cols = find_sel_cols(query['select'])
+    tables = query['from']
+    try:
+        where_cols = find_where_cols(query['where'])
+    except KeyError:
+        where_cols = set()
+
+    if "*" not in sel_cols:
+        added_cols = where_cols.difference(sel_cols)
+        new_query = add_where_cols_to_sel(query, added_cols)
+    else:
+        new_query = query
+    new_query_str = mo_sql_parsing.format(new_query)
+    logging.debug(f"Transformed query: {new_query_str}")
+
+    return new_query_str, tables
 
 
-def create_cell(col_name: str, col_value: str) -> str:
-    return f"<cell> {col_value} <col_header> {col_name} </col_header> </cell>"
-
-
-def query_results_to_totto(query_results: Dict[str, str]):
-    metadata = create_metadata(query_results['tables_name'][0])
-    table_cells_str = ""
-
-    if len(query_results['rows']) > 1:
-        raise DifficultyNotImplemented("Query results with multiple rows cannot be explained yet.")
-
-    for row in query_results['rows']:
-        for header, val in zip(query_results['col_names'], row):
-            table_cells_str += create_cell(header, val) + " "
-
-    return f"{metadata} <table> {table_cells_str}</table>"
-
-
-def difficulty_check_query(query: str) -> bool:
-    lowered_query = query.lower()
+def difficulty_check_query(query: Dict) -> bool:
+    jsoned_query = json.dumps(query)
     """ Currently we do not allow aggregating, group, nested queries """
-    if "group by" in lowered_query:
+    if "groupby" in query:
         raise DifficultyNotImplemented("GROUP BY difficulty not implemented yet.")
-    # elif "count" in lowered_query or "avg" in lowered_query \
-    #         or "max" in lowered_query or "min" in lowered_query:
-    #     raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
-    elif len(lowered_query.split("select")) > 2:
+    elif check_aggr_exists(query['select']):
+        raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
+    elif len(jsoned_query.split("select")) > 2:
         raise DifficultyNotImplemented("Nested queries difficulty not implemented yet.")
     return True
+
+
+def check_aggr_exists(sel_clause: List) -> bool:
+    aggr_funcs = {"avg", "sum", "max", "min", "count"}
+    aggr_exists = False
+    for inner_sel in sel_clause:
+        try:
+            aggr_exists = list(inner_sel['value'].keys())[0] in aggr_funcs
+        except (AttributeError, TypeError):
+            continue
+
+    return aggr_exists
+
+
+def find_where_cols(where_clause: Dict) -> Set[str]:
+    where_cols = set()
+
+    def rec_find_cols(clause):
+        if isinstance(clause, List):
+            if isinstance(clause[0], str):
+                where_cols.add(clause[0])
+            else:
+                for inner_clause in clause:
+                    rec_find_cols(inner_clause)
+        if isinstance(clause, dict):
+            for inner_clause in clause.values():
+                rec_find_cols(inner_clause)
+
+    rec_find_cols(where_clause)
+    return where_cols
+
+
+def find_sel_cols(sel_clause: List) -> Set[str]:
+    ret_cols = set()
+    for clause in sel_clause:
+        try:
+            ret_cols.add(clause['value'])
+        except TypeError:
+            ret_cols.add(clause)
+
+    return ret_cols
 
 
 if __name__ == '__main__':
     sqlite_con = SqliteController("../../storage/datasets/wiki_sql/raw/train.db")
     query_res2 = execute_query_with_added_sel_cols(sqlite_con, 'SELECT Name FROM Titanic WHERE PassengerId=1')
-    print(query_results_to_totto(query_res2))
+    print(query_res2)
