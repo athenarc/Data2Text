@@ -1,0 +1,7 @@
+pytorch-lightning
+yacs
+transformers
+datasets
+pandas
+pyyaml
+wandb

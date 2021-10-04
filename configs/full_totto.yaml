@@ -21,7 +21,7 @@ WANDB:
   RUN_NAME: "Inference Full ToTTo"
   GROUP: "Full Entities ToTTo Dataset | T5-base"
   TAGS: ["Evaluation", "ToTTo", "t5-base"]
-  MODE: "online"
+  MODE: "offline"
   NOTES: ""
 
 DATALOADER:
