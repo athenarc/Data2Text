@@ -8,6 +8,8 @@ import transformers
 import wandb
 from wandb.wandb_run import Run  # Typing
 
+from visualizing.parent.parent_calc import parent_calc
+from visualizing.parent.table_process import tables_to_parent_format
 from visualizing.totto_table_parse import to_valid_html
 
 
@@ -18,6 +20,7 @@ class InferenceEvaluation:
     html_source: wandb.Html
     bleu: float = field(init=False)
     bertscore: float = field(init=False)
+    parent: float = field(init=False)
     source: str
 
     # Attributes below are helpers and not logged in the table
@@ -27,22 +30,26 @@ class InferenceEvaluation:
 
     def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
-                                            references=[[tokenizer.tokenize(targ) for targ in self.targets]])['bleu']
+                                            references=[[tokenizer.tokenize(targets) for targets in self.targets]])['bleu']
         self.bertscore = bertscore_calculator.compute(predictions=[self.predicted],
                                                       references=[self.targets], lang="en")['f1'][0]
+        _, _, self.parent, _ = parent_calc(predictions=[self.predicted.lower().split()],
+                                           references=[target.lower().split() for target in self.targets],
+                                           tables=tables_to_parent_format([self.source]))
 
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
-               self.html_source, self.bleu, self.bertscore, self.source
+               self.html_source, self.bleu, self.bertscore, \
+               self.parent, self.source
 
     @staticmethod
     def get_field_names_in_order() -> List[str]:
         """ There is hard coupling between this function and to_tuple above"""
-        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "Source"]
+        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "PARENT", "Source"]
 
     def get_float_metrics(self) -> Dict[str, float]:
         """ Returns the metrics that can then be aggregated """
-        return {"bleu": self.bleu, "bertscore": self.bertscore}
+        return {"bleu": self.bleu, "bertscore": self.bertscore, "PARENT": self.parent}
 
 
 def create_inference_examples_table(inference_evaluations: List[InferenceEvaluation]):

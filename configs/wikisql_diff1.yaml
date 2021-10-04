@@ -11,8 +11,8 @@ SOLVER:
 
 WANDB:
   RUN_NAME: "Inference WikiSQL Annotation | With query info"
-  GROUP: "Reduced Entities ToTTo Dataset | T5-base"
-  TAGS: ["Evaluate", "WikiSQLtoToTTo", "t5-base"]
+  GROUP: "Reduced Entities ToTTo Dataset | T5-small"
+  TAGS: ["Evaluate", "WikiSQLtoToTTo", "t5-small"]
   MODE: "online"
   NOTES: ""
 
