@@ -10,6 +10,8 @@ def parse_source(source: str) -> List[Tuple[str, str]]:
     col_values = re.findall(r"<cell> (.*?) <col_header>", source)
     col_names = re.findall(r"<col_header> (.*?) </col_header>", source)
 
+    print(col_values)
+    print(col_names)
     if len(col_names) != len(col_values):
         raise ValueError(f"Could not parse source: {source}")
 
@@ -22,10 +24,10 @@ def parse_source(source: str) -> List[Tuple[str, str]]:
 def tokenize_table(table):
     tokenized_table = []
     for col_name, col_value in table:
-        tokenized_table.append([
+        tokenized_table.append((
             col_name.lower().split(),
             col_value.lower().split()
-        ])
+        ))
 
     return tokenized_table
 

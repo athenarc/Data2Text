@@ -79,7 +79,7 @@ class TestQueryProcessing:
 
 @pytest.fixture(autouse=True, scope='class')
 def get_db_interface():
-    db_test_path = "resources/test_tables.db"
+    db_test_path = "tests/resources/test_tables.db"
     return SqliteController(db_test_path)
 
 
