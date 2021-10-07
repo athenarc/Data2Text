@@ -4,7 +4,7 @@ from typing import Dict, List, Set
 
 import mo_sql_parsing
 
-from app.backend.sqlite_interface import SqliteController
+from app.backend.model.sqlite_interface import SqliteController
 
 
 class DifficultyNotImplemented(NotImplementedError):

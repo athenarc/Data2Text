@@ -24,6 +24,7 @@ class InferenceController:
         tokenizer = T5Tokenizer.from_pretrained(self.cfg.MODEL.TOKENIZER_NAME)
 
         # Load the model
+        print(f"PATH: {self.cfg.MODEL.PATH_TO_CHECKPOINT}")
         model = T5System.load_from_checkpoint(self.cfg.MODEL.PATH_TO_CHECKPOINT,
                                               cfg=self.cfg, tokenizer=tokenizer)
 

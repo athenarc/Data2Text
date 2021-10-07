@@ -4,8 +4,8 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from app.backend.arg_parsing import get_model_config
-from app.backend.query_results_explainer import QueryResultsExplainer
+from app.backend.controller.arg_parsing import get_model_config
+from app.backend.model.results_explainer import QueryResultsExplainer
 
 app = FastAPI()
 cfg = get_model_config(name="FastAPI Data2Text Endpoint")
@@ -40,7 +40,7 @@ def explain_query(query: Query):
 
 
 def main():
-    uvicorn.run("app.backend.api:app", host='0.0.0.0', port=4557,
+    uvicorn.run("app.backend.controller.api:app", host='0.0.0.0', port=4557,
                 reload=True, debug=True, workers=3, reload_dirs=["app/backend"],)
 
 

@@ -2,10 +2,10 @@ import logging
 import sqlite3
 
 from app.backend.inference import InferenceController
-from app.backend.process_query import (DifficultyNotImplemented,
-                                       execute_query_with_added_sel_cols)
-from app.backend.process_query_results import query_results_to_totto
-from app.backend.sqlite_interface import SqliteController
+from app.backend.model.sqlite_interface import SqliteController
+from app.backend.processing.process_query import (
+    DifficultyNotImplemented, execute_query_with_added_sel_cols)
+from app.backend.processing.process_query_results import query_results_to_totto
 
 
 class QueryResultsExplainer:

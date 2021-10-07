@@ -35,6 +35,6 @@ class SqliteController:
 
 
 if __name__ == '__main__':
-    sqlite_con = SqliteController("../../storage/datasets/wiki_sql/raw/train.db")
+    sqlite_con = SqliteController("../../../storage/datasets/wiki_sql/raw/train.db")
     # table_cols_debug = sqlite_con.get_table_cols('Titanic')
     print(sqlite_con.get_table_names())

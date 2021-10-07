@@ -1,6 +1,6 @@
 import argparse
 
-from config import cfg
+from app.backend.config import cfg
 
 
 def get_model_config(name: str = ""):

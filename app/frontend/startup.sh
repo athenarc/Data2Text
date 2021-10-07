@@ -1,2 +1,2 @@
 #!/bin/sh
-streamlit run app/frontend/streamlit.py
+streamlit run streamlit.py
