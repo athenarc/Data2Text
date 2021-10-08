@@ -1,7 +1,7 @@
 import logging
 import sqlite3
 
-from app.backend.inference import InferenceController
+from app.backend.controller.inference import InferenceController
 from app.backend.model.sqlite_interface import SqliteController
 from app.backend.processing.process_query import (
     DifficultyNotImplemented, execute_query_with_added_sel_cols)

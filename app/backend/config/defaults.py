@@ -1,57 +1,30 @@
 from yacs.config import CfgNode as CN
 
 # -----------------------------------------------------------------------------
-# Convention about Training / Test specific parameters
-# -----------------------------------------------------------------------------
-# Whenever an argument can be either used for training or for testing, the
-# corresponding name will be post-fixed by a _TRAIN for a training parameter,
-# or _TEST for a test-specific parameter.
-# For example, the number of images during training will be
-# IMAGES_PER_BATCH_TRAIN, while the number of images for testing will be
-# IMAGES_PER_BATCH_TEST
-
-# -----------------------------------------------------------------------------
-# Config definition
+# Backend Config
 # -----------------------------------------------------------------------------
 
 _C = CN()
 
 _C.MODEL = CN()
-_C.MODEL.DEVICE = "cuda"
+_C.MODEL.DEVICE = "cpu"
 _C.MODEL.GPUS_NUMB = 1
 _C.MODEL.MAX_INPUT_TOKENS = 512
-_C.MODEL.MAX_OUTPUT_TOKENS = 512
+_C.MODEL.MAX_OUTPUT_TOKENS = 64
 _C.MODEL.TOKENIZER_NAME = "t5-small"
 _C.MODEL.PRETRAINED_MODEL_NAME = "t5-small"
-_C.MODEL.PATH_TO_CHECKPOINT = ""
+_C.MODEL.PATH_TO_CHECKPOINT = "storage/checkpoints/full_entities/t5_small/epoch=3-step=60579.ckpt"
 
 # -----------------------------------------------------------------------------
-# INPUT
+# FastAPI
 # -----------------------------------------------------------------------------
-_C.INPUT = CN()
+_C.FASTAPI = CN()
 # Batch size during training
-_C.INPUT.TRAIN_BATCH_SIZE = 4
-# Batch size during testing
-_C.INPUT.TEST_BATCH_SIZE = 4
-
-# -----------------------------------------------------------------------------
-# Dataset
-# -----------------------------------------------------------------------------
-_C.DATASET = CN()
-# List of the dataset names for training
-_C.DATASET.TRAIN = ""
-# List of the dataset names for validation
-_C.DATASET.VALIDATION = ""
-# List of the dataset names for testing
-_C.DATASET.TEST = ""
-_C.DATASET.EVALUATION = ""
-
-# -----------------------------------------------------------------------------
-# DataLoader
-# -----------------------------------------------------------------------------
-_C.DATALOADER = CN()
-# Number of data loading threads
-_C.DATALOADER.NUM_WORKERS = 6
+_C.FASTAPI.WORKERS = 1
+_C.FASTAPI.DEBUG = True
+_C.FASTAPI.RELOAD = True
+_C.FASTAPI.HOST = '0.0.0.0'
+_C.FASTAPI.PORT = 4557
 
 # ---------------------------------------------------------------------------- #
 # Solver
@@ -60,29 +33,8 @@ _C.SOLVER = CN()
 _C.SOLVER.OPTIMIZER_NAME = "Adam"  # Possible values Adam, AdaFactor (case sensitive)
 _C.SOLVER.MAX_EPOCHS = 50
 _C.SOLVER.BASE_LR = 0.001
-
 _C.SOLVER.CHECKPOINT_PERIOD = 1
 _C.SOLVER.LOG_PERIOD = 50
-
-# ---------------------------------------------------------------------------- #
-# Output paths
-# ---------------------------------------------------------------------------- #
-_C.OUTPUT = CN()
-_C.OUTPUT.LOGGER_DIR = "storage/logs/runtime/"
-_C.OUTPUT.MODEL_LOGS_DIR = "storage/logs/model/"
-_C.OUTPUT.WANDB_LOGS_DIR = "storage/logs/"
-_C.OUTPUT.PLOTS_DIR = "storage/plots/"
-_C.OUTPUT.CHECKPOINTS_DIR = "storage/checkpoints"
-
-# ---------------------------------------------------------------------------- #
-# Wandb options
-# ---------------------------------------------------------------------------- #
-_C.WANDB = CN()
-_C.WANDB.MODE = "online"
-_C.WANDB.TAGS = None
-_C.WANDB.RUN_NAME = None
-_C.WANDB.GROUP = None
-_C.WANDB.NOTES = "No description provided."
 
 # ---------------------------------------------------------------------------- #
 # Misc. options

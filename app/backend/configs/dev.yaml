@@ -4,3 +4,13 @@ MODEL:
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
   PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_small/epoch=3-step=60579.ckpt"
+
+FASTAPI:
+  WORKERS: 1
+  DEBUG: True
+  RELOAD: True
+  HOST: '0.0.0.0'
+  PORT: 4557
+
+MISC:
+  LOGGER_LEVEL: "INFO"

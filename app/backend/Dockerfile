@@ -10,7 +10,7 @@ COPY modeling/ modeling/
 COPY solver/ solver/
 COPY utils/ utils/
 
-CMD ["python", "-m", "app.backend.controller.api", "--config_file", "app/backend/configs/model.yaml"]
+CMD ["python", "-m", "app.backend.controller.api"]
 
 # Build must be run from project root directory
 # docker build -t d2t-back:latest -f app/backend/Dockerfile .
