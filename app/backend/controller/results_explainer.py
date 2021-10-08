@@ -9,8 +9,8 @@ from app.backend.processing.process_query_results import query_results_to_totto
 
 
 class QueryResultsExplainer:
-    def __init__(self, db_path, cfg):
-        self.sqlite_controller = SqliteController(db_path)
+    def __init__(self, cfg):
+        self.sqlite_controller = SqliteController(cfg.DB.PATH)
         self.inference_controller = InferenceController(cfg)
 
     def explain_query_results(self, query: str) -> str:

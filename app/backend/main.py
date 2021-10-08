@@ -1,9 +1,10 @@
 import logging
 
 import uvicorn
-from controller.shared_objects import init_shared_objects
 from fastapi import FastAPI
-from routers.add_routes import initialize_routes
+
+from app.backend.controller.shared_objects import cfg
+from app.backend.routers.add_routes import initialize_routes
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
@@ -18,8 +19,13 @@ def health_check():
 
 
 def main():
-    uvicorn.run("app.backend.main:app", host='0.0.0.0', port=4557,
-                reload=True, debug=True, workers=1, reload_dirs=["app/backend"],)
+    uvicorn.run("app.backend.main:app",
+                host=cfg.FASTAPI.HOST,
+                port=cfg.FASTAPI.PORT,
+                reload=cfg.FASTAPI.RELOAD,
+                debug=cfg.FASTAPI.DEBUG,
+                workers=cfg.FASTAPI.WORKERS,
+                reload_dirs=["app/backend"])
 
 
 if __name__ == "__main__":

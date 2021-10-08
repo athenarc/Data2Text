@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 
-HOST = "127.0.0.1"
+HOST = "back"
 PORT = 4557
 
 

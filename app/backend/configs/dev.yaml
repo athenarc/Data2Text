@@ -12,5 +12,8 @@ FASTAPI:
   HOST: '0.0.0.0'
   PORT: 4557
 
+DB:
+  PATH: "storage/app_data/tables.db"
+
 MISC:
   LOGGER_LEVEL: "INFO"
