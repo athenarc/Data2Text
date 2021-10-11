@@ -1,2 +1,2 @@
 #!/bin/sh
-streamlit run streamlit.py
+streamlit run streamlit.py $1

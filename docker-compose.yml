@@ -16,7 +16,7 @@ services:
       - app
     volumes:
       - /home/mikexydas/PycharmProjects/Data2Text/storage:/app/storage
-      - /home/mikexydas/.cache:/app/.cache
+#      - /home/mikexydas/.cache:/app/.cache
 networks:
   app:
       driver: bridge

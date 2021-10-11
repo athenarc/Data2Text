@@ -6,7 +6,7 @@ COPY . .
 RUN pip install -r requirements.txt
 
 RUN chmod +x ./startup.sh
-ENTRYPOINT ["/bin/bash", "./startup.sh"]
+ENTRYPOINT ["/bin/bash", "./startup.sh", "config/prod.yaml"]
 
 # Build
 # docker build -t d2t-front:latest .
