@@ -18,11 +18,10 @@ from termcolor import colored
 
 AVAILABLE_CHOICES = {
     1: "Correct",
-    2: "Confusion",
-    3: "Omission",
-    4: "Erroneous",
-    5: "Hallucination",
-    6: "Other"
+    2: "Omission",
+    3: "Erroneous",
+    4: "Hallucination",
+    # 5: "Other"
 }
 
 
@@ -30,7 +29,7 @@ def parse_inference(inference_table):
     return {
         "target": inference_table[1],
         "predicted": inference_table[0],
-        "source": inference_table[5]
+        "source": inference_table[6]
     }
 
 
@@ -61,16 +60,18 @@ def confirm_choice(evaluation):
 def choice_loop():
     while True:
         try:
-            choice = int(input(colored("> Choice: ", color="cyan")))
-            if choice < 1 or choice > len(AVAILABLE_CHOICES.items()):
-                raise ValueError
+            choices = input(colored("> Choice: ", color="cyan")).strip().split(",")
+            choices = list(map(int, choices))
+            for choice in choices:
+                if choice < 1 or choice > len(AVAILABLE_CHOICES.items()):
+                    raise ValueError
         except ValueError:
             print(f"Unexpected input, choose an integer from 1-{len(AVAILABLE_CHOICES.items())}")
             continue
 
-        evaluation = AVAILABLE_CHOICES[choice]
-        if AVAILABLE_CHOICES[choice] == "Other":
-            evaluation += f", {input(colored('> Explanation: ', color='cyan'))}"
+        evaluation = ",".join(AVAILABLE_CHOICES[choice] for choice in choices)
+        # if AVAILABLE_CHOICES[choice] == "Other":
+        #     evaluation += f", {input(colored('> Explanation: ', color='cyan'))}"
 
         if not confirm_choice(evaluation):
             continue
@@ -96,7 +97,8 @@ def main():
 
     evaluated_inferences = []
     for raw_inference in inferences:
-        print("\n---------------------------------------------------------------------")
+        print("\n" + "-" * 90)
+        print("-" * 90)
         inference = parse_inference(raw_inference)
         show_inference(inference)
 

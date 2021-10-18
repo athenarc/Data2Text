@@ -10,7 +10,7 @@ SOLVER:
   BASE_LR: 0.001
 
 WANDB:
-  RUN_NAME: "Inference WikiSQL Annotation | With query info"
+  RUN_NAME: "Inference WikiSQL Annotation | No query info"
   GROUP: "Reduced Entities ToTTo Dataset | T5-base"
   TAGS: ["Evaluate", "WikiSQLtoToTTo", "t5-base"]
   MODE: "online"
