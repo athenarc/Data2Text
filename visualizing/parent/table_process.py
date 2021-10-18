@@ -10,8 +10,6 @@ def parse_source(source: str) -> List[Tuple[str, str]]:
     col_values = re.findall(r"<cell> (.*?) <col_header>", source)
     col_names = re.findall(r"<col_header> (.*?) </col_header>", source)
 
-    print(col_values)
-    print(col_names)
     if len(col_names) != len(col_values):
         raise ValueError(f"Could not parse source: {source}")
 

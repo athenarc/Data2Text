@@ -1,0 +1,30 @@
+MODEL:
+  MAX_INPUT_TOKENS: 512
+  MAX_OUTPUT_TOKENS: 64
+  TOKENIZER_NAME: "t5-base"
+  PRETRAINED_MODEL_NAME: "t5-base"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/full_entities/t5_base/epoch=2-step=90866.ckpt"
+
+SOLVER:
+  OPTIMIZER_NAME: "AdaFactor"
+  BASE_LR: 0.001
+
+WANDB:
+  RUN_NAME: "Inference Reduced Entities"
+  GROUP: "Full Entities ToTTo Dataset | T5-base"
+  TAGS: ["Evaluation", "ToTTo", "t5-base"]
+  MODE: "online"
+  NOTES: ""
+
+DATASET:
+  VALIDATION: "storage/datasets/totto/filtered_sampled/dev.json"
+  TRAIN: "storage/datasets/totto/filtered_sampled/train.json"
+  EVALUATION: "storage/datasets/totto/filtered_sampled/evaluation.json"
+
+
+
+INPUT:
+  TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8
+DATALOADER:
+  NUM_WORKERS: 11

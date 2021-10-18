@@ -31,11 +31,16 @@ class InferenceEvaluation:
     def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
                                             references=[[tokenizer.tokenize(targets) for targets in self.targets]])['bleu']
+
         self.bertscore = bertscore_calculator.compute(predictions=[self.predicted],
                                                       references=[self.targets], lang="en")['f1'][0]
-        _, _, self.parent, _ = parent_calc(predictions=[self.predicted.lower().split()],
-                                           references=[target.lower().split() for target in self.targets],
-                                           tables=tables_to_parent_format([self.source]))
+
+        try:
+            _, _, self.parent, _ = parent_calc(predictions=[self.predicted.lower().split()],
+                                               references=[target.lower().split() for target in self.targets],
+                                               tables=tables_to_parent_format([self.source]))
+        except ValueError:
+            self.parent = -1
 
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
@@ -62,12 +67,13 @@ def create_inference_examples_table(inference_evaluations: List[InferenceEvaluat
 
 
 def calculate_aggregated_metrics(inference_evaluations: List[InferenceEvaluation]) -> Dict[str, float]:
-    aggregated_metrics_dict = defaultdict(int)
+    aggregated_metrics_dict = defaultdict(lambda: [0, 0])  # Sum of statistic, population
     for inference_eval in inference_evaluations:
         for metric, value in inference_eval.get_float_metrics().items():
-            aggregated_metrics_dict[metric] += value
+            aggregated_metrics_dict[metric][0] += value if value != -1 else 0  # Statistic
+            aggregated_metrics_dict[metric][1] += 1 if value != -1 else 0  # Population
 
-    return {k: v / len(inference_evaluations) for k, v in aggregated_metrics_dict.items()}
+    return {k: v[0] / v[1] for k, v in aggregated_metrics_dict.items()}
 
 
 def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, List[str], str]],
@@ -98,7 +104,7 @@ def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: L
     inference_evaluations = create_inferences_evaluations(zipped_inf_targets_source, tokenizer)
 
     # Table example inferences on a sample of size 100
-    sample_inferences_stored = random.sample(inference_evaluations, 100)
+    sample_inferences_stored = random.sample(inference_evaluations, min(100, len(inference_evaluations)))
     inference_examples_on_table = create_inference_examples_table(sample_inferences_stored)
 
     # Aggregated metrics on the whole evaluation set
