@@ -48,6 +48,10 @@ def transform_query(raw_query):
         new_query = add_where_cols_to_sel(query, added_cols)
     else:
         new_query = query
+
+    # We currently add LIMIT 1 to all queries since we cannot verbalise multiple rows
+    new_query = add_limit_1(new_query)
+
     new_query_str = mo_sql_parsing.format(new_query)
     logging.debug(f"Transformed query: {new_query_str}")
 
@@ -107,7 +111,12 @@ def find_sel_cols(sel_clause: List) -> Set[str]:
     return ret_cols
 
 
+def add_limit_1(parsed_query):
+    parsed_query["limit"] = 1
+    return parsed_query
+
+
 if __name__ == '__main__':
-    sqlite_con = SqliteController("../../storage/datasets/wiki_sql/raw/train.db")
+    sqlite_con = SqliteController("../../../storage/app_data/tables.db")
     query_res2 = execute_query_with_added_sel_cols(sqlite_con, 'SELECT Name FROM Titanic WHERE PassengerId=1')
     print(query_res2)

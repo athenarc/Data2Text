@@ -8,15 +8,27 @@ from app.backend.processing import process_query
 class TestQueryProcessing:
     def test_transform_query_same_sel_where(self):
         assert process_query.transform_query("SELECT col1 FROM table_name WHERE col1=2") == \
-               ("SELECT col1 FROM table_name WHERE col1 = 2", "table_name")
+               ("SELECT col1 FROM table_name WHERE col1 = 2 LIMIT 1", "table_name")
 
     def test_transform_query_diff_sel_where(self):
         assert process_query.transform_query("SELECT col1 FROM table_name WHERE col2=2") == \
-               ("SELECT col1, col2 FROM table_name WHERE col2 = 2", "table_name")
+               ("SELECT col1, col2 FROM table_name WHERE col2 = 2 LIMIT 1", "table_name")
 
     def test_transform_query_diff_sel_star(self):
         assert process_query.transform_query("SELECT * FROM table_name WHERE col2=2") == \
-               ("SELECT * FROM table_name WHERE col2 = 2", "table_name")
+               ("SELECT * FROM table_name WHERE col2 = 2 LIMIT 1", "table_name")
+
+    def test_add_limit_1_limit_1_exists(self):
+        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
+               {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
+
+    def test_add_limit_1_limit_not_exists(self):
+        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name'}) == \
+               {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
+
+    def test_add_limit_1_limit_else_exists(self):
+        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 5}) == \
+               {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
 
     def test_aggr_exists_dict(self):
         assert process_query.check_aggr_exists([{'value': {'count': 'bbb'}}])
