@@ -1,7 +1,7 @@
 import pytest
 from mo_sql_parsing import parse
 
-from app.backend.model.sqlite_interface import SqliteController
+from app.backend.db.SqliteController import SqliteController
 from app.backend.processing import process_query
 
 
