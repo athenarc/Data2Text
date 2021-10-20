@@ -22,3 +22,7 @@ class DbInterface(ABC):
     @abstractmethod
     def preview_table(self, table: str, limit: int = 10):
         """ Returns the first `limit` rows of the given `table` """
+
+    @abstractmethod
+    def shutdown(self) -> None:
+        """ Do any cleanup if necessary. Eg. close the connection."""

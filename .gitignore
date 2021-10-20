@@ -523,3 +523,4 @@ TSWLatexianTemp*
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
 /configs/secrets.yaml
+/app/backend/config/credentials.yaml

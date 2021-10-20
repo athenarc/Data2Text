@@ -3,6 +3,8 @@ pytorch-lightning==1.4.1
 yacs
 pandas
 pyyaml
+sshtunnel
+pymysql
 transformers==4.10.0
 datasets==1.11.0
 mo-sql-parsing==5.58.21262

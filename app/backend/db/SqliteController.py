@@ -8,6 +8,10 @@ class SqliteController(DbInterface):
     def __init__(self, db_path):
         self.db_path = db_path
 
+    def shutdown(self):
+        """No cleanup is needed since we connect every time we perform a query."""
+        pass
+
     def query_with_res_cols(self, query):
         con = sqlite3.connect(self.db_path)
         cur = con.cursor()
@@ -34,6 +38,7 @@ class SqliteController(DbInterface):
     def preview_table(self, table: str, limit: int = 10):
         rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
         return {"table": table, "header": cols, "row": rows}
+
 
 
 if __name__ == '__main__':
