@@ -7,9 +7,9 @@ router = APIRouter()
 
 @router.get("/tables")
 def available_tables():
-    return {"tables": query_explainer.sqlite_controller.get_table_names()}
+    return {"tables": query_explainer.db_controller.get_table_names()}
 
 
 @router.get("/tables/{table_name}")
 async def table_preview(table_name: str):
-    return {"table_sample": query_explainer.sqlite_controller.preview_table(table_name)}
+    return {"table_sample": query_explainer.db_controller.preview_table(table_name)}

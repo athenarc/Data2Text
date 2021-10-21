@@ -31,5 +31,5 @@ if query_explanation != "":
     st.markdown(f"Query explanation: **{query_explanation}**")
 
 
-if __name__ == '__main__':
-    explain_query("SELECT Name FROM Titanic WHERE PassengerId=1")
+# if __name__ == '__main__':
+#     explain_query("SELECT Name FROM Titanic WHERE PassengerId=1")

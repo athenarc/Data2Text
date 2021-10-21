@@ -1,7 +1,7 @@
 import sqlite3
 from typing import List
 
-from app.backend.db.DbInterface import DbInterface
+from app.backend.db.DbInterface import DbException, DbInterface
 
 
 class SqliteController(DbInterface):
@@ -16,8 +16,11 @@ class SqliteController(DbInterface):
         con = sqlite3.connect(self.db_path)
         cur = con.cursor()
 
-        cur.execute(query)
-        res = cur.fetchall()
+        try:
+            cur.execute(query)
+            res = cur.fetchall()
+        except sqlite3.OperationalError as e:
+            raise DbException(f"{e}")
         desc = [d[0] for d in cur.description]
         con.close()
 
@@ -40,8 +43,7 @@ class SqliteController(DbInterface):
         return {"table": table, "header": cols, "row": rows}
 
 
-
 if __name__ == '__main__':
     sqlite_con = SqliteController("../../../storage/datasets/wiki_sql/raw/train.db")
     # table_cols_debug = sqlite_con.get_table_cols('Titanic')
-    print(sqlite_con.get_table_names())
+    print(sqlite_con.query_with_res_cols("SELECT * FROM titanic"))

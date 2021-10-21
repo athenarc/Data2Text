@@ -4,7 +4,7 @@ from typing import Dict, List, Set
 
 import mo_sql_parsing
 
-from app.backend.db.SqliteController import SqliteController
+from app.backend.db.DbInterface import DbInterface
 
 
 class DifficultyNotImplemented(NotImplementedError):
@@ -20,7 +20,7 @@ def add_where_cols_to_sel(query: Dict, added_cols: Set[str]) -> Dict:
     return query_copy
 
 
-def execute_query_with_added_sel_cols(sqlite_controller: SqliteController, raw_query):
+def execute_query_with_added_sel_cols(sqlite_controller: DbInterface, raw_query):
     new_query_str, tables = transform_query(raw_query)
     query_res = sqlite_controller.query_with_res_cols(new_query_str)
 

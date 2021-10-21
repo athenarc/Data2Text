@@ -1,12 +1,24 @@
-from typing import List
+from contextlib import contextmanager
+from typing import Dict, List
 
 import pandas as pd
+import pandas.io.sql
 import pymysql
 import sshtunnel
 import yaml
 from sshtunnel import SSHTunnelForwarder
 
-from app.backend.db.DbInterface import DbInterface
+from app.backend.db.DbInterface import DbException, DbInterface
+
+
+@contextmanager
+def get_connection(*args, **kwargs):
+    """ A context manager that opens and closes the MySQL connection """
+    connection = pymysql.connect(*args, **kwargs)
+    try:
+        yield connection
+    finally:
+        connection.close()
 
 
 class MySqlController(DbInterface):
@@ -14,77 +26,85 @@ class MySqlController(DbInterface):
         with open(credentials_path, 'r') as stream:
             self.credentials = yaml.safe_load(stream)
 
-        # Since the db is not hosted in localhost we first have to connect through ssh
-        # with the host machine and then execute the queries using the ssh tunnel.
-        self.tunnel = self._open_ssh_tunnel()
-        # self.connection = self._mysql_connect()
+        # Currently the tunneling code is not working on DARELAB. Interestingly, it works on other remote
+        # servers. Fix: use ssh tunneling on the terminal.
+        # self.tunnel = self._open_ssh_tunnel()
 
     def _open_ssh_tunnel(self) -> SSHTunnelForwarder:
         """Open an SSH tunnel and connect using a username and password."""
-        # tunnel = SSHTunnelForwarder(
-        #     (self.credentials['MYSQL']['SSH_HOST'],
-        #      self.credentials['MYSQL']['SSH_PORT']),
-        #     ssh_username=self.credentials['MYSQL']['SSH_USERNAME'],
-        #     ssh_password=self.credentials['MYSQL']['SSH_PASSWORD'],
-        #     remote_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
-        #                          self.credentials['MYSQL']['DATABASE_PORT']),
-        #     local_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
-        #                         self.credentials['MYSQL']['DATABASE_PORT'])
-        #
-        # )
+        tunnel = SSHTunnelForwarder(
+            (self.credentials['MYSQL']['SSH_HOST'],
+             self.credentials['MYSQL']['SSH_PORT']),
+            ssh_username=self.credentials['MYSQL']['SSH_USERNAME'],
+            ssh_password=self.credentials['MYSQL']['SSH_PASSWORD'],
+            remote_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
+                                 self.credentials['MYSQL']['DATABASE_PORT']),
+            local_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
+                                self.credentials['MYSQL']['DATABASE_PORT'])
 
-
-        with sshtunnel.open_tunnel(
-                ("darelab.imsi.athenarc.gr", 15000),
-                ssh_username="mxydas",
-                ssh_password='D9kD$JD$qY1K',
-                remote_bind_address=("127.0.0.1", 3306),
-                local_bind_address=("127.0.0.1", 8892)
-        ) as tunnel:
-            conn = pymysql.connect(host='127.0.0.1', user=self.credentials['MYSQL']['DATABASE_USERNAME'],
-                                   passwd=self.credentials['MYSQL']['DATABASE_PASSWORD'],
-                                   db=self.credentials['MYSQL']['DATABASE_NAME'],
-                                   port=8892)
-            query = '''SELECT VERSION();'''
-            data = pd.read_sql_query(query, conn)
-            print(data)
-            conn.close()
-
-        # tunnel.start()
-        # print("Done")
-        # return tunnel
-
-    def _mysql_connect(self) -> pymysql.Connection:
-        """Connect to a MySQL server using the SSH tunnel connection"""
-        connection = pymysql.connect(
-            host=self.credentials['MYSQL']['DATABASE_HOST'],
-            user=self.credentials['MYSQL']['DATABASE_USERNAME'],
-            passwd=self.credentials['MYSQL']['DATABASE_PASSWORD'],
-            # database="cordis"
-            db=self.credentials['MYSQL']['DATABASE_NAME'],
-            port=8899
         )
 
-        return connection
+        tunnel.start()
+        return tunnel
+
+    def _mysql_connection_args(self) -> Dict:
+        """Return the connection arguments as a dict that will then be used as kwargs from
+        the connection context manager"""
+
+        connection_args = {
+            "host": self.credentials['MYSQL']['DATABASE_HOST'],
+            "user": self.credentials['MYSQL']['DATABASE_USERNAME'],
+            "passwd": self.credentials['MYSQL']['DATABASE_PASSWORD'],
+            "db": self.credentials['MYSQL']['DATABASE_NAME'],
+            "port": self.credentials['MYSQL']['DATABASE_PORT']
+        }
+
+        return connection_args
 
     def shutdown(self) -> None:
         """ Close the mysql connection and the tunnel"""
-        self.connection.close()
-        self.tunnel.close()
+        # self.tunnel.close()
 
     def query_with_res_cols(self, query: str):
-        return pd.read_sql_query(query, self.connection)
+        try:
+            with get_connection(**self._mysql_connection_args()) as con:
+                res = pd.read_sql_query(query, con)
+        except pandas.io.sql.DatabaseError as e:
+            raise DbException(f"ERROR: {e}")
+        return list(res.itertuples(index=False, name=None)), list(res.columns)
 
     def get_table_names(self) -> List[str]:
-        return []
+        table_query = f"""
+        SELECT table_name
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE table_schema = \'{self.credentials['MYSQL']['DATABASE_NAME']}\';
+        """
+
+        with get_connection(**self._mysql_connection_args()) as con:
+            table_names = pd.read_sql_query(table_query, con)
+        return list(table_names.TABLE_NAME)
 
     def get_table_cols(self, table_name: str) -> List[str]:
-        return []
+        table_cols_query = f"""
+        SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = \'{self.credentials['MYSQL']['DATABASE_NAME']}\' AND TABLE_NAME = \'{table_name}\';
+        """
+        with get_connection(**self._mysql_connection_args()) as con:
+            table_cols = pd.read_sql_query(table_cols_query, con)
+        return list(table_cols.COLUMN_NAME)
 
     def preview_table(self, table: str, limit: int = 10):
-        return []
+        rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
+        return {"table": table, "header": cols, "row": rows}
 
 
 if __name__ == '__main__':
     mysql_controller = MySqlController("../config/credentials.yaml")
-    print(mysql_controller.query_with_res_cols("SELECT * FROM projects LIMIT 10"))
+    res_rows, desc = mysql_controller.query_with_res_cols("SELECT * FROM projects LIMIT 10")
+    print(res_rows)
+    print(desc)
+
+    print(mysql_controller.get_table_names())
+    print(mysql_controller.get_table_cols("projects"))
+    print(mysql_controller.preview_table("projects"))

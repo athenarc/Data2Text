@@ -26,3 +26,7 @@ class DbInterface(ABC):
     @abstractmethod
     def shutdown(self) -> None:
         """ Do any cleanup if necessary. Eg. close the connection."""
+
+
+class DbException(Exception):
+    pass
