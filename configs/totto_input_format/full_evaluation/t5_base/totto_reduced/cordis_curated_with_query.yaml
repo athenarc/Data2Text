@@ -1,0 +1,29 @@
+MODEL:
+  MAX_INPUT_TOKENS: 512
+  MAX_OUTPUT_TOKENS: 64
+  TOKENIZER_NAME: "t5-base"
+  PRETRAINED_MODEL_NAME: "t5-base"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/reduced_entities/t5_base/epoch=3-step=19995.ckpt"
+
+SOLVER:
+  OPTIMIZER_NAME: "AdaFactor"
+  BASE_LR: 0.001
+
+WANDB:
+  RUN_NAME: "Inference Curated Cordis Annotation | With query info"
+  GROUP: "Reduced Entities ToTTo Dataset | T5-base"
+  TAGS: ["Evaluate", "Curated", "Cordis", "t5-base"]
+  MODE: "online"
+  NOTES: ""
+
+DATASET:
+  VALIDATION: "storage/datasets/totto/cordis_to_totto/curated_cordis_with_query.json"
+  EVALUATION: "storage/datasets/totto/cordis_to_totto/curated_cordis_with_query.json"
+  TRAIN: "storage/datasets/totto/filtered_sampled/train.json"
+
+DATALOADER:
+  NUM_WORKERS: 11
+
+INPUT:
+  TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8

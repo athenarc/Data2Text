@@ -10,6 +10,8 @@ services:
       - back
   back:
     build: .
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "4557:4557"
     networks:
