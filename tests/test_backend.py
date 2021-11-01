@@ -2,160 +2,165 @@ import pytest
 from mo_sql_parsing import parse
 
 from app.backend.db.SqliteController import SqliteController
-from app.backend.processing import process_query
+from app.backend.processing.process_query import (clause_extractors,
+                                                  difficulty_check,
+                                                  query_pipeline)
+from app.backend.processing.process_query.query_injectors import (
+    inject_column_aliases, inject_from_where, inject_limit_1)
 
 
 class TestQueryProcessing:
     def test_transform_query_same_sel_where(self):
-        assert process_query.transform_query("SELECT col1 FROM table_name WHERE col1=2") == \
+        assert query_pipeline.transform_query("SELECT col1 FROM table_name WHERE col1=2") == \
                ("SELECT col1 FROM table_name WHERE col1 = 2 LIMIT 1", "table_name")
 
     def test_transform_query_diff_sel_where(self):
-        assert process_query.transform_query("SELECT col1 FROM table_name WHERE col2=2") == \
+        assert query_pipeline.transform_query("SELECT col1 FROM table_name WHERE col2=2") == \
                ("SELECT col1, col2 FROM table_name WHERE col2 = 2 LIMIT 1", "table_name")
 
     def test_transform_query_diff_sel_star(self):
-        assert process_query.transform_query("SELECT * FROM table_name WHERE col2=2") == \
+        assert query_pipeline.transform_query("SELECT * FROM table_name WHERE col2=2") == \
                ("SELECT * FROM table_name WHERE col2 = 2 LIMIT 1", "table_name")
 
     def test_add_limit_1_limit_1_exists(self):
-        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
+        assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
                {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
 
     def test_add_limit_1_limit_not_exists(self):
-        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name'}) == \
+        assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name'}) == \
                {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
 
     def test_add_limit_1_limit_else_exists(self):
-        assert process_query.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 5}) == \
+        assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 5}) == \
                {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
 
     def test_aggr_exists_dict(self):
-        assert process_query.check_aggr_exists([{'value': {'count': 'bbb'}}])
-        assert process_query.check_aggr_exists([{'value': {'max': 'bbb'}}])
-        assert process_query.check_aggr_exists([{'value': {'min': 'bbb'}}])
-        assert process_query.check_aggr_exists([{'value': {'avg': 'bbb'}}])
-        assert process_query.check_aggr_exists([{'value': {'sum': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'count': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'max': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'min': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'avg': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'sum': 'bbb'}}])
 
     def test_aggr_exists_list(self):
-        assert process_query.check_aggr_exists([{'value': 'dd'}, {'value': {'count': 'bbb'}}])
-        assert process_query.check_aggr_exists([{'value': {'max': 'ccc'}}, {'value': 'dd'},
-                                                {'value': {'count': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': 'dd'}, {'value': {'count': 'bbb'}}])
+        assert difficulty_check.check_aggr_exists([{'value': {'max': 'ccc'}}, {'value': 'dd'},
+                                                   {'value': {'count': 'bbb'}}])
 
     def test_aggr_not_exists_list(self):
-        assert process_query.check_aggr_exists([{'value': 'dd'}]) is False
-        assert process_query.check_aggr_exists([{'value': 'dd'}, {'value': 'cc'}, {'value': 'country'}]) is False
+        assert difficulty_check.check_aggr_exists([{'value': 'dd'}]) is False
+        assert difficulty_check.check_aggr_exists([{'value': 'dd'}, {'value': 'cc'}, {'value': 'country'}]) is False
 
     def test_aggr_not_exists_star(self):
-        assert process_query.check_aggr_exists(["*"]) is False
+        assert difficulty_check.check_aggr_exists(["*"]) is False
 
     def test_find_where_cols_simple(self):
-        assert process_query.find_where_cols({'eq': ['aa', 15]}) == {'aa'}
+        assert clause_extractors.find_where_cols({'eq': ['aa', 15]}) == {'aa'}
 
     def test_find_where_cols_complex(self):
-        assert process_query.find_where_cols({'or': [{'and': [{'eq': ['aa', 15]}, {'eq': ['bb', 12]}]},
-                                                     {'gt': ['cc', 13]}]}) \
+        assert clause_extractors.find_where_cols({'or': [{'and': [{'eq': ['aa', 15]}, {'eq': ['bb', 12]}]},
+                                                         {'gt': ['cc', 13]}]}) \
                == {'aa', 'bb', 'cc'}
 
     def test_find_sel_cols_list(self):
-        assert process_query.find_sel_cols([{'value': 'dd'}]) == {'dd'}
-        assert process_query.find_sel_cols([{'value': 'jobs.cc'}, {'value': 'dd'}]) == {'jobs.cc', 'dd'}
+        assert clause_extractors.find_sel_cols([{'value': 'dd'}]) == {'dd'}
+        assert clause_extractors.find_sel_cols([{'value': 'jobs.cc'}, {'value': 'dd'}]) == {'jobs.cc', 'dd'}
 
     def test_find_sel_cols_str(self):
-        assert process_query.find_sel_cols(['*']) == {'*'}
+        assert clause_extractors.find_sel_cols(['*']) == {'*'}
 
     def test_difficulty_check_group_by(self):
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 GROUP BY col2"))
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 group by col2"))
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 GROUP BY col2"))
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 group by col2"))
 
     def test_difficulty_check_aggregation(self):
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(parse("SELECT COUNT(col1), col2 FROM table WHERE col1=2"))
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(parse("SELECT min(col1), col2 FROM table WHERE col1=2"))
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(parse("SELECT COUNT(col1), col2 FROM table WHERE col1=2"))
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(parse("SELECT min(col1), col2 FROM table WHERE col1=2"))
 
     def test_difficulty_check_nested(self):
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(
                 parse("SELECT col1, col2 FROM table WHERE col1=in (SELECT col1 FROM table)"))
-        with pytest.raises(process_query.DifficultyNotImplemented):
-            process_query.difficulty_check_query(
+        with pytest.raises(difficulty_check.DifficultyNotImplemented):
+            difficulty_check.difficulty_check_query(
                 parse("SELECT col1, col2 FROM table WHERE col1=in (select col1 FROM table)"))
 
     def test_difficulty_check_expected(self):
-        assert process_query.difficulty_check_query(
+        assert difficulty_check.difficulty_check_query(
             parse("SELECT col1, col2 FROM table WHERE col1=5"))
 
     def test_find_from_tables_one_table_no_aliases(self):
-        assert process_query.find_from_tables('t1') == ['t1']
+        assert clause_extractors.find_from_tables('t1') == ['t1']
 
     def test_find_from_tables_multiple_tables_no_aliases(self):
-        assert process_query.find_from_tables(['t1', 't2']) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(['t1', 't2']) == ['t1', 't2']
 
     def test_find_from_tables_one_table_with_alias(self):
-        assert process_query.find_from_tables({'value': 'table2', 'name': 't2'}) \
+        assert clause_extractors.find_from_tables({'value': 'table2', 'name': 't2'}) \
                == ['table2']
 
     def test_find_from_tables_multiple_tables_with_alias(self):
-        assert process_query.find_from_tables([{'value': 'table1', 'name': 't1'}, {'value': 'table2', 'name': 't2'}]) \
+        assert clause_extractors.find_from_tables(
+            [{'value': 'table1', 'name': 't1'}, {'value': 'table2', 'name': 't2'}]) \
                == ['table1', 'table2']
 
     def test_find_from_tables_multiple_tables_with_and_without_alias(self):
-        assert process_query.find_from_tables([{'value': 'table1', 'name': 't1'}, 'table2']) \
+        assert clause_extractors.find_from_tables([{'value': 'table1', 'name': 't1'}, 'table2']) \
                == ['table1', 'table2']
 
     def test_get_from_mappings_one_table_no_aliases(self):
-        assert process_query.get_from_mappings('t1') == {}
+        assert inject_column_aliases.get_from_mappings('t1') == {}
 
     def test_get_from_mappings_multiple_tables_no_aliases(self):
-        assert process_query.get_from_mappings(['t1', 't2']) == {}
+        assert inject_column_aliases.get_from_mappings(['t1', 't2']) == {}
 
     def test_get_from_mappings_one_table_with_alias(self):
-        assert process_query.get_from_mappings({'value': 'table2', 'name': 't2'}) \
+        assert inject_column_aliases.get_from_mappings({'value': 'table2', 'name': 't2'}) \
                == {'t2': 'table2'}
 
     def test_get_from_mappings_multiple_tables_with_alias(self):
-        assert process_query.get_from_mappings(
+        assert inject_column_aliases.get_from_mappings(
             [{'value': 'table1', 'name': 't1'}, {'value': 'table2', 'name': 't2'}]) \
                == {'t1': 'table1', 't2': 'table2'}
 
     def test_get_from_mappings_multiple_tables_with_and_without_alias(self):
-        assert process_query.get_from_mappings([{'value': 'table1', 'name': 't1'}, 'table2']) \
+        assert inject_column_aliases.get_from_mappings([{'value': 'table1', 'name': 't1'}, 'table2']) \
                == {'t1': 'table1'}
 
     def test_apply_join_aliases_single_table_no_alias(self):
-        assert process_query.apply_join_aliases({'select': [{'value': 'c'}], 'from': 't'}, ["t"]) \
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 'c'}], 'from': 't'}, ["t"]) \
                == {'select': [{'value': 'c'}], 'from': 't'}
 
     def test_apply_join_aliases_single_table_with_alias(self):
-        assert process_query.apply_join_aliases({'select': [{'value': 'c'}],
-                                                 'from': {'value': 'table1', 'name': 't1'}},
-                                                ["table1"]) \
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 'c'}],
+                                                         'from': {'value': 'table1', 'name': 't1'}},
+                                                        ["table1"]) \
                == {'select': [{'value': 'c'}], 'from': {'value': 'table1', 'name': 't1'}}
 
     def test_apply_join_aliases_multiple_table_no_alias(self):
-        assert process_query.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
-                                                 'from': ["t1", "t2"]},
-                                                ["t1", "t2"]) \
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
+                                                         'from': ["t1", "t2"]},
+                                                        ["t1", "t2"]) \
                == {'select': [{'value': 't1.c'}, {'value': 't2.c'}], 'from': ["t1", "t2"]}
 
     def test_apply_join_aliases_multiple_table_with_alias(self):
-        assert process_query.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
-                                                 'from': [{'value': 'table1', 'name': 't1'},
-                                                          {'value': 'table2', 'name': 't2'}]},
-                                                ["table1", "table2"]) \
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
+                                                         'from': [{'value': 'table1', 'name': 't1'},
+                                                                  {'value': 'table2', 'name': 't2'}]},
+                                                        ["table1", "table2"]) \
                == {'select': [{'value': 't1.c', 'name': 'table1 c'},
                               {'value': 't2.c', 'name': 'table2 c'}],
                    'from': [{'value': 'table1', 'name': 't1'},
                             {'value': 'table2', 'name': 't2'}]}
 
     def test_apply_join_aliases_multiple_table_with_and_without_alias(self):
-        assert process_query.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 'table2.c'}],
-                                                 'from': [{'value': 'table1', 'name': 't1'},
-                                                          "table2"]},
-                                                ["table1", "table2"]) \
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 'table2.c'}],
+                                                         'from': [{'value': 'table1', 'name': 't1'},
+                                                                  "table2"]},
+                                                        ["table1", "table2"]) \
                == {'select': [{'value': 't1.c', 'name': 'table1 c'},
                               {'value': 'table2.c'}],
                    'from': [{'value': 'table1', 'name': 't1'},

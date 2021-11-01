@@ -5,8 +5,10 @@ from app.backend.controller.inference import InferenceController
 from app.backend.db.DbInterface import DbException, DbInterface
 from app.backend.db.MySqlController import MySqlController
 from app.backend.db.SqliteController import SqliteController
-from app.backend.processing.process_query import (
-    DifficultyNotImplemented, execute_query_with_added_sel_cols)
+from app.backend.processing.process_query.difficulty_check import \
+    DifficultyNotImplemented
+from app.backend.processing.process_query.query_pipeline import \
+    execute_transformed_query
 from app.backend.processing.process_query_results import query_results_to_totto
 
 
@@ -19,7 +21,7 @@ class QueryResultsExplainer:
     def explain_query_results(self, query: str) -> str:
         try:
             query_res_in_totto = query_results_to_totto(
-                execute_query_with_added_sel_cols(self.db_controller, query)
+                execute_transformed_query(self.db_controller, query)
             )
         except DbException as e:
             return f"{e}"

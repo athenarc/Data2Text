@@ -1,6 +1,7 @@
 from typing import Dict
 
-from app.backend.processing.process_query import DifficultyNotImplemented
+from app.backend.processing.process_query.difficulty_check import \
+    DifficultyNotImplemented
 
 
 def create_metadata(table_name, nl_query="") -> str:
