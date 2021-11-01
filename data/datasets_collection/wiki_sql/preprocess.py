@@ -66,7 +66,7 @@ def transform_wikisql_to_totto(annotations_path: str, save_path: str, use_query:
 if __name__ == '__main__':
     # The paths below expect the sys.path to be the project root
     ANNOTATIONS_PATH = "storage/datasets/cordis/curated_cordis_to_wikisql.json"
-    TOTTO_SAVE_PATH = "storage/datasets/totto/cordis_to_totto/curated_cordis_with_query.json"
-    USE_QUERY = True
+    TOTTO_SAVE_PATH = "storage/datasets/totto/cordis_to_totto/curated_cordis_no_query.json"
+    USE_QUERY = False
 
     transform_wikisql_to_totto(ANNOTATIONS_PATH, TOTTO_SAVE_PATH, USE_QUERY)

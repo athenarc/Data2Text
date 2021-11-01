@@ -1,6 +1,6 @@
 """
 Takes as input a directory of config files and evaluates them. The results are
-reported on wandb.
+reported on wandb. Can include or exclude configs using the --include or --exclude arguments.
 """
 import argparse
 import subprocess
