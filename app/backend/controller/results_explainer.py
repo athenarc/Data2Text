@@ -1,5 +1,4 @@
 import logging
-import sqlite3
 
 from app.backend.controller.inference import InferenceController
 from app.backend.db.DbInterface import DbException, DbInterface
@@ -24,7 +23,7 @@ class QueryResultsExplainer:
                 execute_transformed_query(self.db_controller, query)
             )
         except DbException as e:
-            return f"{e}"
+            return f"DB ERROR: {e}"
         except DifficultyNotImplemented as e:
             return f"ERROR, Difficulty not implemented: {e}"
 

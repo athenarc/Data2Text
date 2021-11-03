@@ -27,7 +27,7 @@ def preview_table(table_name, table_canvas):
     rows = table_sample['row']
 
     df = pd.DataFrame(rows, columns=cols)
-    table_canvas.table(df)
+    table_canvas.dataframe(df)
 
 
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(10), retry=retry_if_exception_type(ConnectionError))

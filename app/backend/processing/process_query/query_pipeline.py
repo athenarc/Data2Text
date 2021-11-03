@@ -16,6 +16,10 @@ from app.backend.processing.process_query.query_injectors.inject_limit_1 import 
 
 
 def execute_transformed_query(sqlite_controller: DbInterface, raw_query):
+    # We check if the original query has any errors
+    logging.debug("Executing original query.")
+    _ = sqlite_controller.query_with_res_cols(raw_query)
+
     new_query_str, tables = transform_query(raw_query)
     query_res = sqlite_controller.query_with_res_cols(new_query_str)
 
@@ -39,6 +43,9 @@ def transform_query(raw_query):
         where_cols = find_where_cols(query['where'])
     except KeyError:
         where_cols = set()
+    logging.debug(f"Select cols: {sel_cols}")
+    logging.debug(f"Table: {tables}")
+    logging.debug(f"Where cols: {where_cols}")
 
     # Inject in SELECT, WHERE clauses that do not appear in SELECT already
     # eg SELECT c1 FROM t1 WHERE c2=1 -> SELECT c1, c2 FROM t2 WHERE c2=1

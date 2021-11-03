@@ -17,9 +17,10 @@ if show_preview:
     table_preview = st.empty()
     preview_table(selected_table, table_preview)
 
-
+st.text("")
+st.text("")
 st.markdown("**Input Query**")
-input_query = st.text_area("", value="SELECT Name FROM Titanic WHERE PassengerId=1")
+input_query = st.text_area("", value="SELECT acronym, start_year FROM projects WHERE start_year=2016")
 
 query_explanation = ""
 explanation_area = st.empty()

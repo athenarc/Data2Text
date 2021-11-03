@@ -68,6 +68,17 @@ class TestQueryProcessing:
     def test_find_sel_cols_str(self):
         assert clause_extractors.find_sel_cols(['*']) == {'*'}
 
+    def test_find_sel_cols_only_aggregate(self):
+        assert clause_extractors.find_sel_cols([{'value': {'count': 'col1'}}]) == set()
+
+    def test_find_sel_cols_multiple_aggregate(self):
+        assert clause_extractors.find_sel_cols([{'value': {'count': 'col1'}}, {'value': {'sum': 'col2'}}]) \
+               == set()
+
+    def test_find_sel_cols_aggregate_and_col(self):
+        assert clause_extractors.find_sel_cols([{'value': {'count': 'col1'}}, {'value': 'col2'}]) \
+               == {'col2'}
+
     def test_difficulty_check_group_by(self):
         with pytest.raises(difficulty_check.DifficultyNotImplemented):
             difficulty_check.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 GROUP BY col2"))
@@ -165,6 +176,26 @@ class TestQueryProcessing:
                               {'value': 'table2.c'}],
                    'from': [{'value': 'table1', 'name': 't1'},
                             "table2"]}
+
+    def test_apply_join_aliases_multiple_table_with_alias_only_aggr(self):
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': {'count': 't2.c'}}],
+                                                         'from': [{'value': 'table1', 'name': 't1'},
+                                                                  {'value': 'table2', 'name': 't2'}]},
+                                                        ["table1", "table2"]) \
+               == {'select': [{'value': {'count': 't2.c'}}],
+                   'from': [{'value': 'table1', 'name': 't1'},
+                            {'value': 'table2', 'name': 't2'}]}
+
+    def test_apply_join_aliases_multiple_table_with_alias_with_aggr(self):
+        assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'},
+                                                                    {'value': {'count': 't2.c'}}],
+                                                         'from': [{'value': 'table1', 'name': 't1'},
+                                                                  {'value': 'table2', 'name': 't2'}]},
+                                                        ["table1", "table2"]) \
+               == {'select': [{'value': 't1.c', 'name': 'table1 c'},
+                              {'value': {'count': 't2.c'}}],
+                   'from': [{'value': 'table1', 'name': 't1'},
+                            {'value': 'table2', 'name': 't2'}]}
 
 
 @pytest.fixture(autouse=True, scope='class')
