@@ -6,7 +6,8 @@ from app.backend.processing.process_query import (clause_extractors,
                                                   difficulty_check,
                                                   query_pipeline)
 from app.backend.processing.process_query.query_injectors import (
-    inject_column_aliases, inject_from_where, inject_limit_1)
+    inject_column_aliases, inject_from_where, inject_limit_1,
+    inject_verbalised_aggregates)
 
 
 class TestQueryProcessing:
@@ -196,6 +197,58 @@ class TestQueryProcessing:
                               {'value': {'count': 't2.c'}}],
                    'from': [{'value': 'table1', 'name': 't1'},
                             {'value': 'table2', 'name': 't2'}]}
+
+    def test_verbalise_aggregates_single_table_single_col_avg(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'avg': 'col1'}}],
+             'from': ['table1']},
+            ["table1"]) \
+               == {'select': [{'value': {'avg': 'col1'}, 'name': 'average col1'}],
+                   'from': ['table1']}
+
+    def test_verbalise_aggregates_single_table_two_cols_avg_sum(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'avg': 'col1'}},
+                        {'value': {'sum': 'col2'}}],
+             'from': ['table1']},
+            ["table1"]) \
+               == {'select': [{'value': {'avg': 'col1'}, 'name': 'average col1'},
+                              {'value': {'sum': 'col2'}, 'name': 'sum of col2'}],
+                   'from': ['table1']}
+
+    def test_verbalise_aggregates_single_table_two_cols_max_none(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'avg': 'col1'}},
+                        {'value': 'col2'}],
+             'from': ['table1']},
+            ["table1"]) \
+               == {'select': [{'value': {'avg': 'col1'}, 'name': 'average col1'},
+                              {'value': 'col2'}],
+                   'from': ['table1']}
+
+    def test_verbalise_aggregates_multiple_tables_single_col_min(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'avg': 'table1.col1'}}],
+             'from': ['table1', 'table2']},
+            ['table1', 'table2']) \
+               == {'select': [{'value': {'avg': 'table1.col1'}, 'name': 'average table1.col1'}],
+                   'from': ['table1', 'table2']}
+
+    def test_verbalise_aggregates_multiple_single_table_single_col_count(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'count': 'col1'}}],
+             'from': ['table1']},
+            ['table1']) \
+               == {'select': [{'value': {'count': 'col1'}, 'name': 'count of table1'}],
+                   'from': ['table1']}
+
+    def test_verbalise_aggregates_multiple_multiple_table_single_col_count(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'count': 't1.col1'}}],
+             'from': [{'value': 'table1', 'name': 't1'}, 'table2']},
+            ['table1', 'table2']) \
+               == {'select': [{'value': {'count': 't1.col1'}, 'name': 'count of table1'}],
+                   'from': [{'value': 'table1', 'name': 't1'}, 'table2']}
 
 
 @pytest.fixture(autouse=True, scope='class')

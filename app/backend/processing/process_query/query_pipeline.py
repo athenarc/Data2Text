@@ -13,6 +13,8 @@ from app.backend.processing.process_query.query_injectors.inject_from_where impo
     add_where_cols_to_sel
 from app.backend.processing.process_query.query_injectors.inject_limit_1 import \
     add_limit_1
+from app.backend.processing.process_query.query_injectors.inject_verbalised_aggregates import \
+    verbalise_aggregates
 
 
 def execute_transformed_query(sqlite_controller: DbInterface, raw_query):
@@ -62,6 +64,10 @@ def transform_query(raw_query):
     # Eg. SELECT t1.c1, t2.c1 FROM table1 t1, table t2 ->
     # SELECT t1.c1 AS "table1 c1", t2.c1 AS "table2 c1" FROM table1 t1, table t2
     new_query = apply_join_aliases(new_query, tables)
+
+    # Verbalise aggregates to a representation that is meaningful for a model trained on ToTTo
+    # Eg. SELECT SUM(col1) FROM table1 -> SELECT SUM(col1) AS "sum of col1" FROM table1
+    new_query = verbalise_aggregates(new_query, tables)
 
     # We transform back the Dict query representation to a string query
     new_query_str = mo_sql_parsing.format(new_query)

@@ -16,7 +16,7 @@ def create_cell(col_name: str, col_value: str) -> str:
 
 
 def query_results_to_totto(query_results: Dict[str, str]):
-    metadata = create_metadata(query_results['tables_name'][0])
+    metadata = create_metadata(query_results['tables_name'])
     table_cells_str = ""
 
     if len(query_results['rows']) > 1:
