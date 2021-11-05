@@ -51,11 +51,7 @@ def transform_query(raw_query):
 
     # Inject in SELECT, WHERE clauses that do not appear in SELECT already
     # eg SELECT c1 FROM t1 WHERE c2=1 -> SELECT c1, c2 FROM t2 WHERE c2=1
-    if "*" not in sel_cols:
-        added_cols = where_cols.difference(sel_cols)
-        new_query = add_where_cols_to_sel(query, added_cols)
-    else:
-        new_query = query
+    new_query = add_where_cols_to_sel(query, sel_cols, where_cols)
 
     # We currently inject LIMIT 1 to all queries since we cannot verbalise multiple rows
     new_query = add_limit_1(new_query)

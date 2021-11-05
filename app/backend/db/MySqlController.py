@@ -94,6 +94,18 @@ class MySqlController(DbInterface):
             table_cols = pd.read_sql_query(table_cols_query, con)
         return list(table_cols.COLUMN_NAME)
 
+    def get_pks_of_table(self, table_name: str) -> List[str]:
+        pks_of_table_query = f"""
+        SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = '{self.credentials['MYSQL']['DATABASE_NAME']}'
+          AND TABLE_NAME = '{table_name}'
+          AND COLUMN_KEY = 'PRI';
+        """
+        with get_connection(**self._mysql_connection_args()) as con:
+            table_pks = pd.read_sql_query(pks_of_table_query, con)
+        return list(table_pks.COLUMN_NAME)
+
     def preview_table(self, table: str, limit: int = 10):
         rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
         return {"table": table, "header": cols, "row": rows}
@@ -101,10 +113,11 @@ class MySqlController(DbInterface):
 
 if __name__ == '__main__':
     mysql_controller = MySqlController("../config/credentials.yaml")
-    res_rows, desc = mysql_controller.query_with_res_cols("SELECT * FROM projects LIMIT 10")
-    print(res_rows)
-    print(desc)
-
-    print(mysql_controller.get_table_names())
-    print(mysql_controller.get_table_cols("projects"))
-    print(mysql_controller.preview_table("projects"))
+    # res_rows, desc = mysql_controller.query_with_res_cols("SELECT * FROM projects LIMIT 10")
+    # print(res_rows)
+    # print(desc)
+    #
+    # print(mysql_controller.get_table_names())
+    # print(mysql_controller.get_table_cols("projects"))
+    # print(mysql_controller.preview_table("projects"))
+    print(mysql_controller.get_pks_of_table('projects'))

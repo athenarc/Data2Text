@@ -38,12 +38,22 @@ class SqliteController(DbInterface):
 
         return table_cols
 
+    def get_pks_of_table(self, table_name: str) -> List[str]:
+        pks_of_table_query = f"""
+                SELECT l.name
+                FROM pragma_table_info('books') AS l
+                WHERE l.pk = 1;
+                """
+        table_pks = self.query_with_res_cols(pks_of_table_query)
+        return list(table_pks[0][0])
+
     def preview_table(self, table: str, limit: int = 10):
         rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
         return {"table": table, "header": cols, "row": rows}
 
 
 if __name__ == '__main__':
-    sqlite_con = SqliteController("../../../storage/datasets/wiki_sql/raw/train.db")
+    sqlite_con = SqliteController("../../../storage/app_data/tables.db")
     # table_cols_debug = sqlite_con.get_table_cols('Titanic')
-    print(sqlite_con.query_with_res_cols("SELECT * FROM titanic"))
+    # print(sqlite_con.query_with_res_cols("SELECT * FROM titanic"))
+    print(sqlite_con.get_pks_of_table('books'))

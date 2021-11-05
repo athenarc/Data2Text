@@ -40,7 +40,10 @@ def find_where_cols(where_clause: Dict) -> Set[str]:
     def rec_find_cols(clause):
         if isinstance(clause, List):
             if isinstance(clause[0], str):
-                where_cols.add(clause[0])
+                if not is_join_column(clause[1]):
+                    # We do not include columns that are used to join two tables
+                    # They usually are ids that do not offer interpretable information.
+                    where_cols.add(clause[0])
             else:
                 for inner_clause in clause:
                     rec_find_cols(inner_clause)
@@ -73,3 +76,18 @@ def is_star_select(clause) -> bool:
     if isinstance(clause, str) and clause == "*":
         return True
     return False
+
+
+def is_join_column(value) -> bool:
+    """
+    Weakly checks if this is a JOIN clause, eg. t1.id = t2.f_id.
+    Issue: It does not consult the FROM clause and is based on trivial pattern matching.
+    As a result the clause: "t1.c1 = This is. a value" will be considered as a JOIN clause.
+    """
+    try:
+        if len(value.split('.')) == 2:
+            return True
+        else:
+            return False
+    except AttributeError:
+        return False

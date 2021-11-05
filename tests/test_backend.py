@@ -23,6 +23,10 @@ class TestQueryProcessing:
         assert query_pipeline.transform_query("SELECT * FROM table_name WHERE col2=2") == \
                ("SELECT * FROM table_name WHERE col2 = 2 LIMIT 1", "table_name")
 
+    def test_transform_query_with_join(self):
+        assert query_pipeline.transform_query("SELECT t1.col3 FROM t1, t2 WHERE t1.col1 = t2.col1 AND t1.col2=2") == \
+               ("SELECT t1.col3, t1.col2 FROM t1, t2 WHERE t1.col1 = t2.col1 AND t1.col2 = 2 LIMIT 1", "t1, t2")
+
     def test_add_limit_1_limit_1_exists(self):
         assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
                {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}

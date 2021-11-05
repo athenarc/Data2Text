@@ -20,6 +20,10 @@ class DbInterface(ABC):
         """ Returns the column names of the given table_name. """
 
     @abstractmethod
+    def get_pks_of_table(self, table_name: str) -> List[str]:
+        """ Returns a list of the primary keys of the given table. """
+
+    @abstractmethod
     def preview_table(self, table: str, limit: int = 10):
         """ Returns the first `limit` rows of the given `table` """
 
