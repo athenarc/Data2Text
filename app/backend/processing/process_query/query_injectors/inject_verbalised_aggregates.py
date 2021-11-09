@@ -22,12 +22,16 @@ def verbalise_aggregates(query, tables):
     for sel_clause in aggregate_clauses:
         aggr_func, aggr_col = list(sel_clause['value'].items())[0]
         if aggr_func == "avg":
+            aggr_col = aggr_col.split('.')[-1]
             sel_clause['name'] = verbalise_avg(aggr_col)
         elif aggr_func == "max":
+            aggr_col = aggr_col.split('.')[-1]
             sel_clause['name'] = verbalise_max(aggr_col)
         elif aggr_func == "min":
+            aggr_col = aggr_col.split('.')[-1]
             sel_clause['name'] = verbalise_min(aggr_col)
         elif aggr_func == "sum":
+            aggr_col = aggr_col.split('.')[-1]
             sel_clause['name'] = verbalise_sum(aggr_col)
         elif aggr_func == "count":
             if len(tables) == 1:

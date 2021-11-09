@@ -33,7 +33,7 @@ def transform_query(raw_query: str) -> Tuple[str, str]:
 
     # This call will raise a DifficultyNotImplemented error if we do not pass the check
     # Currently we do not allow GROUP BY and nested queries
-    difficulty_check_query(query)
+    # difficulty_check_query(query)
 
     # Extract SELECT, FROM, WHERE clauses
     sel_cols = find_sel_cols(query['select'])

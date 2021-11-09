@@ -1,3 +1,6 @@
+import csv
+from typing import Tuple
+
 import pytest
 from mo_sql_parsing import parse
 
@@ -238,7 +241,7 @@ class TestQueryProcessing:
             {'select': [{'value': {'avg': 'table1.col1'}}],
              'from': ['table1', 'table2']},
             ['table1', 'table2']) \
-               == {'select': [{'value': {'avg': 'table1.col1'}, 'name': 'average table1.col1'}],
+               == {'select': [{'value': {'avg': 'table1.col1'}, 'name': 'average col1'}],
                    'from': ['table1', 'table2']}
 
     def test_verbalise_aggregates_multiple_single_table_single_col_count(self):
@@ -291,3 +294,19 @@ class TestSqliteInterface:
         cols = rows_cols['header']
         assert cols == ["PassengerId", "Survived", "Name", "Sex", "Age", "Ticket", "Fare"]
         assert first_row == (1, 'Survived', 'Karina Davis', 'male', 22, 'A/5 21171', 7.25)
+
+
+def read_cordis_queries():
+    cordis_queries = []
+    with open("tests/resources/cordis_integration_queries.tsv") as fd:
+        rd = csv.reader(fd, delimiter="\t")
+        _ = next(rd)  # Skip header
+        for row in rd:
+            cordis_queries.append([row[0], (row[1], row[2])])
+    return cordis_queries
+
+
+class TestQueryTransformationIntegration:
+    @pytest.mark.parametrize('query,expected', read_cordis_queries())
+    def test_transform_query_on_cordis(self, query: str, expected: Tuple[str, str]):
+        assert query_pipeline.transform_query(query) == expected
