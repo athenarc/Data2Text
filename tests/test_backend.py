@@ -25,7 +25,8 @@ class TestQueryProcessing:
 
     def test_transform_query_with_join(self):
         assert query_pipeline.transform_query("SELECT t1.col3 FROM t1, t2 WHERE t1.col1 = t2.col1 AND t1.col2=2") == \
-               ("SELECT t1.col3, t1.col2 FROM t1, t2 WHERE t1.col1 = t2.col1 AND t1.col2 = 2 LIMIT 1", "t1, t2")
+               ("SELECT t1.col3 AS \"t1 col3\", t1.col2 AS \"t1 col2\" FROM t1, t2 WHERE t1.col1 = t2.col1 "
+                "AND t1.col2 = 2 LIMIT 1", "t1, t2")
 
     def test_add_limit_1_limit_1_exists(self):
         assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
@@ -91,10 +92,10 @@ class TestQueryProcessing:
             difficulty_check.difficulty_check_query(parse("SELECT col1, col2 FROM table WHERE col1=2 group by col2"))
 
     def test_difficulty_check_aggregation(self):
-        with pytest.raises(difficulty_check.DifficultyNotImplemented):
-            difficulty_check.difficulty_check_query(parse("SELECT COUNT(col1), col2 FROM table WHERE col1=2"))
-        with pytest.raises(difficulty_check.DifficultyNotImplemented):
-            difficulty_check.difficulty_check_query(parse("SELECT min(col1), col2 FROM table WHERE col1=2"))
+        # with pytest.raises(difficulty_check.DifficultyNotImplemented):
+        assert difficulty_check.difficulty_check_query(parse("SELECT COUNT(col1), col2 FROM table WHERE col1=2"))
+        # with pytest.raises(difficulty_check.DifficultyNotImplemented):
+        assert difficulty_check.difficulty_check_query(parse("SELECT min(col1), col2 FROM table WHERE col1=2"))
 
     def test_difficulty_check_nested(self):
         with pytest.raises(difficulty_check.DifficultyNotImplemented):
@@ -160,7 +161,9 @@ class TestQueryProcessing:
         assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
                                                          'from': ["t1", "t2"]},
                                                         ["t1", "t2"]) \
-               == {'select': [{'value': 't1.c'}, {'value': 't2.c'}], 'from': ["t1", "t2"]}
+               == {'select': [{'value': 't1.c', 'name': 't1 c'},
+                              {'value': 't2.c', 'name': 't2 c'}],
+                   'from': ["t1", "t2"]}
 
     def test_apply_join_aliases_multiple_table_with_alias(self):
         assert inject_column_aliases.apply_join_aliases({'select': [{'value': 't1.c'}, {'value': 't2.c'}],
@@ -178,7 +181,7 @@ class TestQueryProcessing:
                                                                   "table2"]},
                                                         ["table1", "table2"]) \
                == {'select': [{'value': 't1.c', 'name': 'table1 c'},
-                              {'value': 'table2.c'}],
+                              {'value': 'table2.c', 'name': 'table2 c'}],
                    'from': [{'value': 'table1', 'name': 't1'},
                             "table2"]}
 

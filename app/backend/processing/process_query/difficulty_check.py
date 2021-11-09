@@ -8,11 +8,11 @@ class DifficultyNotImplemented(NotImplementedError):
 
 def difficulty_check_query(query: Dict) -> bool:
     jsoned_query = json.dumps(query)
-    """ Currently we do not allow aggregating, group, nested queries """
+    """ Currently we do not allow nested queries """
     if "groupby" in query:
         raise DifficultyNotImplemented("GROUP BY difficulty not implemented yet.")
-    elif check_aggr_exists(query['select']):
-        raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
+    # elif check_aggr_exists(query['select']):
+    #     raise DifficultyNotImplemented("Aggregators difficulty not implemented yet.")
     elif len(jsoned_query.split("select")) > 2:
         raise DifficultyNotImplemented("Nested queries difficulty not implemented yet.")
     return True

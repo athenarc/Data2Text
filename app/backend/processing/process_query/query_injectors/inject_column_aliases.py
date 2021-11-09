@@ -18,7 +18,11 @@ def apply_join_aliases(query, tables):
             continue
 
         if table_col[0] in table_mappings:
+            # Case SELECT table1.c1 FROM table1, table2
             sel_clause['name'] = f"{table_mappings[table_col[0]]} {table_col[1]}"
+        else:
+            # Case SELECT t1.c1 FROM table1 t1, table2 t2
+            sel_clause['name'] = f"{table_col[0]} {table_col[1]}"
 
     return query
 
