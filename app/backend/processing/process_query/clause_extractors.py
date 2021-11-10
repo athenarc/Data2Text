@@ -55,6 +55,17 @@ def find_where_cols(where_clause: Dict) -> Set[str]:
     return where_cols
 
 
+def find_group_by_cols(group_by_clause) -> Set[str]:
+    group_by_cols = set()
+    if isinstance(group_by_clause, Dict):
+        group_by_clause = [group_by_clause]
+
+    for col in group_by_clause:
+        group_by_cols.add(col['value'])
+
+    return group_by_cols
+
+
 def is_aggregate(clause) -> bool:
     """ Clause is of type: {'value': {'count': 'col1'}} """
     if isinstance(clause, Dict):

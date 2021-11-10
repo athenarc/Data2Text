@@ -7,7 +7,7 @@ from app.backend.db.DbInterface import DbInterface
 from app.backend.db.SqliteController import SqliteController
 from app.backend.processing.process_query import query_injectors
 from app.backend.processing.process_query.clause_extractors import (
-    find_from_tables, find_sel_cols, find_where_cols)
+    find_from_tables, find_group_by_cols, find_sel_cols, find_where_cols)
 from app.backend.processing.process_query.difficulty_check import \
     difficulty_check_query
 
@@ -35,20 +35,27 @@ def transform_query(raw_query: str) -> Tuple[str, str]:
     # Currently we do not allow GROUP BY and nested queries
     # difficulty_check_query(query)
 
-    # Extract SELECT, FROM, WHERE clauses
+    # Extract SELECT, FROM, WHERE, GROUP BY clauses
     sel_cols = find_sel_cols(query['select'])
     tables = find_from_tables(query['from'])
     try:
         where_cols = find_where_cols(query['where'])
     except KeyError:
         where_cols = set()
+    try:
+        group_by_cols = find_group_by_cols(query['groupby'])
+    except KeyError:
+        group_by_cols = set()
     logging.debug(f"Select cols: {sel_cols}")
     logging.debug(f"Table: {tables}")
     logging.debug(f"Where cols: {where_cols}")
+    logging.debug(f"Group by cols: {group_by_cols}")
 
-    # Inject in SELECT, WHERE clauses that do not appear in SELECT already
+    added_cols = where_cols.union(group_by_cols)
+
+    # Inject in SELECT, WHERE and GROUP BY columns that do not appear in SELECT already
     # eg SELECT c1 FROM t1 WHERE c2=1 -> SELECT c1, c2 FROM t2 WHERE c2=1
-    new_query = query_injectors.add_where_cols_to_sel(query, sel_cols, where_cols)
+    new_query = query_injectors.add_injected_cols_to_sel(query, sel_cols, added_cols)
 
     # We currently inject LIMIT 1 to all queries since we cannot verbalise multiple rows
     new_query = query_injectors.add_limit_1(new_query)

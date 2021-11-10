@@ -4,7 +4,7 @@ from app.backend.processing.process_query.clause_extractors import \
     is_star_select
 
 
-def add_where_cols_to_sel(query: Dict, sel_cols: Set[str], where_cols: Set[str]) -> Dict:
+def add_injected_cols_to_sel(query: Dict, sel_cols: Set[str], where_cols: Set[str]) -> Dict:
     if is_star_select(query['select'][0]):
         # The user explicitly selected all the columns. No need to add anything.
         return query

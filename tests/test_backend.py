@@ -9,8 +9,7 @@ from app.backend.processing.process_query import (clause_extractors,
                                                   difficulty_check,
                                                   query_pipeline)
 from app.backend.processing.process_query.query_injectors import (
-    inject_column_aliases, inject_from_where, inject_limit_1,
-    inject_verbalised_aggregates)
+    inject_column_aliases, inject_limit_1, inject_verbalised_aggregates)
 
 
 class TestQueryProcessing:
@@ -87,6 +86,16 @@ class TestQueryProcessing:
     def test_find_sel_cols_aggregate_and_col(self):
         assert clause_extractors.find_sel_cols([{'value': {'count': 'col1'}}, {'value': 'col2'}]) \
                == {'col2'}
+
+    def test_find_groupby_cols_single_col(self):
+        assert clause_extractors.find_group_by_cols({'value': 'col1'}) == {'col1'}
+
+    def test_find_groupby_cols_multiple_cols(self):
+        assert clause_extractors.find_group_by_cols([{'value': 'col1'}, {'value': 'col2'}]) == {'col1', 'col2'}
+
+    def test_find_groupby_cols_multiple_cols_table_alias(self):
+        assert clause_extractors.find_group_by_cols([{'value': 't1.col1'}, {'value': 't2.col2'}]) \
+               == {'t1.col1', 't2.col2'}
 
     def test_difficulty_check_group_by(self):
         with pytest.raises(difficulty_check.DifficultyNotImplemented):
