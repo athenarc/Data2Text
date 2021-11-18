@@ -13,7 +13,13 @@ from modeling.T5Module import T5System
 
 def start_trainer(cfg: CfgNode, train_dataloader: DataLoader,
                   validation_dataloader: DataLoader, tokenizer: T5Tokenizer) -> None:
-    model = T5System(cfg, tokenizer)
+
+    # Continue from checkpoint or start from scratch
+    if cfg.MODEL.PATH_TO_CHECKPOINT != "":
+        model = T5System.load_from_checkpoint(cfg.MODEL.PATH_TO_CHECKPOINT,
+                                              cfg=cfg, tokenizer=tokenizer)
+    else:
+        model = T5System(cfg, tokenizer)
 
     # Callbacks
     checkpoint = ModelCheckpoint(dirpath=cfg.OUTPUT.CHECKPOINTS_DIR, monitor="val_loss",
