@@ -115,8 +115,8 @@ if __name__ == '__main__':
     #     json.dump(jsoned_cordis, outfile)
 
     # Curated CORDIS
-    jsoned_cordis = curated_cordis_to_json('storage/datasets/cordis/curated/CORDIS_Evaluation.csv',
-                                           'storage/datasets/cordis/curated/raw/queries')
+    jsoned_cordis = curated_cordis_to_json('storage/datasets/cordis/curated_no_injection/CORDIS_Evaluation.csv',
+                                           'storage/datasets/cordis/curated_no_injection/raw/queries')
 
-    with open('storage/datasets/cordis/curated_cordis_to_wikisql.json', 'w') as outfile:
+    with open('storage/datasets/cordis/curated_no_injection_cordis_to_wikisql.json', 'w') as outfile:
         json.dump(jsoned_cordis, outfile)

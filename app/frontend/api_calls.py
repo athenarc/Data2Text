@@ -8,7 +8,7 @@ BACKEND_HOST = read_settings_file()['BACKEND_HOST']  # back
 BACKEND_PORT = read_settings_file()['BACKEND_PORT']  # 4557
 
 
-@retry(wait=wait_fixed(5), stop=stop_after_attempt(10), retry=retry_if_exception_type(ConnectionError))
+@retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def get_table_names():
     try:
         tables = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/tables")
@@ -17,7 +17,7 @@ def get_table_names():
     return tables.json()['tables']
 
 
-@retry(wait=wait_fixed(5), stop=stop_after_attempt(10), retry=retry_if_exception_type(ConnectionError))
+@retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def preview_table(table_name, table_canvas):
     try:
         table_sample = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/tables/{table_name}").json()['table_sample']
@@ -30,7 +30,7 @@ def preview_table(table_name, table_canvas):
     table_canvas.dataframe(df)
 
 
-@retry(wait=wait_fixed(5), stop=stop_after_attempt(10), retry=retry_if_exception_type(ConnectionError))
+@retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def explain_query(query):
     try:
         nl_res = requests.post(f"http://{BACKEND_HOST}:{BACKEND_PORT}/explain_query", json={"query": query})
