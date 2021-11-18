@@ -48,6 +48,7 @@ def find_where_cols(where_clause: Dict) -> Set[str]:
                 for inner_clause in clause:
                     rec_find_cols(inner_clause)
         if isinstance(clause, dict):
+            in_and_not_in_values_to_list(clause)
             for inner_clause in clause.values():
                 rec_find_cols(inner_clause)
 
@@ -102,3 +103,24 @@ def is_join_column(value) -> bool:
             return False
     except AttributeError:
         return False
+
+
+def in_and_not_in_values_to_list(clause) -> None:
+    """
+    In the case of the IN, NOT IN operators if the value has only one element then the final
+    query contains: "col1 IN 'value1'" which is not valid SQL. We transform it to a list so as
+    to be "col1 IN ('value1')".
+
+    The clause is transformed inplace.
+    """
+    if 'in' in clause:
+        operator = 'in'
+    elif 'nin' in clause:
+        operator = 'nin'
+    else:
+        return
+    clause_dict = clause[operator][1].copy()
+    clause[operator][1] = {
+        k: [v] if not isinstance(v, list) else v
+        for k, v in clause_dict.items()
+    }
