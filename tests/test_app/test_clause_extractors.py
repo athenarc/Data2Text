@@ -57,6 +57,28 @@ class TestClauseExtraction:
         assert clause_extractors.find_from_tables([{'value': 'table1', 'name': 't1'}, 'table2']) \
                == ['table1', 'table2']
 
+    def test_find_from_tables_with_joins(self):
+        assert clause_extractors.find_from_tables(
+            ['t1', {'join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'inner join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'left join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'left outer join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'right join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'right outer join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'full join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+        assert clause_extractors.find_from_tables(
+            ['t1', {'full outer join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+
+    def test_find_from_tables_with_join_and_alias(self):
+        assert clause_extractors.find_from_tables(
+            ['t1', {'inner join': {'name': 'table2', 'value': 't2'}, 'on': {'eq': ['t1.id', 't2.id']}}]) == ['t1', 't2']
+
     def test_in_and_not_in_values_to_list_single_value_in_clause(self):
         clause = {'in': ['col1', {'literal': 'val1'}]}
         clause_extractors.in_and_not_in_values_to_list(clause)

@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from app.backend.processing.process_query.clause_extractors import (
-    is_aggregate, is_star_select)
+    find_join_type_in_from, is_aggregate, is_distinct, is_star_select)
 
 
 def apply_join_aliases(query, tables):
@@ -10,7 +10,7 @@ def apply_join_aliases(query, tables):
 
     table_mappings = get_from_mappings(query['from'])
     for sel_clause in query['select']:
-        if is_aggregate(sel_clause) or is_star_select(sel_clause):
+        if is_aggregate(sel_clause) or is_star_select(sel_clause) or is_distinct(sel_clause):
             # We do not alias the aggregates. Their information is added through the aggregate injector.
             continue
         table_col = sel_clause['value'].split('.')
@@ -29,19 +29,20 @@ def apply_join_aliases(query, tables):
 
 
 def get_from_mappings(from_clause):
-    if isinstance(from_clause, str):
-        return {}
-    elif isinstance(from_clause, Dict):
-        return {from_clause['name']: from_clause['value']}
-    elif isinstance(from_clause, List):
-        mappings = {}
-        for table in from_clause:
-            try:
-                mappings[table['name']] = table['value']
-            except TypeError:
-                # Case that the table does not have an alias in the query.
-                continue
+    if not isinstance(from_clause, List):
+        from_clause = [from_clause]
 
-        return mappings
-    else:
-        raise TypeError("Unexpected type.")
+    mappings = {}
+    for table in from_clause:
+        if not isinstance(table, Dict):
+            continue
+
+        if 'name' in table:
+            # Simple alias case
+            mappings[table['name']] = table['value']
+        elif (join_type := find_join_type_in_from(table)) is not None:
+            if isinstance(table[join_type], Dict):
+                # Alias on joined table
+                mappings[table[join_type]['name']] = table[join_type]['value']
+
+    return mappings

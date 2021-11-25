@@ -21,6 +21,13 @@ def verbalise_aggregates(query, tables):
     aggregate_clauses = [clause for clause in query['select'] if is_aggregate(clause)]
     for sel_clause in aggregate_clauses:
         aggr_func, aggr_col = list(sel_clause['value'].items())[0]
+        if isinstance(aggr_col, dict):
+            # Case: SELECT COUNT(DISTINCT c1) FROM t1
+            try:
+                aggr_col = aggr_col['distinct']['value']
+            except KeyError:
+                raise KeyError(f"Unexpected aggregate clause {sel_clause}")
+
         if aggr_func == "avg":
             aggr_col = aggr_col.split('.')[-1]
             sel_clause['name'] = verbalise_avg(aggr_col)

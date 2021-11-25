@@ -22,6 +22,15 @@ class TestQueryInjectors:
         assert inject_column_aliases.get_from_mappings([{'value': 'table1', 'name': 't1'}, 'table2']) \
                == {'t1': 'table1'}
 
+    def test_get_from_mappings_with_join_no_alias(self):
+        assert inject_column_aliases.get_from_mappings(
+            ['t1', {'inner join': 't2', 'on': {'eq': ['t1.id', 't2.id']}}]) == {}
+
+    def test_get_from_mappings_with_join_and_alias(self):
+        assert inject_column_aliases.get_from_mappings(
+            ['t1', {'inner join': {'name': 't2', 'value': 'table2'}, 'on': {'eq': ['t1.id', 't2.id']}}]) \
+               == {'t2': 'table2'}
+
     def test_add_limit_1_limit_1_exists(self):
         assert inject_limit_1.add_limit_1({'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}) == \
                {'select': [{'value': 'col_name'}], 'from': 'table_name', "limit": 1}
