@@ -28,6 +28,18 @@ class TestClauseExtraction:
         assert clause_extractors.find_sel_cols([{'value': {'count': 'col1'}}, {'value': 'col2'}]) \
                == {'col2'}
 
+    def test_find_sel_cols_distinct_single_col(self):
+        assert clause_extractors.find_sel_cols([{'value': {'distinct': {'value': 'col1'}}}]) \
+               == {'col1'}
+
+    def test_find_sel_cols_distinct_multiple_cols(self):
+        assert clause_extractors.find_sel_cols([{'value': {'distinct': [{'value': 'c1'}, {'value': 't2.c2'}]}}]) \
+               == {'c1', 't2.c2'}
+
+    def test_find_sel_cols_distinct_with_aggr(self):
+        assert clause_extractors.find_sel_cols(
+            [{'value': {'count': {'distinct': {'value': 'c1'}}}}, {'value': 't2.c2'}]) == {'t2.c2'}
+
     def test_find_groupby_cols_single_col(self):
         assert clause_extractors.find_group_by_cols({'value': 'col1'}) == {'col1'}
 

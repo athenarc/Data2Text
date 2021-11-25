@@ -152,3 +152,14 @@ class TestQueryInjectors:
             ['table1', 'table2']) \
                == {'select': [{'value': {'count': 't1.col1'}, 'name': 'count of table1'}],
                    'from': [{'value': 'table1', 'name': 't1'}, 'table2']}
+
+    def test_verbalise_aggregates_distinct_col_avg(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'avg': {'distinct': {'value': 'c1'}}}}], 'from': ['t1']}, ["t1"]) \
+               == {'select': [{'value': {'avg': {'distinct': {'value': 'c1'}}}, 'name': 'average c1'}], 'from': ['t1']}
+
+    def test_verbalise_aggregates_distinct_col_count(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'count': {'distinct': {'value': 'c1'}}}}], 'from': ['t1']}, ["t1"]) \
+               == {'select': [{'value': {'count': {'distinct': {'value': 'c1'}}}, 'name': 'count of t1'}],
+                   'from': ['t1']}

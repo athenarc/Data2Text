@@ -6,7 +6,7 @@ def find_sel_cols(sel_clause: List) -> Set[str]:
     ret_cols = set()
     for clause in sel_clause:
         if is_aggregate(clause):
-            continue  # Currently we do not consider an aggregated column as selected
+            continue  # We deal with aggregate select cols only when verbalising them
         elif is_distinct(clause):
             ret_cols = ret_cols.union(return_distinct_cols(clause))
         elif is_named_value(clause):
