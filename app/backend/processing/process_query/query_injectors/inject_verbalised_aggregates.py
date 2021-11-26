@@ -1,6 +1,7 @@
 import logging
 
-from app.backend.processing.process_query.clause_extractors import is_aggregate
+from app.backend.processing.process_query.clause_extractors import (
+    find_select_math_operation, is_aggregate)
 from app.backend.processing.process_query.query_injectors.inject_column_aliases import \
     get_from_mappings
 
@@ -22,11 +23,15 @@ def verbalise_aggregates(query, tables):
     for sel_clause in aggregate_clauses:
         aggr_func, aggr_col = list(sel_clause['value'].items())[0]
         if isinstance(aggr_col, dict):
-            # Case: SELECT COUNT(DISTINCT c1) FROM t1
-            try:
-                aggr_col = aggr_col['distinct']['value']
-            except KeyError:
-                raise KeyError(f"Unexpected aggregate clause {sel_clause}")
+            if (arithmetic_op := find_select_math_operation({'value': aggr_col})) is not None:
+                # CASE: SELECT AVG(c1 - c2) FROM t1
+                aggr_col = f" {MATH_OPS_SYMBOL[arithmetic_op]} ".join(aggr_col[arithmetic_op])
+            else:
+                # Case: SELECT COUNT(DISTINCT c1) FROM t1
+                try:
+                    aggr_col = aggr_col['distinct']['value']
+                except KeyError:
+                    raise KeyError(f"Unexpected aggregate clause {sel_clause}")
 
         if aggr_func == "avg":
             aggr_col = aggr_col.split('.')[-1]
@@ -83,3 +88,12 @@ def map_column_alias_to_table(col_name, query):
     except ValueError:
         logging.warning(f'Could not find table name for column {col_name}.')
         return col_name
+
+
+MATH_OPS_SYMBOL = {
+    'add': '+',
+    'sub': '-',
+    'mul': '*',
+    'div': '/',
+    'mod': '%',
+}

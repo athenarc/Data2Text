@@ -5,14 +5,16 @@ from typing import Dict, List, Optional, Set
 def find_sel_cols(sel_clause: List) -> Set[str]:
     ret_cols = set()
     for clause in sel_clause:
-        if is_aggregate(clause):
+        if is_star_select(clause):
+            ret_cols.add("*")
+        elif is_aggregate(clause):
             continue  # We deal with aggregate select cols only when verbalising them
         elif is_distinct(clause):
             ret_cols = ret_cols.union(return_distinct_cols(clause))
+        elif (arithmetic_op := find_select_math_operation(clause)) is not None:
+            ret_cols = ret_cols.union(return_select_math_op_cols(clause, arithmetic_op))
         elif is_named_value(clause):
             ret_cols.add(clause['value'])
-        elif is_star_select(clause):
-            ret_cols.add("*")
         else:
             logging.warning(f"Cannot parse select clause {clause}")
             continue
@@ -121,6 +123,27 @@ def is_join_column(value) -> bool:
 def is_distinct(clause) -> bool:
     if isinstance(clause, Dict):
         return 'distinct' in clause['value']
+
+
+def find_select_math_operation(clause) -> Optional[str]:
+    if isinstance(clause['value'], Dict):
+        if 'sub' in clause['value']:
+            return 'sub'
+        elif 'add' in clause['value']:
+            return 'add'
+        elif 'mul' in clause['value']:
+            return 'mul'
+        elif 'div' in clause['value']:
+            return 'div'
+        elif 'mod' in clause['value']:
+            return 'mod'
+        else:
+            return None
+
+
+def return_select_math_op_cols(clause, op) -> Set[str]:
+    cols = clause['value'][op]
+    return {col for col in cols}
 
 
 def return_distinct_cols(clause) -> Set[str]:

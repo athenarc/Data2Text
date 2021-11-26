@@ -1,7 +1,8 @@
 from typing import Dict, List
 
 from app.backend.processing.process_query.clause_extractors import (
-    find_join_type_in_from, is_aggregate, is_distinct, is_star_select)
+    find_join_type_in_from, find_select_math_operation, is_aggregate,
+    is_distinct, is_star_select)
 
 
 def apply_join_aliases(query, tables):
@@ -10,7 +11,10 @@ def apply_join_aliases(query, tables):
 
     table_mappings = get_from_mappings(query['from'])
     for sel_clause in query['select']:
-        if is_aggregate(sel_clause) or is_star_select(sel_clause) or is_distinct(sel_clause):
+        if is_aggregate(sel_clause) \
+                or is_star_select(sel_clause) \
+                or is_distinct(sel_clause) \
+                or (find_select_math_operation(sel_clause) is not None):
             # We do not alias the aggregates. Their information is added through the aggregate injector.
             continue
         table_col = sel_clause['value'].split('.')

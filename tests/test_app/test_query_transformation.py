@@ -1,4 +1,5 @@
 import csv
+import json
 from typing import Tuple
 
 import pytest
@@ -84,3 +85,11 @@ class TestQueryTransformationIntegration:
     @pytest.mark.parametrize('query,expected', read_cordis_queries())
     def test_transform_query_on_cordis(self, query: str, expected: Tuple[str, str]):
         assert query_pipeline.transform_query(query) == expected
+
+    @pytest.mark.slow
+    def test_spider_queries_smoke_test(self):
+        with open('tests/resources/spider_queries.json', 'r') as inp:
+            queries = json.load(inp)
+        sql_queries = (q['query'] for q in queries)
+        for q in sql_queries:
+            _ = query_pipeline.transform_query(q)
