@@ -1,10 +1,10 @@
-import json
 import glob
+import json
 import random
 from typing import List
 
-from tqdm import tqdm
 from sentence_splitter import split_text_into_sentences
+from tqdm import tqdm
 
 
 def preprocess(texts: List[str]) -> List[str]:
