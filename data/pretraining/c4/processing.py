@@ -38,7 +38,7 @@ if __name__ == '__main__':
     file_paths = find_all_files(C4_ORIGINAL_DIR)
 
     for ind, file_path in enumerate(file_paths):
-        print(f"File: {ind} / {len(file_paths)}")
+        print(f"File: {ind + 1} / {len(file_paths)}")
 
         # Reading
         with open(file_path) as f:
