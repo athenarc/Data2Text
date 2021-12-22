@@ -79,7 +79,7 @@ def get_filtered_tables(table_paths):
     return filtered_tables
 
 
-if __name__ == '__main__':
+def wdc_filtering():
     WDC_ORIGINAL_DIR = "storage/datasets/wdc/original/"
     WDC_FILTERED_DIR = "storage/datasets/wdc/filtered/"
 
@@ -99,3 +99,7 @@ if __name__ == '__main__':
         total_tables += len(filter_tables)
 
     print(f"DONE! Final tables: {total_tables}.")
+
+
+if __name__ == '__main__':
+    wdc_filtering()

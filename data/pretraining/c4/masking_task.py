@@ -55,7 +55,7 @@ def perform_span_masking(sentence: str, mask_rate: float = 0.15) -> Tuple[str, s
     return " ".join(masked_sent), "".join(masked_tokens)
 
 
-if __name__ == '__main__':
+def c4_masking_task():
     C4_PROCESSED_DIR = "storage/datasets/c4/processed/"
     C4_MASKED_DIR = "storage/datasets/c4/masked/"
 
@@ -84,3 +84,7 @@ if __name__ == '__main__':
             json.dump(masked_c4, outfile)
 
     print("DONE!")
+
+
+if __name__ == '__main__':
+    c4_masking_task()

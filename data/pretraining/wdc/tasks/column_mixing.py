@@ -6,7 +6,8 @@ from typing import Dict, List, Tuple
 
 from tqdm import tqdm
 
-from data.pretraining.wdc.utils import find_rows_with_high_overlap
+from data.pretraining.wdc.utils import (find_rows_with_high_overlap,
+                                        pick_row_and_section)
 from data.pretraining.wdc.wdc_to_totto import create_totto_table
 
 
@@ -43,24 +44,6 @@ def mix_columns(cols, mixing_rate) -> List[str]:
     return mixed_cols
 
 
-def pick_row_and_section(table) -> Tuple[str, str]:
-    # Prefer a row with high overlap with textBefore or textAfter if it exists
-    rows_before = find_rows_with_high_overlap(table, text_position="textBeforeTable", threshold=0.4)
-    rows_after = find_rows_with_high_overlap(table, text_position="textAfterTable", threshold=0.4)
-
-    if len(rows_after) != 0:
-        row = rows_after[0][0]
-        section = rows_after[0][1]
-    elif len(rows_before) != 0:
-        row = rows_before[0][0]
-        section = rows_before[0][1]
-    else:
-        row = random.choice(table['relation'][1:])
-        section = ""
-
-    return row, section
-
-
 def create_target_cols(cols) -> str:
     return f"<S>{'<S>'.join(cols)}<S>"
 
@@ -95,7 +78,7 @@ def create_mixing_task_from_table(table, mixing_rate):
     }
 
 
-if __name__ == '__main__':
+def column_mixing_task():
     WDC_FILTERED_DIR = "storage/datasets/wdc/filtered/"
     WDC_COLUMN_MIXING_DIR = "storage/datasets/wdc/column_mixing/"
     MIXING_RATE = 0.35
@@ -110,7 +93,6 @@ if __name__ == '__main__':
             filtered_tables = json.load(inp)
 
         # Column mixing
-        # column_mixing_datapoints = [create_mixing_task_from_table(table)]
         column_mixing_datapoints = []
         for table in tqdm(filtered_tables):
             column_mixing_datapoints.append(create_mixing_task_from_table(table, MIXING_RATE))
@@ -120,3 +102,7 @@ if __name__ == '__main__':
             json.dump(column_mixing_datapoints, outfile)
 
     print(f"DONE!")
+
+
+if __name__ == '__main__':
+    column_mixing_task()

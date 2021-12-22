@@ -30,7 +30,7 @@ def find_all_files(c4_dir: str) -> List[str]:
     return [path for path in glob.glob(f"{c4_dir}*")]
 
 
-if __name__ == '__main__':
+def c4_processing():
     C4_ORIGINAL_DIR = "storage/datasets/c4/original/"
     C4_OUTPUT_DIR = "storage/datasets/c4/processed/"
 
@@ -52,3 +52,7 @@ if __name__ == '__main__':
             json.dump(c4_processed, outfile)
 
     print("DONE!")
+
+
+if __name__ == '__main__':
+    c4_processing()
