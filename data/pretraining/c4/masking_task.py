@@ -55,7 +55,7 @@ def perform_span_masking(sentence: str, mask_rate: float = 0.15) -> Tuple[str, s
     return " ".join(masked_sent), "".join(masked_tokens)
 
 
-def c4_masking_task():
+def c4_masking_task(disable_tqdm=True):
     C4_PROCESSED_DIR = "storage/datasets/c4/processed/"
     C4_MASKED_DIR = "storage/datasets/c4/masked/"
 
@@ -63,7 +63,7 @@ def c4_masking_task():
     file_paths = find_all_files(C4_PROCESSED_DIR)
 
     for ind, file_path in enumerate(file_paths):
-        print(f"File: {ind + 1} / {len(file_paths)}")
+        print(f"C4 | Span masking | File: {ind + 1} / {len(file_paths)}")
 
         # Reading
         with open(file_path, 'r') as inp:
@@ -71,7 +71,7 @@ def c4_masking_task():
 
         # Span masking
         masked_c4 = []
-        for sent in tqdm(processed_c4):
+        for sent in tqdm(processed_c4, disable=disable_tqdm):
             masked_sent, target_tokens = perform_span_masking(sent, mask_rate=0.15)
             masked_c4.append({
                 "original": sent,
@@ -87,4 +87,4 @@ def c4_masking_task():
 
 
 if __name__ == '__main__':
-    c4_masking_task()
+    c4_masking_task(disable_tqdm=False)

@@ -5,8 +5,8 @@ import json
 from tqdm import tqdm
 
 
-def get_tables(table_paths):
-    for table_path in tqdm(table_paths):
+def get_tables(table_paths, with_tqdm):
+    for table_path in tqdm(table_paths, disable=with_tqdm):
         with gzip.open(table_path, 'r') as f:
             for line in f:
                 try:
@@ -64,9 +64,9 @@ def remove_extra_info(table):
     }
 
 
-def get_filtered_tables(table_paths):
+def get_filtered_tables(table_paths, disable_tqdm):
     filtered_tables = [remove_extra_info(table)
-                       for table in get_tables(table_paths)
+                       for table in get_tables(table_paths, disable_tqdm)
                        if has_header(table) and
                        is_horizontal(table) and
                        has_rows(table) and
@@ -79,7 +79,7 @@ def get_filtered_tables(table_paths):
     return filtered_tables
 
 
-def wdc_filtering():
+def wdc_filtering(disable_tqdm=True):
     WDC_ORIGINAL_DIR = "storage/datasets/wdc/original/"
     WDC_FILTERED_DIR = "storage/datasets/wdc/filtered/"
 
@@ -87,10 +87,10 @@ def wdc_filtering():
     total_tables = 0
 
     for ind, table_dir in enumerate(table_dirs):
-        print(f"Directory: {ind + 1} / {len(table_dirs)}")
+        print(f"WDC | Filtering | Directory: {ind + 1} / {len(table_dirs)}")
         table_paths = glob.glob(f"{table_dir}/warc/*")
 
-        filter_tables = get_filtered_tables(table_paths)
+        filter_tables = get_filtered_tables(table_paths, disable_tqdm)
 
         # Store
         with open(WDC_FILTERED_DIR + table_dir.split('/')[-1] + '.json', 'w') as outfile:
@@ -102,4 +102,4 @@ def wdc_filtering():
 
 
 if __name__ == '__main__':
-    wdc_filtering()
+    wdc_filtering(disable_tqdm=False)

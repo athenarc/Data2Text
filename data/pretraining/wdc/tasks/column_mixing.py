@@ -78,7 +78,7 @@ def create_mixing_task_from_table(table, mixing_rate):
     }
 
 
-def column_mixing_task():
+def column_mixing_task(disable_tqdm=True):
     WDC_FILTERED_DIR = "storage/datasets/wdc/filtered/"
     WDC_COLUMN_MIXING_DIR = "storage/datasets/wdc/column_mixing/"
     MIXING_RATE = 0.35
@@ -86,7 +86,7 @@ def column_mixing_task():
     table_files = glob.glob(f"{WDC_FILTERED_DIR}*")
 
     for ind, table_file in enumerate(table_files):
-        print(f"Directory: {ind + 1} / {len(table_files)}")
+        print(f"WDC | Column mixing | File: {ind + 1} / {len(table_files)}")
 
         # Read
         with open(table_file, 'r') as inp:
@@ -94,7 +94,7 @@ def column_mixing_task():
 
         # Column mixing
         column_mixing_datapoints = []
-        for table in tqdm(filtered_tables):
+        for table in tqdm(filtered_tables, disable=disable_tqdm):
             column_mixing_datapoints.append(create_mixing_task_from_table(table, MIXING_RATE))
 
         # Storing
@@ -105,4 +105,4 @@ def column_mixing_task():
 
 
 if __name__ == '__main__':
-    column_mixing_task()
+    column_mixing_task(disable_tqdm=False)

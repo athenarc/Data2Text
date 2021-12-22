@@ -78,7 +78,7 @@ def check_numb_of_cols(table, minimum):
     return len(table['relation'][0]) >= minimum
 
 
-def column_masking_task():
+def column_masking_task(disable_tqdm=True):
     WDC_FILTERED_DIR = "storage/datasets/wdc/filtered/"
     WDC_COLUMN_MASKING_DIR = "storage/datasets/wdc/column_masking/"
     MASKING_RATE = 0.15
@@ -86,7 +86,7 @@ def column_masking_task():
     table_files = glob.glob(f"{WDC_FILTERED_DIR}*")
 
     for ind, table_file in enumerate(table_files):
-        print(f"Directory: {ind + 1} / {len(table_files)}")
+        print(f"WDC | Column masking | File: {ind + 1} / {len(table_files)}")
 
         # Read
         with open(table_file, 'r') as inp:
@@ -94,7 +94,7 @@ def column_masking_task():
 
         # Column masking
         column_masking_datapoints = []
-        for table in tqdm(filtered_tables):
+        for table in tqdm(filtered_tables, disable=disable_tqdm):
             if check_numb_of_cols(table, minimum=4):
                 column_masking_datapoints.append(mask_col_on_table(table, MASKING_RATE))
 
@@ -106,4 +106,4 @@ def column_masking_task():
 
 
 if __name__ == '__main__':
-    column_masking_task()
+    column_masking_task(disable_tqdm=False)
