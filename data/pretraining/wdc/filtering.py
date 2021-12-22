@@ -30,7 +30,7 @@ def has_rows(table) -> bool:
 
 
 def columns_non_empty(table) -> bool:
-    return not any(col == '' for col in table[0])
+    return not any(col == '' for col in table['relation'][0])
 
 
 def is_horizontal(table) -> bool:
@@ -38,7 +38,7 @@ def is_horizontal(table) -> bool:
 
 
 def is_not_huge(table) -> bool:
-    return len(table['relation']) < 50 and len(table['relation'][0]) < 10
+    return len(table['relation']) < 50 and len(table['relation'][0]) < 8
 
 
 def has_title_or_page_title(table) -> bool:
@@ -70,6 +70,7 @@ def get_filtered_tables(table_paths):
                        if has_header(table) and
                        is_horizontal(table) and
                        has_rows(table) and
+                       columns_non_empty(table) and
                        is_english(table) and
                        is_not_huge(table) and
                        has_title_or_page_title(table) and
