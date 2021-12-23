@@ -54,6 +54,26 @@ def title_is_not_huge(table) -> bool:
         return False
 
 
+def has_non_numeric_col_names(table, allowed_num_rate=0.1) -> bool:
+    columns = table['relation'][0]
+
+    def is_numeric(col_name: str) -> bool:
+        try:
+            _ = float(col_name)
+            return True
+        except ValueError:
+            return False
+
+    numb_of_num_cols = sum([is_numeric(col_name) for col_name in columns])
+    return True if numb_of_num_cols / len(columns) <= allowed_num_rate else False
+
+
+def does_not_belong_to_specific_case(table) -> bool:
+    words = ['Player', 'Cart Icon', 'Username']
+
+    return not any(table['relation'][0][0] == word for word in words)
+
+
 def remove_extra_info(table):
     return {
         'relation': table['relation'],
@@ -74,7 +94,9 @@ def get_filtered_tables(table_paths, disable_tqdm):
                        is_english(table) and
                        is_not_huge(table) and
                        has_title_or_page_title(table) and
-                       title_is_not_huge(table)]
+                       title_is_not_huge(table) and
+                       has_non_numeric_col_names(table, allowed_num_rate=0) and
+                       does_not_belong_to_specific_case(table)]
 
     return filtered_tables
 

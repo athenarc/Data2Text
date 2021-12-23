@@ -59,7 +59,7 @@ def mask_col_on_table(table, mixing_rate):
         'row': row
     })
 
-    totto_mixed = create_totto_table({
+    totto_masked = create_totto_table({
         'title': table['title'],
         'pageTitle': table['pageTitle'],
         'section': section,
@@ -69,7 +69,7 @@ def mask_col_on_table(table, mixing_rate):
 
     return {
         "totto_original": totto_original,
-        "totto_mixed": totto_mixed,
+        "totto_masked": totto_masked,
         "target": target
     }
 
