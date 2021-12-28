@@ -6,6 +6,8 @@ from data.pretraining.wdc.filtering import wdc_filtering
 from data.pretraining.wdc.tasks.column_masking import column_masking_task
 from data.pretraining.wdc.tasks.column_mixing import column_mixing_task
 from data.pretraining.wdc.tasks.column_type_prediction import column_type_task
+from data.pretraining.wdc.tasks.content_masking import \
+    content_table_masking_task
 
 
 def smap(f):
@@ -23,7 +25,8 @@ def run_pretraining_tasks_creation():
         pool.map(smap, [c4_masking_task,
                         column_mixing_task,
                         column_masking_task,
-                        column_type_task])
+                        column_type_task,
+                        content_table_masking_task])
 
 
 def create_pretraining_tasks():

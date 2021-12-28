@@ -6,8 +6,7 @@ from typing import Dict, List, Tuple
 
 from tqdm import tqdm
 
-from data.pretraining.wdc.utils import (find_rows_with_high_overlap,
-                                        pick_row_and_section)
+from data.pretraining.wdc.utils import pick_row_and_section
 from data.pretraining.wdc.wdc_to_totto import create_totto_table
 
 
@@ -49,7 +48,7 @@ def create_target_cols(cols) -> str:
 
 
 def create_mixing_task_from_table(table, mixing_rate):
-    row, section = pick_row_and_section(table)
+    row, section = next(pick_row_and_section(table, threshold=1))
 
     mixed_columns = mix_columns(table['relation'][0], mixing_rate)
 

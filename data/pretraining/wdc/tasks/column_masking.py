@@ -47,7 +47,7 @@ def create_cols_with_masks(cols, mixing_rate) -> Tuple[List[str], str]:
 
 
 def mask_col_on_table(table, mixing_rate):
-    row, section = pick_row_and_section(table)
+    row, section = next(pick_row_and_section(table, threshold=1))
 
     masked_columns, target = create_cols_with_masks(table['relation'][0], mixing_rate)
 
