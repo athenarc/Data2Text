@@ -72,7 +72,7 @@ def create_mixing_task_from_table(table, mixing_rate):
 
     return {
         "totto_original": totto_original,
-        "totto_mixed": totto_mixed,
+        "totto_task": totto_mixed,
         "target": target
     }
 

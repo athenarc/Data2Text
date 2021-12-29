@@ -5,6 +5,7 @@ from typing import List, Optional
 from dateutil.parser import parse
 from tqdm import tqdm
 
+from data.pretraining.wdc.utils import pick_row_and_section
 from data.pretraining.wdc.wdc_to_totto import create_totto_table
 
 
@@ -28,7 +29,7 @@ def is_date(cell: str) -> bool:
     try:
         _ = parse(cell, fuzzy=False)
         return True
-    except ValueError:
+    except (ValueError, OverflowError):
         return False
 
 
@@ -58,7 +59,7 @@ def create_target(col_types: List[str]) -> str:
 
 
 def create_column_type_prediction_task(table):
-    row = find_nonempty_row(table)
+    row, section = next(pick_row_and_section(table, threshold=1))
     if row is None:
         return None
 
@@ -68,7 +69,7 @@ def create_column_type_prediction_task(table):
     totto_original = create_totto_table({
         'title': table['title'],
         'pageTitle': table['pageTitle'],
-        'section': table['textAfterTable'],
+        'section': section,
         'columns': table['relation'][0],
         'row': row
     })
@@ -76,14 +77,14 @@ def create_column_type_prediction_task(table):
     totto_col_types = create_totto_table({
         'title': table['title'],
         'pageTitle': table['pageTitle'],
-        'section': table['textAfterTable'],
+        'section': section,
         'columns': table['relation'][0],
         'row': [''] * len(row)
     })
 
     return {
         "totto_original": totto_original,
-        "totto_mixed": totto_col_types,
+        "totto_task": totto_col_types,
         "target": target
     }
 

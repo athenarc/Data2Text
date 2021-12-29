@@ -56,7 +56,7 @@ def create_content_masking_task_from_table(table, threshold=1):
 
     return {
         "totto_original": totto_original,
-        "totto_mixed": totto_mixed,
+        "totto_task": totto_mixed,
         "target": target
     }
 

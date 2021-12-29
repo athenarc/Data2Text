@@ -74,8 +74,8 @@ def c4_masking_task(disable_tqdm=True):
         for sent in tqdm(processed_c4, disable=disable_tqdm):
             masked_sent, target_tokens = perform_span_masking(sent, mask_rate=0.15)
             masked_c4.append({
-                "original": sent,
-                "masked": masked_sent,
+                "totto_original": sent,
+                "totto_task": masked_sent,
                 "target": target_tokens
             })
 

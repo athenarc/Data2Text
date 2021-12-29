@@ -69,7 +69,7 @@ def mask_col_on_table(table, mixing_rate):
 
     return {
         "totto_original": totto_original,
-        "totto_masked": totto_masked,
+        "totto_task": totto_masked,
         "target": target
     }
 
