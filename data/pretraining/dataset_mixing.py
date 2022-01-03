@@ -14,8 +14,11 @@ def datapoint_generator_creation(directory, prefix):
                 datapoints = json.load(inp)
 
             for datapoint in datapoints:
-                datapoint['totto_task'] = f"{prefix}{datapoint['totto_task']}"
-                yield datapoint
+                # This is the format used when finetuning on ToTTo
+                yield {
+                    'subtable_and_metadata': f"{prefix}{datapoint['totto_task']}",
+                    'final_sentence': datapoint['target']
+                }
 
     return datapoint_generator(directory, prefix)
 

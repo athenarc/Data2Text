@@ -525,4 +525,4 @@ TSWLatexianTemp*
 /configs/secrets.yaml
 /app/backend/config/credentials.yaml
 /configs/credentials.yaml
-/app/backend/config/secrets.yaml
+/configs/secrets.yaml

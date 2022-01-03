@@ -6,6 +6,7 @@ import yaml
 
 from config import cfg
 from tools.evaluate_net import evaluate
+from tools.pretrain_net import pretrain
 from tools.train_net import train
 from utils.logger import setup_logger
 
@@ -50,6 +51,9 @@ def main():
         train(cfg)
     elif args.job_type == "evaluate":
         evaluate(cfg, run)
+    elif args.job_type == "pretrain":
+        pretrain(cfg)
+
 
 
 if __name__ == '__main__':
