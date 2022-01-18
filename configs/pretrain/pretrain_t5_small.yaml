@@ -8,6 +8,7 @@ MODEL:
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
   BASE_LR: 0.001
+  CHECKPOINT_PERIOD: 5000
 
 WANDB:
   RUN_NAME: "Pretrain t5-small | All pretrain tasks"

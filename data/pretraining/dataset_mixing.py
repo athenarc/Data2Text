@@ -60,7 +60,7 @@ def mix_datasets():
 
     OUTPUT_DIR = 'storage/datasets/pretrain'
     batches_numb = 1
-    datapoints_per_batch = 2_000
+    datapoints_per_batch = 200_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
 

@@ -1,0 +1,28 @@
+<View>
+  <View style="padding: 25px;              box-shadow: 2px 2px 8px #AAA">
+    <Header value="DB Name"/>
+    <Text name="text1" value="$db"/>
+  </View>
+  <!--- <View style="padding: 25px;
+             box-shadow: 2px 2px 8px #AAA">
+    <Header value="Original Query"/>
+    <Text name="text2"
+          value="$original_query"/>
+  </View> -->
+
+  <View style="padding: 25px;              box-shadow: 2px 2px 8px #AAA">
+    <Header value="Query"/>
+    <Text name="text3" value="$transformed_query"/>
+  </View>
+
+  <View style="padding: 25px;              box-shadow: 2px 2px 8px #AAA">
+    <Header value="NL Question"/>
+    <Text name="text4" value="$nl_query"/>
+  </View>
+
+  <Header value="Result"/>
+    <Table name="table" value="$res"/>
+
+  <Header value="Provide explanation of the above table"/>
+  <TextArea name="answer" toName="table" showSubmitButton="true" maxSubmissions="1" editable="true" required="true"/>
+</View>
