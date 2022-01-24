@@ -60,38 +60,35 @@ def query_beautifier(query: str) -> str:
 
 
 def gather_annotation_info(spider_datapoint, db_dir):
+    # We do not allow nested queries
+    if spider_datapoint['query'].count('SELECT') >= 2:
+        return None
+
     transformed_query, _ = transform_query(spider_datapoint['query'])
+
     res, cols = connect_and_query(
         create_db_path(db_dir, spider_datapoint['db_id']),
         transformed_query
     )
 
+    sampled_row = sample_row_from_res(res, cols)
+    if sampled_row is None:
+        return None
+
+    spider_transformed_res = spider_table_transform(sampled_row)
+
     return {
         "db": spider_datapoint['db_id'],
-        "res": spider_table_transform(sample_row_from_res(res, cols)),
+        "res": spider_transformed_res,
         "original_query": query_beautifier(spider_datapoint['query']),
         "transformed_query": query_beautifier(transformed_query),
         "nl_query": spider_datapoint['question']
     }
 
 
-def main():
-    SPIDER_TRAIN_PATH = "storage/datasets/spider/original/train_spider.json"
-    DB_DIR = "storage/datasets/spider/original/database/"
-    OUTPUT_PATH = "storage/datasets/spider/annotations/label_studio/annotations.json"
-
-    with open(SPIDER_TRAIN_PATH, 'r') as file:
-        train_datapoints = json.load(file)
-
+def create_transformed_benchmark(train_datapoints, db_dir):
     annotations = []
-    for datapoint in train_datapoints[:10]:
-        annotation_point = gather_annotation_info(datapoint, DB_DIR)
+    for datapoint in train_datapoints:
+        annotation_point = gather_annotation_info(datapoint, db_dir)
         if annotation_point is not None:
             annotations.append(annotation_point)
-
-    with open(OUTPUT_PATH, 'w') as outfile:
-        json.dump(annotations, outfile)
-
-
-if __name__ == '__main__':
-    main()
