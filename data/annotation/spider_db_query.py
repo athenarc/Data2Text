@@ -92,3 +92,5 @@ def create_transformed_benchmark(train_datapoints, db_dir):
         annotation_point = gather_annotation_info(datapoint, db_dir)
         if annotation_point is not None:
             annotations.append(annotation_point)
+
+    return annotations

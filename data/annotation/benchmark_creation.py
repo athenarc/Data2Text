@@ -1,6 +1,7 @@
 import json
 import random
 
+import numpy as np
 from mo_parsing.exceptions import ParseException
 from tqdm import tqdm
 
@@ -84,8 +85,18 @@ def create_benchmark_annotations():
     for cat, pop in final_populations.items():
         print(f"{cat}: {pop}")
 
+    class NpEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, np.integer):
+                return int(obj)
+            if isinstance(obj, np.floating):
+                return float(obj)
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            return super(NpEncoder, self).default(obj)
+
     with open(OUTPUT_PATH, 'w') as outfile:
-        json.dump(transformed_benchmark, outfile)
+        json.dump(transformed_benchmark, outfile, cls=NpEncoder)
 
 
 if __name__ == '__main__':
