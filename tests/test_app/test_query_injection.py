@@ -3,6 +3,7 @@ from app.backend.processing.process_query.query_injectors import (
 
 
 class TestQueryInjectors:
+
     def test_get_from_mappings_one_table_no_aliases(self):
         assert inject_column_aliases.get_from_mappings('t1') == {}
 
@@ -152,6 +153,14 @@ class TestQueryInjectors:
             ['table1', 'table2']) \
                == {'select': [{'value': {'count': 't1.col1'}, 'name': 'count of table1'}],
                    'from': [{'value': 'table1', 'name': 't1'}, 'table2']}
+
+    def test_verbalise_aggregates_multiple_multiple_table_count_star(self):
+        assert inject_verbalised_aggregates.verbalise_aggregates(
+            {'select': [{'value': {'count': '*'}}],
+             'from': ['table1', 'table2']},
+            ['table1', 'table2']) \
+               == {'select': [{'value': {'count': '*'}, 'name': 'count of table1 and table2'}],
+                   'from': ['table1', 'table2']}
 
     def test_verbalise_aggregates_distinct_col_avg(self):
         assert inject_verbalised_aggregates.verbalise_aggregates(

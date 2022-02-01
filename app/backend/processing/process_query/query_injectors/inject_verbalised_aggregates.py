@@ -52,7 +52,7 @@ def verbalise_aggregates(query, tables):
             else:
                 # JOIN query
                 sel_clause['name'] = verbalise_count(
-                    map_column_alias_to_table(aggr_col, query))
+                    map_column_alias_to_table(aggr_col, query, tables))
         else:
             logging.warning(f"Cannot verbalise aggregate {aggr_func}.")
 
@@ -79,15 +79,16 @@ def verbalise_sum(column_name: str) -> str:
     return f"sum of {column_name}"
 
 
-def map_column_alias_to_table(col_name, query):
+def map_column_alias_to_table(col_name, query, tables):
     table_mappings = get_from_mappings(query['from'])
 
     try:
         table_alias, col_name = col_name.split('.')
         return table_mappings.get(table_alias, table_alias)
     except ValueError:
-        logging.warning(f'Could not find table name for column {col_name}.')
-        return col_name
+        # Case that we have COUNT(*) and multiple tables
+        # The verbalization ends up being: "count of t1 and t2 and t3..."
+        return " and ".join(tables)
 
 
 MATH_OPS_SYMBOL = {
