@@ -55,7 +55,7 @@ def find_where_cols(where_clause: Dict) -> Set[str]:
             if isinstance(clause[0], str):
                 if not is_join_column(clause[1]):
                     # We do not include columns that are used to join two tables
-                    # They usually are ids that do not offer interpretable information.
+                    # They are usually ids that do not offer interpretable information.
                     where_cols.add(clause[0])
             else:
                 for inner_clause in clause:
@@ -78,6 +78,29 @@ def find_group_by_cols(group_by_clause) -> Set[str]:
         group_by_cols.add(col['value'])
 
     return group_by_cols
+
+
+def find_order_by_cols(order_by_clause) -> Set[str]:
+    order_by_cols = set()
+    if isinstance(order_by_clause, Dict):
+        order_by_clause = [order_by_clause]
+
+    def explore_clause_tree(node, leaf_values):
+        if isinstance(node, str):
+            if node != 'desc' and node != 'asc':
+                leaf_values.add(node)
+            return
+
+        if isinstance(node, List):
+            for leaf_node in node:
+                explore_clause_tree(leaf_node, leaf_values)
+
+        if isinstance(node, Dict):
+            for leaf_node in list(node.values()):
+                explore_clause_tree(leaf_node, leaf_values)
+
+    explore_clause_tree(order_by_clause, order_by_cols)
+    return order_by_cols
 
 
 def is_aggregate(clause) -> bool:
@@ -107,7 +130,7 @@ def is_star_select(clause) -> bool:
 
 def is_join_column(value) -> bool:
     """
-    Weakly checks if this is a JOIN clause, eg. t1.id = t2.f_id.
+    Weakly checks if this is a JOIN clause, e.g. t1.id = t2.f_id.
     Issue: It does not consult the FROM clause and is based on trivial pattern matching.
     As a result the clause: "t1.c1 = This is. a value" will be considered as a JOIN clause.
     """
@@ -177,8 +200,7 @@ def find_join_type_in_from(clause) -> Optional[str]:
 def in_and_not_in_values_to_list(clause) -> None:
     """
     In the case of the IN, NOT IN operators if the value has only one element then the final
-    query contains: "col1 IN 'value1'" which is not valid SQL. We transform it to a list so as
-    to be "col1 IN ('value1')".
+    query contains: "col1 IN 'value1'" which is not valid SQL. We transform it to a list to be "col1 IN ('value1')".
 
     The clause is transformed inplace.
     """

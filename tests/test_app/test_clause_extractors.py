@@ -50,6 +50,16 @@ class TestClauseExtraction:
         assert clause_extractors.find_group_by_cols([{'value': 't1.col1'}, {'value': 't2.col2'}]) \
                == {'t1.col1', 't2.col2'}
 
+    def test_find_orderby_cols_single_col(self):
+        assert clause_extractors.find_order_by_cols({'value': 'col1'}) == {'col1'}
+
+    def test_find_orderby_cols_multiple_cols(self):
+        assert clause_extractors.find_order_by_cols([{'value': 'col1'}, {'value': 'col2'}]) == {'col1', 'col2'}
+
+    def test_find_orderby_cols_multiple_cols_table_alias(self):
+        assert clause_extractors.find_order_by_cols([{'value': 't1.col1'}, {'value': 't2.col2'}]) \
+               == {'t1.col1', 't2.col2'}
+
     def test_find_from_tables_one_table_no_aliases(self):
         assert clause_extractors.find_from_tables('t1') == ['t1']
 
