@@ -4,9 +4,7 @@ services:
 
   nginx:
     image: nginx:1.21
-    # ports:
-    #   - "8088:80"
-    #   - "8087:443"
+
     expose:
       - 80
     depends_on:
