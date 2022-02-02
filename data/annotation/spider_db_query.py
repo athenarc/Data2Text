@@ -1,4 +1,5 @@
 import json
+import logging
 import sqlite3
 
 import numpy as np
@@ -89,7 +90,12 @@ def gather_annotation_info(spider_datapoint, db_dir):
 def create_transformed_benchmark(train_datapoints, db_dir):
     annotations = []
     for datapoint in train_datapoints:
-        annotation_point = gather_annotation_info(datapoint, db_dir)
+        try:
+            annotation_point = gather_annotation_info(datapoint, db_dir)
+        except sqlite3.OperationalError:
+            logging.warning(f"Query not executed: {datapoint['query']}")
+            continue
+
         if annotation_point is not None:
             annotations.append(annotation_point)
 

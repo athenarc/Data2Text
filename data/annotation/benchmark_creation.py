@@ -6,6 +6,7 @@ from mo_parsing.exceptions import ParseException
 from tqdm import tqdm
 
 from data.annotation import query_categorization
+from data.annotation.annotator_split import assign_annotators
 from data.annotation.spider_db_query import create_transformed_benchmark
 from utils.query_pattern_recognition import ExtractException, QueryInfo
 
@@ -59,13 +60,25 @@ def create_benchmark_annotations():
     OUTPUT_PATH = "storage/datasets/spider/annotations/label_studio/annotations.json"
 
     populations = {
-        "small_select": 300,
+        "small_select": 500,
         "large_select": 150,
-        "aggregate": 200,
-        "aggregate_group_by": 150,
-        "join": 100,
-        "join_aggregate": 100
+        "aggregate": 400,
+        "aggregate_group_by": 250,
+        "join": 350,
+        "join_aggregate": 350
     }
+
+    annotators = [
+        "Stavroula",
+        "Giorgos",
+        "Chris",
+        "Katerina",
+        "Antonis",
+        "Anna",
+        "Apostolis"
+    ]
+    overlap_ratio = 0.25
+
     # populations = {
     #     "small_select": 5,
     #     "large_select": 5,
@@ -80,12 +93,14 @@ def create_benchmark_annotations():
     categorized_datapoints = categorize_spider(train_datapoints)
     benchmark_datapoints, final_populations = sample_queries(populations, categorized_datapoints)
     transformed_benchmark = create_transformed_benchmark(benchmark_datapoints, DB_DIR)
+    benchmark_with_annotators = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
 
     print("Benchmark creation finished:")
     for cat, pop in final_populations.items():
         print(f"{cat}: {pop}")
 
     class NpEncoder(json.JSONEncoder):
+        """ Needed to encode dictionary fields with numpy types """
         def default(self, obj):
             if isinstance(obj, np.integer):
                 return int(obj)
@@ -96,7 +111,7 @@ def create_benchmark_annotations():
             return super(NpEncoder, self).default(obj)
 
     with open(OUTPUT_PATH, 'w') as outfile:
-        json.dump(transformed_benchmark, outfile, cls=NpEncoder)
+        json.dump(benchmark_with_annotators, outfile, cls=NpEncoder)
 
 
 if __name__ == '__main__':
