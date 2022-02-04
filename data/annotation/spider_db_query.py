@@ -83,7 +83,8 @@ def gather_annotation_info(spider_datapoint, db_dir):
         "res": spider_transformed_res,
         "original_query": query_beautifier(spider_datapoint['query']),
         "transformed_query": query_beautifier(transformed_query),
-        "nl_query": spider_datapoint['question']
+        "nl_query": spider_datapoint['question'],
+        "category": spider_datapoint['category']
     }
 
 

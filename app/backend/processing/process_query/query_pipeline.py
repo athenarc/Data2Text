@@ -8,7 +8,7 @@ from app.backend.db.SqliteController import SqliteController
 from app.backend.processing.process_query import query_injectors
 from app.backend.processing.process_query.clause_extractors import (
     find_from_tables, find_group_by_cols, find_order_by_cols, find_sel_cols,
-    find_where_cols)
+    find_where_cols, is_aggregate_query)
 
 
 def execute_transformed_query(db_controller: DbInterface, raw_query: str):

@@ -87,7 +87,7 @@ def find_order_by_cols(order_by_clause) -> Set[str]:
 
     def explore_clause_tree(node, leaf_values):
         if isinstance(node, str):
-            if node != 'desc' and node != 'asc':
+            if node != 'desc' and node != 'asc' and node != '*':
                 leaf_values.add(node)
             return
 
@@ -111,6 +111,13 @@ def is_aggregate(clause) -> bool:
             if any(aggr in clause['value'] for aggr in aggregates):
                 return True
     return False
+
+
+def is_aggregate_query(query) -> bool:
+    if len([clause for clause in query['select'] if is_aggregate(clause)]) != 0:
+        return True
+    else:
+        return False
 
 
 def is_named_value(clause) -> bool:

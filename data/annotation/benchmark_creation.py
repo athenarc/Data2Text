@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 from data.annotation import query_categorization
 from data.annotation.annotator_split import assign_annotators
+from data.annotation.filter_queries import filter_benchmark
 from data.annotation.spider_db_query import create_transformed_benchmark
 from utils.query_pattern_recognition import ExtractException, QueryInfo
 
@@ -57,7 +58,7 @@ def sample_queries(category_populations, categorized_spider):
 def create_benchmark_annotations():
     SPIDER_TRAIN_PATH = "storage/datasets/spider/original/train_spider.json"
     DB_DIR = "storage/datasets/spider/original/database/"
-    OUTPUT_PATH = "storage/datasets/spider/annotations/label_studio/annotations.json"
+    OUTPUT_PATH = "storage/datasets/spider/annotations/label_studio/annotations_filtered.json"
 
     populations = {
         "small_select": 500,
@@ -67,6 +68,15 @@ def create_benchmark_annotations():
         "join": 350,
         "join_aggregate": 350
     }
+
+    # populations = {
+    #     "small_select": 3000,
+    #     "large_select": 3000,
+    #     "aggregate": 3000,
+    #     "aggregate_group_by": 3000,
+    #     "join": 3000,
+    #     "join_aggregate": 3000
+    # }
 
     annotators = [
         "Stavroula",
@@ -79,19 +89,12 @@ def create_benchmark_annotations():
     ]
     overlap_ratio = 0.25
 
-    # populations = {
-    #     "small_select": 5,
-    #     "large_select": 5,
-    #     "aggregate": 5,
-    #     "aggregate_group_by": 5,
-    #     "join": 5,
-    #     "join_aggregate": 5
-    # }
     with open(SPIDER_TRAIN_PATH, 'r') as file:
         train_datapoints = json.load(file)
 
     categorized_datapoints = categorize_spider(train_datapoints)
-    benchmark_datapoints, final_populations = sample_queries(populations, categorized_datapoints)
+    filtered_datapoints = filter_benchmark(categorized_datapoints)
+    benchmark_datapoints, final_populations = sample_queries(populations, filtered_datapoints)
     transformed_benchmark = create_transformed_benchmark(benchmark_datapoints, DB_DIR)
     benchmark_with_annotators = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
 
