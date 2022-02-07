@@ -1,11 +1,15 @@
 import random
+from collections import defaultdict
 
 
 def create_overlapping_annotations(annotation_split, annotators, annot_per_point):
+    annotated_benchmarks = defaultdict(lambda: [])
     for datapoint in annotation_split:
-        datapoint['annotator'] = ', '.join(random.sample(annotators, annot_per_point))
+        chosen_annotators = random.sample(annotators, annot_per_point)
+        for annotator in chosen_annotators:
+            annotated_benchmarks[annotator].append(datapoint)
 
-    return annotation_split
+    return annotated_benchmarks
 
 
 def split_dataset(datapoints, overlap_ratio):
@@ -15,6 +19,10 @@ def split_dataset(datapoints, overlap_ratio):
 
 
 def assign_annotators(datapoints, annotators, overlap_ratio):
+    # Add an id attribute
+    for ind, datapoint in enumerate(datapoints):
+        datapoint['id'] = ind
+
     overlap_dataset, single_annot_dataset = split_dataset(datapoints, overlap_ratio)
 
     # Assign annotators to the overlap portion of the dataset
@@ -22,9 +30,6 @@ def assign_annotators(datapoints, annotators, overlap_ratio):
 
     # Assign annotators to the non overlap portion of the dataset
     for datapoint in single_annot_dataset:
-        datapoint['annotator'] = 'empty'
+        overlap_dataset['Mike'].append(datapoint)
 
-    dataset_with_annotators = overlap_dataset + single_annot_dataset
-    random.shuffle(dataset_with_annotators)
-
-    return dataset_with_annotators
+    return overlap_dataset

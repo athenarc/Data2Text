@@ -58,7 +58,7 @@ def sample_queries(category_populations, categorized_spider):
 def create_benchmark_annotations():
     SPIDER_TRAIN_PATH = "storage/datasets/spider/original/train_spider.json"
     DB_DIR = "storage/datasets/spider/original/database/"
-    OUTPUT_PATH = "storage/datasets/spider/annotations/label_studio/annotations_filtered.json"
+    OUTPUT_DIR = "storage/datasets/spider/annotations/label_studio/"
 
     populations = {
         "small_select": 500,
@@ -96,7 +96,7 @@ def create_benchmark_annotations():
     filtered_datapoints = filter_benchmark(categorized_datapoints)
     benchmark_datapoints, final_populations = sample_queries(populations, filtered_datapoints)
     transformed_benchmark = create_transformed_benchmark(benchmark_datapoints, DB_DIR)
-    benchmark_with_annotators = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
+    benchmark_per_annotator = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
 
     print("Benchmark creation finished:")
     for cat, pop in final_populations.items():
@@ -113,8 +113,9 @@ def create_benchmark_annotations():
                 return obj.tolist()
             return super(NpEncoder, self).default(obj)
 
-    with open(OUTPUT_PATH, 'w') as outfile:
-        json.dump(benchmark_with_annotators, outfile, cls=NpEncoder)
+    for annotator, benchmark in benchmark_per_annotator.items():
+        with open(OUTPUT_DIR + annotator + '.json', 'w') as outfile:
+            json.dump(benchmark, outfile, cls=NpEncoder)
 
 
 if __name__ == '__main__':

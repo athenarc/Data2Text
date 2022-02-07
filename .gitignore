@@ -526,3 +526,4 @@ TSWLatexianTemp*
 /app/backend/config/credentials.yaml
 /configs/credentials.yaml
 /configs/secrets.yaml
+/data/annotation/secret.yml
