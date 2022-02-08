@@ -62,20 +62,17 @@ def match_file_names_with_id():
 
 def import_data():
     for annotator, proj_id in match_file_names_with_id().items():
-        with open(f'{ANNOTATIONS_DIR}{annotator}.json', 'r') as file:
-            data = json.load(file)
-
         files = {'file': (f'{ANNOTATIONS_DIR}{annotator}.json', open(f'{ANNOTATIONS_DIR}{annotator}.json', 'r'))}
 
-        res = requests.post(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/import',
+        _ = requests.post(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/import',
                             headers={'Authorization': f'Token {AUTH_TOKEN}'},
                             files=files)
 
 
 if __name__ == '__main__':
-    # print(">>> Deleting projects...", end='')
-    # delete_all_projects()
-    # print('Done')
+    print(">>> Deleting projects...", end='')
+    delete_all_projects()
+    print('Done')
 
     print(">>> Creating projects...", end='')
     create_projects()

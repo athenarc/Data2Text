@@ -87,7 +87,7 @@ def create_benchmark_annotations():
         "Anna",
         "Apostolis"
     ]
-    overlap_ratio = 0.25
+    overlap_ratio = 0.7
 
     with open(SPIDER_TRAIN_PATH, 'r') as file:
         train_datapoints = json.load(file)
