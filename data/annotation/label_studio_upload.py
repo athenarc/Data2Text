@@ -31,7 +31,7 @@ def delete_all_projects():
     project_ids = [proj['id'] for proj in get_all_projects()['results']]
 
     for proj_id in project_ids:
-        r = requests.delete(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/',
+        _ = requests.delete(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/',
                             headers={'Authorization': f'Token {AUTH_TOKEN}'})
 
 

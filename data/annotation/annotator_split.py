@@ -23,13 +23,13 @@ def assign_annotators(datapoints, annotators, overlap_ratio):
     for ind, datapoint in enumerate(datapoints):
         datapoint['id'] = ind
 
-    overlap_dataset, single_annot_dataset = split_dataset(datapoints, overlap_ratio)
+    overlap_dataset, _ = split_dataset(datapoints, overlap_ratio)
 
     # Assign annotators to the overlap portion of the dataset
-    overlap_dataset = create_overlapping_annotations(overlap_dataset, annotators, annot_per_point=3)
+    overlap_dataset = create_overlapping_annotations(overlap_dataset, annotators, annot_per_point=2)
 
     # Assign annotators to the non overlap portion of the dataset
-    for datapoint in single_annot_dataset:
-        overlap_dataset['Mike'].append(datapoint)
+    # for datapoint in single_annot_dataset:
+    #     overlap_dataset['Mike'].append(datapoint)
 
     return overlap_dataset

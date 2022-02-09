@@ -8,7 +8,7 @@ def find_sel_cols(sel_clause: List) -> Set[str]:
         if is_star_select(clause):
             ret_cols.add("*")
         elif is_aggregate(clause):
-            continue  # We deal with aggregate select cols only when verbalising them
+            ret_cols.add(extract_aggregate_name(clause))
         elif is_distinct(clause):
             ret_cols = ret_cols.union(return_distinct_cols(clause))
         elif (arithmetic_op := find_select_math_operation(clause)) is not None:
@@ -222,3 +222,14 @@ def in_and_not_in_values_to_list(clause) -> None:
         k: [v] if not isinstance(v, list) else v
         for k, v in clause_dict.items()
     }
+
+
+def extract_aggregate_name(clause):
+    try:
+        value = list(clause['value'].values())[0]
+        if isinstance(value, str):
+            return value
+        elif isinstance(clause, Dict):
+            return list(value.values())[0]['value']
+    except TypeError:
+        return None
