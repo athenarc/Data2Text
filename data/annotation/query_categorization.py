@@ -32,7 +32,8 @@ def is_aggregates(query_info: QueryInfo):
             query_info.flags['having'] is False and \
             query_info.flags['joins'] is False and \
             query_info.flags['aggregates'] is True and \
-            query_info.flags['distinct'] is False:
+            query_info.flags['distinct'] is False and \
+            'select' in query_info.aggregates.where:
         return True
     return False
 
@@ -63,6 +64,7 @@ def is_join_and_aggregate(query_info: QueryInfo):
             query_info.flags['having'] is False and \
             query_info.flags['joins'] is True and \
             query_info.flags['aggregates'] is True and \
-            query_info.flags['distinct'] is False:
+            query_info.flags['distinct'] is False and \
+            'select' in query_info.aggregates.where:
         return True
     return False

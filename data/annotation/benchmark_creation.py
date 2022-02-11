@@ -6,7 +6,7 @@ from mo_parsing.exceptions import ParseException
 from tqdm import tqdm
 
 from data.annotation import query_categorization
-from data.annotation.annotator_split import assign_annotators
+from data.annotation.annotator_split import assign_annotators, confirm_overlap
 from data.annotation.filter_queries import filter_benchmark
 from data.annotation.spider_db_query import create_transformed_benchmark
 from utils.query_pattern_recognition import ExtractException, QueryInfo
@@ -61,12 +61,12 @@ def create_benchmark_annotations():
     OUTPUT_DIR = "storage/datasets/spider/annotations/label_studio/"
 
     populations = {
-        "small_select": 500,
+        "small_select": 560,
         "large_select": 150,
-        "aggregate": 400,
+        "aggregate": 450,
         "aggregate_group_by": 250,
         "join": 350,
-        "join_aggregate": 350
+        "join_aggregate": 150
     }
 
     # populations = {
@@ -88,7 +88,7 @@ def create_benchmark_annotations():
         "Apostolis",
         "Mike"
     ]
-    overlap_ratio = 1
+    overlap_ratio = 0.3
 
     with open(SPIDER_TRAIN_PATH, 'r') as file:
         train_datapoints = json.load(file)
@@ -117,6 +117,10 @@ def create_benchmark_annotations():
     for annotator, benchmark in benchmark_per_annotator.items():
         with open(OUTPUT_DIR + annotator + '.json', 'w') as outfile:
             json.dump(benchmark, outfile, cls=NpEncoder)
+    # with open(OUTPUT_DIR + 'annotations_sel_aggregate.json', 'w') as outfile:
+    #     json.dump(transformed_benchmark, outfile, cls=NpEncoder)
+    print(">>> Overlaps:")
+    print(confirm_overlap(benchmark_per_annotator))
 
 
 if __name__ == '__main__':

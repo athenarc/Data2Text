@@ -60,14 +60,14 @@ def mix_datasets():
 
     OUTPUT_DIR = 'storage/datasets/pretrain'
     batches_numb = 1
-    datapoints_per_batch = 200_000
+    datapoints_per_file = 200_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
 
     for which_batch in tqdm(range(batches_numb)):
         stored_datapoints = []
         for task, ratio in ratios.items():
-            for _ in range(int(datapoints_per_batch * ratio)):
+            for _ in range(int(datapoints_per_file * ratio)):
                 stored_datapoints.append(next(task_generators[task]))
 
         # Shuffle since the tasks are ordered
