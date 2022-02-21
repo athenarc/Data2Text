@@ -9,9 +9,10 @@ SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
   BASE_LR: 0.001
   CHECKPOINT_PERIOD: 5000
+  MAX_EPOCHS: 1
 
 WANDB:
-  RUN_NAME: "Pretrain t5-small | All pretrain tasks"
+  RUN_NAME: "Pretrain t5-small | No type"
   GROUP: "Pretrain"
   TAGS: ["Pretrain", "t5-small"]
   MODE: "online"
@@ -20,7 +21,7 @@ WANDB:
 DATASET:
   VALIDATION: ""
   EVALUATION: ""
-  TRAIN: "storage/datasets/pretrain/pretrain_file_0.json"
+  TRAIN: "storage/datasets/pretrain/no_type/pretrain_file_0.json"
 
 DATALOADER:
   NUM_WORKERS: 11
@@ -30,4 +31,4 @@ INPUT:
   TEST_BATCH_SIZE: 8
 
 OUTPUT:
-  CHECKPOINTS_DIR: "storage/checkpoints/pretrained/t5_small/"
+  CHECKPOINTS_DIR: "storage/checkpoints/pretrained/no_type/t5_small/"

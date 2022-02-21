@@ -64,7 +64,7 @@ def create_benchmark_annotations():
         "small_select": 560,
         "large_select": 150,
         "aggregate": 450,
-        "aggregate_group_by": 250,
+        "aggregate_group_by": 150,
         "join": 350,
         "join_aggregate": 150
     }

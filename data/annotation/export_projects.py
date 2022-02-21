@@ -4,6 +4,7 @@ import os
 
 import requests
 import yaml
+from tqdm import tqdm
 
 from data.annotation.label_studio_upload import AUTH_TOKEN, get_all_projects
 
@@ -18,7 +19,7 @@ def export_all_annotations():
     os.mkdir(export_dir)
 
     project_ids_titles = [(proj['id'], proj['title']) for proj in get_all_projects()['results']]
-    for proj_id, title in project_ids_titles:
+    for proj_id, title in tqdm(project_ids_titles):
         annotations = json.loads(
             requests.get(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/export',
                          headers={'Authorization': f'Token {AUTH_TOKEN}'}).text)
