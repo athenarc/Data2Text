@@ -8,6 +8,7 @@ import transformers
 import wandb
 from wandb.wandb_run import Run  # Typing
 
+from visualizing.gruen.gruen_original import get_gruen
 from visualizing.parent.parent_calc import parent_calc
 from visualizing.parent.table_process import tables_to_parent_format
 from visualizing.totto_table_parse import to_valid_html
@@ -109,6 +110,9 @@ def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: L
 
     # Aggregated metrics on the whole evaluation set
     aggregated_metrics = calculate_aggregated_metrics(inference_evaluations)
+
+    # Inject the GRUEN metric (so far it is not calculated
+    aggregated_metrics['GRUEN'] = float(sum(get_gruen(inferences)) / len(inferences))
 
     # Log the results on wandb
     run.log({"inference_samples": inference_examples_on_table})

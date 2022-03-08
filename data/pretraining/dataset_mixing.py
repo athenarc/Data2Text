@@ -51,14 +51,14 @@ def mix_datasets():
     }
 
     ratios = {
-        'C4_MASKING_TASK_DIR': 0.5,
-        'WDC_COLUMN_MASKING': 0.166,
-        'WDC_COLUMN_TYPE': 0,
-        'WDC_COLUMN_MIXING': 0.166,
-        'WDC_CONTENT_MASKING': 0.166
+        'C4_MASKING_TASK_DIR': 0.2,
+        'WDC_COLUMN_MASKING': 0.2,
+        'WDC_COLUMN_TYPE': 0.2,
+        'WDC_COLUMN_MIXING': 0.2,
+        'WDC_CONTENT_MASKING': 0.2
     }
 
-    OUTPUT_DIR = 'storage/datasets/pretrain/no_type'
+    OUTPUT_DIR = 'storage/datasets/pretrain/all_tasks'
     batches_numb = 1
     datapoints_per_file = 200_000
 
