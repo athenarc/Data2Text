@@ -46,7 +46,10 @@ class InferenceEvaluation:
         except ValueError:
             self.parent = -1
 
-        self.gruen = gruen_calculator.compute(predictions=[self.predicted])[0]
+        try:
+            self.gruen = gruen_calculator.compute(predictions=[self.predicted])[0]
+        except ValueError:
+            self.gruen = -1
 
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
