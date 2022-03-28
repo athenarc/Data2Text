@@ -1,8 +1,10 @@
 from transformers import T5Tokenizer
-from yacs.config import CfgNode  # Typing
 
 from data.build import get_train_dataloader
 from engine.pretrain import start_pretrainer
+
+# from yacs.config import CfgNode  # Typing
+
 
 
 def pretrain(cfg):

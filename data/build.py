@@ -1,9 +1,11 @@
 from torch.utils.data import DataLoader
-from transformers import T5Tokenizer  # Typing
-from yacs.config import CfgNode  # Typing
 
 from data.datasets_collection.totto.totto import Totto
 from tools.enums import Mode
+
+# from transformers import T5Tokenizer  # Typing
+# from yacs.config import CfgNode  # Typing
+
 
 
 def get_train_dataloader(tokenizer, cfg):

@@ -23,8 +23,9 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 # Launch the executable
 #pip install -r aris_requirements.txt
-cd $HOME/data2text
+cd $HOME/projects/Data2Text
 #source venv/bin/activate
 
-srun python3.8 entry_point.py --config_file configs/aris/pretrain/pretrain_t5_small_all_tasks.yaml --job_type pretrain
+#srun python3.8 entry_point.py --config_file configs/aris/pretrain/pretrain_t5_small_all_tasks.yaml --job_type pretrain
+srun python3.8 entry_point.py
 #srun python3 test.py
