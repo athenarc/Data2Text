@@ -9,7 +9,7 @@
 #SBATCH --ntasks-per-node=1 # Tasks per node
 #SBATCH --cpus-per-task=10 # Threads per task
 #SBATCH --mem=12000 # Memory per job in MB
-#SBATCH -t 00:30:00 # Run time (hh:mm:ss) - (max 48h)
+#SBATCH -t 01:00:00 # Run time (hh:mm:ss) - (max 48h)
 #SBATCH --partition=gpu # Run on the GPU nodes queue
 #SBATCH -A pa210903 # Accounting project
 
