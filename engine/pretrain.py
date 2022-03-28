@@ -21,7 +21,7 @@ def start_pretrainer(cfg, train_dataloader, tokenizer):
 
     # Callbacks
     checkpoint = ModelCheckpoint(dirpath=cfg.OUTPUT.CHECKPOINTS_DIR, monitor="train_loss",
-                                 save_top_k=4, every_n_train_steps=cfg.SOLVER.CHECKPOINT_PERIOD)
+                                 save_top_k=4)
 
     # Set directory that wandb will store its runs
     wandb_logger = pl_loggers.WandbLogger(save_dir=f"{cfg.OUTPUT.WANDB_LOGS_DIR}wandb/")
