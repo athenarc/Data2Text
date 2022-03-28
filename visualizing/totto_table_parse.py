@@ -1,5 +1,4 @@
 import re
-from typing import Dict
 
 
 def get_single_table_attribute(source: str, section: str) -> str:
@@ -9,7 +8,7 @@ def get_single_table_attribute(source: str, section: str) -> str:
         return ""
 
 
-def parse_totto_format(source: str) -> Dict[str, str]:
+def parse_totto_format(source: str):
     # We parse each part of the datapoint separately
     ret_dict = {
         "page_title": get_single_table_attribute(source, "page_title"),

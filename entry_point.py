@@ -5,9 +5,9 @@ import wandb
 import yaml
 
 from config import cfg
-from tools.evaluate_net import evaluate
+# from tools.evaluate_net import evaluate
 from tools.pretrain_net import pretrain
-from tools.train_net import train
+# from tools.train_net import train
 from utils.logger import setup_logger
 
 
@@ -47,11 +47,11 @@ def main():
                      config=cfg
                      )
 
-    if args.job_type == "train":
-        train(cfg)
-    elif args.job_type == "evaluate":
-        evaluate(cfg, run)
-    elif args.job_type == "pretrain":
+    # if args.job_type == "train":
+    #     train(cfg)
+    # elif args.job_type == "evaluate":
+    #     evaluate(cfg, run)
+    if args.job_type == "pretrain":
         pretrain(cfg)
 
 

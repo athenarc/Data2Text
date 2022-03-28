@@ -1,5 +1,3 @@
-from typing import Any, Dict, List, Optional, Tuple  # Typing
-
 import numpy as np
 import pytorch_lightning as pl
 import torch
@@ -24,7 +22,7 @@ class T5System(pl.LightningModule):
         self.tokenizer: T5Tokenizer = tokenizer
         self.bleu_metric: Metric = load_metric('bleu', experiment_id="validation")
 
-    def _step(self, batch: Dict[str, Any]) -> float:
+    def _step(self, batch) -> float:
         # In order for our T5 model to return a loss we must pass labels
         labels = batch["target_ids"]
 
@@ -41,7 +39,7 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generate_text(self, batch: Dict[str, torch.LongTensor])\
+    def _generate_text(self, batch)\
             -> torch.LongTensor:
         generated_ids = self.model.generate(
             batch["source_ids"],
@@ -57,7 +55,7 @@ class T5System(pl.LightningModule):
 
         return generated_ids
 
-    def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
+    def _generative_step(self, batch):
         generated_ids = self._generate_text(batch)
         preds = ids_to_clean_text(self.tokenizer, generated_ids)
         targets = ids_to_clean_text(self.tokenizer, batch["target_ids"])
@@ -79,11 +77,11 @@ class T5System(pl.LightningModule):
         return base_metrics
 
     def forward(
-            self, input_ids: List[List[int]],
-            attention_mask: Optional[List[List[int]]] = None,
-            decoder_input_ids: Optional[List[List[int]]] = None,
-            decoder_attention_mask: Optional[List[List[int]]] = None,
-            labels: Optional[List[List[int]]] = None
+            self, input_ids,
+            attention_mask=None,
+            decoder_input_ids=None,
+            decoder_attention_mask=None,
+            labels=None
     ) -> Seq2SeqModelOutput:
         return self.model(
             input_ids,
@@ -93,12 +91,12 @@ class T5System(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
+    def training_step(self, batch, batch_idx: int):
         loss = self._step(batch)
         self.log('train_loss', loss)
         return {"loss": loss}
 
-    def validation_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
+    def validation_step(self, batch, batch_idx: int):
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
         self.log('bleu', base_metrics['bleu'], on_epoch=True)
