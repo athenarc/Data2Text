@@ -11,7 +11,7 @@ from yacs.config import CfgNode  # Typing
 from modeling.T5Module import T5System
 
 
-def start_pretrainer(cfg: CfgNode, train_dataloader: DataLoader, tokenizer: T5Tokenizer) -> None:
+def start_pretrainer(cfg, train_dataloader, tokenizer):
     # Continue from checkpoint or start from scratch
     if cfg.MODEL.PATH_TO_CHECKPOINT != "":
         model = T5System.load_from_checkpoint(cfg.MODEL.PATH_TO_CHECKPOINT,

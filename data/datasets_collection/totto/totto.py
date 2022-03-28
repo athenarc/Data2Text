@@ -2,13 +2,12 @@ import json
 
 from torch.utils.data import Dataset
 from transformers import BatchEncoding, T5Tokenizer  # Typing
-from yacs.config import CfgNode  # Typing
 
 from tools.enums import Mode
 
 
 class Totto(Dataset):
-    def __init__(self, cfg: CfgNode, type_path: Mode, tokenizer: T5Tokenizer):
+    def __init__(self, cfg, type_path, tokenizer):
         if type_path == Mode.TRAIN:
             dataset_path = cfg.DATASET.TRAIN
         elif type_path == Mode.VALIDATION:
@@ -67,7 +66,7 @@ class Totto(Dataset):
     #     return {"source_ids": source_ids, "source_mask": src_mask,
     #             "target_ids": target_ids, "target_mask": target_mask}
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index):
         source, targets = self.convert_to_features(self.dataset[index])
 
         # if self.mode is Mode.TRAIN:

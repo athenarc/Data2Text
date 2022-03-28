@@ -12,17 +12,17 @@ from utils.model import ids_to_clean_text
 
 
 class T5System(pl.LightningModule):
-    def __init__(self, cfg: CfgNode, tokenizer: T5Tokenizer):
+    def __init__(self, cfg, tokenizer):
         super().__init__()
-        self.model: T5ForConditionalGeneration = T5ForConditionalGeneration\
+        self.model = T5ForConditionalGeneration\
             .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
-        self.optimizer_name: str = cfg.SOLVER.OPTIMIZER_NAME
-        self.lr: float = cfg.SOLVER.BASE_LR
-        self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
-        self.tokenizer: T5Tokenizer = tokenizer
-        self.bleu_metric: Metric = load_metric('bleu', experiment_id="validation")
+        self.optimizer_name = cfg.SOLVER.OPTIMIZER_NAME
+        self.lr = cfg.SOLVER.BASE_LR
+        self.max_generated_size = cfg.MODEL.MAX_OUTPUT_TOKENS
+        self.tokenizer = tokenizer
+        self.bleu_metric = load_metric('bleu', experiment_id="validation")
 
-    def _step(self, batch) -> float:
+    def _step(self, batch):
         # In order for our T5 model to return a loss we must pass labels
         labels = batch["target_ids"]
 
@@ -39,8 +39,7 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generate_text(self, batch)\
-            -> torch.LongTensor:
+    def _generate_text(self, batch):
         generated_ids = self.model.generate(
             batch["source_ids"],
             attention_mask=batch["source_mask"],
@@ -91,19 +90,19 @@ class T5System(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch, batch_idx: int):
+    def training_step(self, batch, batch_idx):
         loss = self._step(batch)
         self.log('train_loss', loss)
         return {"loss": loss}
 
-    def validation_step(self, batch, batch_idx: int):
+    def validation_step(self, batch, batch_idx):
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
         self.log('bleu', base_metrics['bleu'], on_epoch=True)
 
         return base_metrics
 
-    def configure_optimizers(self) -> torch.optim.Optimizer:
+    def configure_optimizers(self):
         optimizer_creators = {
             'Adam': get_adam_optimizer,
             'AdaFactor': get_ada_factor_optimizer

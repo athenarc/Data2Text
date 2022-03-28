@@ -5,7 +5,7 @@ from data.build import get_train_dataloader
 from engine.pretrain import start_pretrainer
 
 
-def pretrain(cfg: CfgNode) -> None:
+def pretrain(cfg):
     # Get the T5 tokenizer
     tokenizer = T5Tokenizer.from_pretrained(cfg.MODEL.TOKENIZER_NAME)
 

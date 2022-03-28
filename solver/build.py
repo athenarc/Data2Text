@@ -2,11 +2,11 @@ import torch
 import transformers.optimization
 
 
-def get_adam_optimizer(parameters, lr: float) -> torch.optim.Optimizer:
+def get_adam_optimizer(parameters, lr):
     return torch.optim.Adam(parameters, lr=lr)
 
 
-def get_ada_factor_optimizer(parameters, lr: float) -> transformers.optimization.Optimizer:
+def get_ada_factor_optimizer(parameters, lr):
     """
     Suggested parameters for fine-tuning T5.
     Sources:
