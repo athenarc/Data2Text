@@ -21,7 +21,7 @@ def start_pretrainer(cfg, train_dataloader, tokenizer):
 
     # Callbacks
     checkpoint = ModelCheckpoint(dirpath=cfg.OUTPUT.CHECKPOINTS_DIR, monitor="train_loss",
-                                 save_top_k=4)
+                                 save_top_k=4, every_n_train_steps=cfg.SOLVER.CHECKPOINT_PERIOD)
 
     # Set directory that wandb will store its runs
     wandb_logger = pl_loggers.WandbLogger(save_dir=f"{cfg.OUTPUT.WANDB_LOGS_DIR}wandb/")
@@ -31,12 +31,9 @@ def start_pretrainer(cfg, train_dataloader, tokenizer):
     if gpus_numb == 0:
         logging.warning("Not using a GPU. Pre-training will be slow.")
 
-    # trainer = pl.Trainer(max_epochs=cfg.SOLVER.MAX_EPOCHS,
-    #                      callbacks=[checkpoint], gpus=cfg.MODEL.GPUS_NUMB,
-    #                      logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
-
     trainer = pl.Trainer(max_epochs=cfg.SOLVER.MAX_EPOCHS,
-                         callbacks=[checkpoint],
+                         callbacks=[checkpoint], gpus=cfg.MODEL.GPUS_NUMB,
                          logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
+
     trainer.fit(model,
                 train_dataloaders=train_dataloader)
