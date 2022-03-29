@@ -6,7 +6,6 @@ from engine.pretrain import start_pretrainer
 # from yacs.config import CfgNode  # Typing
 
 
-
 def pretrain(cfg):
     # Get the T5 tokenizer
     tokenizer = T5Tokenizer.from_pretrained(cfg.MODEL.TOKENIZER_NAME)

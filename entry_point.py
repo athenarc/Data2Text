@@ -1,15 +1,14 @@
-# import argparse
-# import os
-#
-# import wandb
-# import yaml
-#
-# from config import cfg
-# from tools.evaluate_net import evaluate
-from tools.pretrain_net import pretrain
+import argparse
+import os
 
-# from tools.train_net import train
-# from utils.logger import setup_logger
+import wandb
+import yaml
+
+from config import cfg
+from tools.evaluate_net import evaluate
+from tools.pretrain_net import pretrain
+from tools.train_net import train
+from utils.logger import setup_logger
 
 
 def main():
