@@ -1,7 +1,7 @@
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from datasets import Metric, load_metric
+# from datasets import Metric, load_metric
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
 from yacs.config import CfgNode  # Typing
@@ -20,7 +20,7 @@ class T5System(pl.LightningModule):
         self.lr = cfg.SOLVER.BASE_LR
         self.max_generated_size = cfg.MODEL.MAX_OUTPUT_TOKENS
         self.tokenizer = tokenizer
-        self.bleu_metric = load_metric('bleu', experiment_id="validation")
+        # self.bleu_metric = load_metric('bleu', experiment_id="validation")
 
     def _step(self, batch):
         # In order for our T5 model to return a loss we must pass labels
@@ -65,12 +65,13 @@ class T5System(pl.LightningModule):
         targets = list(map(lambda x: [self.tokenizer.tokenize(x)], targets))
         preds = list(map(lambda x: self.tokenizer.tokenize(x), preds))
 
-        bleu_score = self.bleu_metric.compute(
-            predictions=preds, references=targets)['bleu']
+        # bleu_score = self.bleu_metric.compute(
+        #     predictions=preds, references=targets)['bleu']
 
         gen_len = np.mean(list(map(len, generated_ids)))
 
-        base_metrics = {'val_loss': loss, "bleu": bleu_score}
+        # base_metrics = {'val_loss': loss, "bleu": bleu_score}
+        base_metrics = {'val_loss': loss}
         base_metrics.update(gen_len=gen_len, preds=preds)
 
         return base_metrics
@@ -98,7 +99,7 @@ class T5System(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
-        self.log('bleu', base_metrics['bleu'], on_epoch=True)
+        # self.log('bleu', base_metrics['bleu'], on_epoch=True)
 
         return base_metrics
 
