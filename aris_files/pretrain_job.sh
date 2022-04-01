@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH --job-name=debug_train # Job name
+#SBATCH --job-name=debug_pretrain # Job name
 #SBATCH --output=gpujob.%j.out # Stdout (%j expands to jobId)
 #SBATCH --error=gpujob.%j.err # Stderr (%j expands to jobId)
 #SBATCH --ntasks=1 # Total number of tasks
@@ -20,12 +20,8 @@ module load cuda/10.1.168
 module load pytorch/1.8.0
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export HF_DATASETS_OFFLINE="1"
 
 # Launch the executable
-#pip install -r aris_requirements.txt
 cd $HOME/projects/Data2Text
-#source venv/bin/activate
-
-#srun python3.8 entry_point.py --config_file configs/aris/pretrain/pretrain_t5_small_all_tasks.yaml --job_type pretrain
-srun python3.8 entry_point.py
-#srun python3 test.py
+srun python3.8 entry_point.py --config_file configs/aris/pretrain/pretrain_t5_small_all_tasks.yaml --job_type pretrain

@@ -7,7 +7,6 @@ from tools.enums import Mode
 # from yacs.config import CfgNode  # Typing
 
 
-
 def get_train_dataloader(tokenizer, cfg):
     return DataLoader(Totto(cfg, Mode.TRAIN, tokenizer),
                       batch_size=cfg.INPUT.TRAIN_BATCH_SIZE, shuffle=True,
