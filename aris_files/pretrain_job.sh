@@ -4,7 +4,7 @@
 #SBATCH --output=gpujob.%j.out # Stdout (%j expands to jobId)
 #SBATCH --error=gpujob.%j.err # Stderr (%j expands to jobId)
 #SBATCH --ntasks=1 # Total number of tasks
-#SBATCH --gres=gpu:1 # GPUs per node
+#SBATCH --gres=gpu:2 # GPUs per node
 #SBATCH --nodes=1 # Total number of nodes requested
 #SBATCH --ntasks-per-node=1 # Tasks per node
 #SBATCH --cpus-per-task=10 # Threads per task

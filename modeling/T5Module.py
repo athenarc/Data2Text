@@ -8,7 +8,7 @@ from yacs.config import CfgNode  # Typing
 
 from modeling.Exceptions import OptimizerNotFound
 from solver.build import get_ada_factor_optimizer, get_adam_optimizer
-from utils.logger import print_gpu_memory
+from utils.logger import return_gpu_memory
 from utils.model import ids_to_clean_text
 
 
@@ -96,7 +96,7 @@ class T5System(pl.LightningModule):
         loss = self._step(batch)
         self.log('train_loss', loss)
 
-        print(f"> Free GPU memory: {print_gpu_memory()}")
+        print(f"Step GPU free memory: {' | '.join(return_gpu_memory())}\n")
         return {"loss": loss}
 
     def validation_step(self, batch, batch_idx):

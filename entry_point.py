@@ -8,7 +8,7 @@ from config import cfg
 from tools.evaluate_net import evaluate
 from tools.pretrain_net import pretrain
 from tools.train_net import train
-from utils.logger import print_gpu_memory, setup_logger
+from utils.logger import return_gpu_memory, setup_logger
 
 
 def main():
@@ -48,7 +48,7 @@ def main():
                      config=cfg
                      )
 
-    print_gpu_memory()
+    print(f"Starting GPU free memory: {' | '.join(return_gpu_memory())}\n")
 
     if args.job_type == "train":
         train(cfg)
