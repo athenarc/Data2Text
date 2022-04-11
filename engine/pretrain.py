@@ -32,7 +32,7 @@ def start_pretrainer(cfg, train_dataloader, tokenizer):
         logging.warning("Not using a GPU. Pre-training will be slow.")
 
     trainer = pl.Trainer(max_epochs=cfg.SOLVER.MAX_EPOCHS,
-                         callbacks=[checkpoint], gpus=cfg.MODEL.GPUS_NUMB,
+                         callbacks=[checkpoint], accelerator="gpu", devices=[0],
                          logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
 
     trainer.fit(model,
