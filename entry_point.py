@@ -8,7 +8,7 @@ from config import cfg
 from tools.evaluate_net import evaluate
 from tools.pretrain_net import pretrain
 from tools.train_net import train
-from utils.logger import setup_logger
+from utils.logger import print_gpu_memory, setup_logger
 
 
 def main():
@@ -47,6 +47,8 @@ def main():
                      notes=cfg.WANDB.NOTES,
                      config=cfg
                      )
+
+    print_gpu_memory()
 
     if args.job_type == "train":
         train(cfg)
