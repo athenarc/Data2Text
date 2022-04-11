@@ -54,5 +54,6 @@ def setup_logger(name: str, save_dir: str, level_str: str, distributed_rank: int
 def return_gpu_memory():
     command = "nvidia-smi --query-gpu=memory.free --format=csv"
     memory_free_info = sp.check_output(command.split()).decode('ascii').split('\n')[:-1][1:]
-    memory_free_values = [int(x.split()[0]) for i, x in enumerate(memory_free_info)]
-    return memory_free_values
+    memory_free_values = [str(int(x.split()[0])) for i, x in enumerate(memory_free_info)]
+    memory_free_values_str = ' | '.join(memory_free_values)
+    return memory_free_values_str

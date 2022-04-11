@@ -96,7 +96,7 @@ class T5System(pl.LightningModule):
         loss = self._step(batch)
         self.log('train_loss', loss)
 
-        print(f"Step GPU free memory: {' | '.join(str(return_gpu_memory()))}\n")
+        print(f"Step GPU free memory: {return_gpu_memory()}\n")
         return {"loss": loss}
 
     def validation_step(self, batch, batch_idx):

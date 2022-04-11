@@ -48,7 +48,7 @@ def main():
                      config=cfg
                      )
 
-    print(f"Starting GPU free memory: {' | '.join(str(return_gpu_memory()))}\n")
+    print(f"Starting GPU free memory: {return_gpu_memory()}\n")
 
     if args.job_type == "train":
         train(cfg)
