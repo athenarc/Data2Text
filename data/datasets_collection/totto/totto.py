@@ -1,3 +1,4 @@
+import glob
 import json
 
 from torch.utils.data import Dataset
@@ -16,9 +17,18 @@ class Totto(Dataset):
             raise ValueError("Supported type_paths: train, validation")
 
         self.mode = type_path
-        with open(dataset_path, encoding="utf-8") as f:
-            self.dataset = json.load(f)
-            # self.dataset = self.dataset[:int(len(self.dataset) * 0.01)]
+        if dataset_path[-1] != '/':
+            # Case that the dataset is a single file
+            with open(dataset_path, encoding="utf-8") as f:
+                self.dataset = json.load(f)
+        else:
+            # Case that the dataset is a directory of files
+            self.dataset = []
+            dataset_paths = glob.glob(dataset_path + "/*")
+            for path in dataset_paths:
+                with open(path, encoding="utf-8") as f:
+                    single_dataset = json.load(f)
+                self.dataset.extend(single_dataset)
 
         self.input_length: int = cfg.MODEL.MAX_INPUT_TOKENS
         self.output_length: int = cfg.MODEL.MAX_OUTPUT_TOKENS
