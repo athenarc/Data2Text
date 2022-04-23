@@ -1,0 +1,31 @@
+MODEL:
+  MAX_INPUT_TOKENS: 512
+  MAX_OUTPUT_TOKENS: 64
+  TOKENIZER_NAME: "t5-base"
+  PRETRAINED_MODEL_NAME: "t5-base"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/pretrained_totto/all_tasks/full_entities/t5_base/epoch=0-step=15144.ckpt"
+
+OUTPUT:
+  CHECKPOINTS_DIR: "storage/checkpoints/full_entities/t5_base"
+
+SOLVER:
+  OPTIMIZER_NAME: "AdaFactor"
+  BASE_LR: 0.001
+
+DATASET:
+  TRAIN: "storage/datasets/totto/filtered/train.json"
+  VALIDATION: "storage/datasets/totto/dev.json"
+  EVALUATION: "storage/datasets/totto/dev.json"
+
+WANDB:
+  RUN_NAME: "totto"
+  GROUP: "ARIS | T5-base | Pretrain | ToTTo"
+  MODE: "offline"
+  NOTES: ""
+
+DATALOADER:
+  NUM_WORKERS: 11
+
+INPUT:
+  TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8
