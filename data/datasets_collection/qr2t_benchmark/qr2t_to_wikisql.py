@@ -91,8 +91,16 @@ def create_wiki_sql_datapoint(qr2t_datapoint):
     }
 
 
-def qr2t_to_wikisql(datapoints, store_path):
+def flatten_target_text(datapoints):
+    for datapoint in datapoints:
+        datapoint['results_description'] = datapoint['results_description'][0]
+
+
+def qr2t_to_wikisql(datapoints, store_path, flatten_target=False):
     final_datapoints = [create_wiki_sql_datapoint(datapoint) for datapoint in datapoints]
+
+    if flatten_target:
+        flatten_target_text(final_datapoints)
 
     with open(store_path, 'w') as outfile:
         json.dump(final_datapoints, outfile)
@@ -106,5 +114,6 @@ if __name__ == '__main__':
 
     train_split, eval_split = create_splits(annots)
 
-    qr2t_to_wikisql(train_split, TARGET_DIR + 'train.json')
-    qr2t_to_wikisql(eval_split, TARGET_DIR + 'eval.json')
+    qr2t_to_wikisql(train_split, TARGET_DIR + 'train.json', flatten_target=True)
+    qr2t_to_wikisql(eval_split, TARGET_DIR + 'dev.json', flatten_target=True)
+    qr2t_to_wikisql(eval_split, TARGET_DIR + 'eval.json', flatten_target=False)

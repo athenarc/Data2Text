@@ -16,9 +16,9 @@ WANDB:
   NOTES: ""
 
 DATASET:
-  VALIDATION: "storage/datasets/qr2t/eval.json"
+  VALIDATION: "storage/datasets/qr2t/dev.json"
   EVALUATION: "storage/datasets/qr2t/eval.json"
-#  TRAIN: "storage/datasets/totto/filtered_sampled/train.json"
+  TRAIN: "storage/datasets/qr2t/train.json"
 
 DATALOADER:
   NUM_WORKERS: 11

@@ -15,8 +15,8 @@ SOLVER:
 
 
 DATASET:
-  TRAIN: "storage/datasets/qr2t/train.json"
-  VALIDATION: "storage/datasets/qr2t/eval.json"
+  TRAIN: "storage/datasets/totto/qr2t_to_totto/train.json"
+  VALIDATION: "storage/datasets/totto/qr2t_to_totto/dev.json"
 #  EVALUATION: "storage/datasets/totto/filtered/evaluation.json"
 
 WANDB:
@@ -29,5 +29,5 @@ DATALOADER:
   NUM_WORKERS: 11
 
 INPUT:
-  TRAIN_BATCH_SIZE: 24
-  TEST_BATCH_SIZE: 24
+  TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8
