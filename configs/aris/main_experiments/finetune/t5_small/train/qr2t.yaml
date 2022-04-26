@@ -15,8 +15,8 @@ SOLVER:
 
 
 DATASET:
-  TRAIN: "storage/datasets/totto/qr2t_to_totto/train.json"
-  VALIDATION: "storage/datasets/totto/qr2t_to_totto/dev.json"
+  TRAIN: "storage/datasets/totto/qr2t/train.json"
+  VALIDATION: "storage/datasets/totto/qr2t/dev.json"
 #  EVALUATION: "storage/datasets/totto/filtered/evaluation.json"
 
 WANDB:
