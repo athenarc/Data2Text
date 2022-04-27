@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/pretrained_totto/all_tasks/full_entities/t5_small/epoch=0-step=15144.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/main_experiments/finetuned/t5_small/totto/epoch=6-step=35342.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
@@ -24,5 +24,5 @@ DATALOADER:
   NUM_WORKERS: 11
 
 INPUT:
-  TRAIN_BATCH_SIZE: 8
-  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 24
+  TEST_BATCH_SIZE: 24
