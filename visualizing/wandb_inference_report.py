@@ -1,4 +1,5 @@
 import random
+import string
 from collections import defaultdict
 from dataclasses import InitVar, dataclass, field
 from typing import Dict, List, Tuple  # Typing
@@ -86,8 +87,10 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                   tokenizer: transformers.PreTrainedTokenizer) \
         -> List[InferenceEvaluation]:
     # Initialize 🤗 datasets metrics
-    bleu_calculator = datasets.load_metric('bleu', experiment_id="debug")
-    bertscore_calculator = datasets.load_metric('bertscore', experiment_id="debug")
+    bleu_calculator = datasets.load_metric('bleu', experiment_id=''.join(random.choice(string.ascii_letters)
+                                                                         for _ in range(10)))
+    bertscore_calculator = datasets.load_metric('bertscore', experiment_id=''.join(random.choice(string.ascii_letters)
+                                                                                   for _ in range(10)))
     # gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
 
     inference_evaluations = []

@@ -22,7 +22,7 @@ class T5System(pl.LightningModule):
         self.lr = cfg.SOLVER.BASE_LR
         self.max_generated_size = cfg.MODEL.MAX_OUTPUT_TOKENS
         self.tokenizer = tokenizer
-        self.bleu_metric = load_metric('bleu', experiment_id="validation")
+        self.bleu_metric = load_metric('bleu', experiment_id=f"{cfg.WANDB.GROUP}-{cfg.WANDB.RUN_NAME}")
 
     def _step(self, batch):
         # In order for our T5 model to return a loss we must pass labels
