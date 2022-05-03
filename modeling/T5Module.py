@@ -1,3 +1,5 @@
+import gc
+
 import numpy as np
 import pytorch_lightning as pl
 import torch
@@ -94,6 +96,7 @@ class T5System(pl.LightningModule):
         )
 
     def training_step(self, batch, batch_idx):
+        gc.collect()
         loss = self._step(batch)
         self.log('train_loss', loss)
 

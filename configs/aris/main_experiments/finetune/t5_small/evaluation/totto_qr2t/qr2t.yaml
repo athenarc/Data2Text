@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/main_experiments/finetuned/t5_small/totto/epoch=6-step=35342.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/main_experiments/finetuned/t5_small/totto_qr2t/epoch=3-step=207.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
@@ -12,17 +12,17 @@ SOLVER:
 WANDB:
   RUN_NAME: "qr2t"
   GROUP: "ARIS | T5-small | ToTTo | QR2T"
-  MODE: "offline"
+  MODE: "online"
   NOTES: ""
 
 DATASET:
-  VALIDATION: "storage/datasets/qr2t/dev.json"
-  EVALUATION: "storage/datasets/qr2t/eval.json"
-  TRAIN: "storage/datasets/qr2t/train.json"
+  VALIDATION: "storage/datasets/aris/qr2t/dev.json"
+  EVALUATION: "storage/datasets/aris/qr2t/eval.json"
+  TRAIN: "storage/datasets/aris/qr2t/train.json"
 
 DATALOADER:
   NUM_WORKERS: 11
 
 INPUT:
-  TRAIN_BATCH_SIZE: 24
-  TEST_BATCH_SIZE: 24
+  TRAIN_BATCH_SIZE: 8
+  TEST_BATCH_SIZE: 8
