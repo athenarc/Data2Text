@@ -10,7 +10,7 @@ import wandb
 from tqdm import tqdm
 from wandb.wandb_run import Run  # Typing
 
-# from visualizing.gruen.gruen_calculation import Gruen
+from visualizing.gruen.gruen_calculation import Gruen
 from visualizing.parent.parent_calc import parent_calc
 from visualizing.parent.table_process import tables_to_parent_format
 from visualizing.totto_table_parse import to_valid_html
@@ -24,17 +24,16 @@ class InferenceEvaluation:
     bleu: float = field(init=False)
     bertscore: float = field(init=False)
     parent: float = field(init=False)
-    # gruen: float = field(init=False)
+    gruen: float = field(init=False)
     source: str
 
     # Attributes below are helpers and not logged in the table
     tokenizer: InitVar[transformers.PreTrainedTokenizer] = None
     bleu_calculator: InitVar[datasets.metric.Metric] = None
     bertscore_calculator: InitVar[datasets.metric.Metric] = None
+    gruen_calculator: InitVar[Gruen] = None
 
-    # gruen_calculator: InitVar[Gruen] = None
-
-    def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
+    def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator, gruen_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
                                             references=[[tokenizer.tokenize(targets) for targets in self.targets]])[
             'bleu']
@@ -49,6 +48,11 @@ class InferenceEvaluation:
         except ValueError:
             self.parent = -1
 
+        try:
+            self.gruen = gruen_calculator.compute(predictions=[self.predicted])[0]
+        except ValueError:
+            self.gruen = -1
+
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
                self.html_source, self.bleu, self.bertscore, \
@@ -57,11 +61,11 @@ class InferenceEvaluation:
     @staticmethod
     def get_field_names_in_order() -> List[str]:
         """ There is hard coupling between this function and to_tuple above"""
-        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "PARENT", "Source"]
+        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "PARENT", "GRUEN", "Source"]
 
     def get_float_metrics(self) -> Dict[str, float]:
         """ Returns the metrics that can then be aggregated """
-        return {"bleu": self.bleu, "bertscore": self.bertscore, "PARENT": self.parent}
+        return {"bleu": self.bleu, "bertscore": self.bertscore, "PARENT": self.parent, "GRUEN": self.gruen}
 
 
 def create_inference_examples_table(inference_evaluations: List[InferenceEvaluation]):
@@ -91,7 +95,7 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                                                          for _ in range(10)))
     bertscore_calculator = datasets.load_metric('bertscore', experiment_id=''.join(random.choice(string.ascii_letters)
                                                                                    for _ in range(10)))
-    # gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
+    gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
 
     inference_evaluations = []
     for inference, targets, source in tqdm(zipped_inf_targets_source, desc="Metric calculation:"):
@@ -100,8 +104,8 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                              source,
                                              tokenizer=tokenizer,
                                              bleu_calculator=bleu_calculator,
-                                             bertscore_calculator=bertscore_calculator)
-        # gruen_calculator=gruen_calculator)
+                                             bertscore_calculator=bertscore_calculator,
+                                             gruen_calculator=gruen_calculator)
         inference_evaluations.append(inference_eval)
 
     return inference_evaluations
@@ -114,8 +118,8 @@ def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: L
     zipped_inf_targets_source = list(zip(inferences, targets, sources))
     inference_evaluations = create_inferences_evaluations(zipped_inf_targets_source, tokenizer)
 
-    # Table example inferences on a sample of size 100
-    sample_inferences_stored = random.sample(inference_evaluations, min(100, len(inference_evaluations)))
+    # Table example inferences on a sample of the first 100 datapoints
+    sample_inferences_stored = inference_evaluations[:min(100, len(inference_evaluations))]
     inference_examples_on_table = create_inference_examples_table(sample_inferences_stored)
 
     # Aggregated metrics on the whole evaluation set
