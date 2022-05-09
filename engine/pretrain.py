@@ -11,7 +11,7 @@ from yacs.config import CfgNode  # Typing
 from modeling.T5Module import T5System
 
 
-def start_pretrainer(cfg: CfgNode, train_dataloader: DataLoader, tokenizer: T5Tokenizer) -> None:
+def start_pretrainer(cfg, train_dataloader, tokenizer):
     # Continue from checkpoint or start from scratch
     if cfg.MODEL.PATH_TO_CHECKPOINT != "":
         model = T5System.load_from_checkpoint(cfg.MODEL.PATH_TO_CHECKPOINT,
@@ -32,7 +32,7 @@ def start_pretrainer(cfg: CfgNode, train_dataloader: DataLoader, tokenizer: T5To
         logging.warning("Not using a GPU. Pre-training will be slow.")
 
     trainer = pl.Trainer(max_epochs=cfg.SOLVER.MAX_EPOCHS,
-                         callbacks=[checkpoint], gpus=cfg.MODEL.GPUS_NUMB,
+                         callbacks=[checkpoint], accelerator="gpu", devices=[0],
                          logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
 
     trainer.fit(model,

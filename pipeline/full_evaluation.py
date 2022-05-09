@@ -5,10 +5,9 @@ reported on wandb. Can include or exclude configs using the --include or --exclu
 import argparse
 import subprocess
 from pathlib import Path
-from typing import List
 
 
-def find_all_configs(root_dir: str) -> List[str]:
+def find_all_configs(root_dir: str):
     paths = Path(root_dir).rglob('*.yaml')
 
     return [str(path) for path in paths]
@@ -23,7 +22,7 @@ def run_experiment(config_path: str) -> None:
     print("=" * 120 + "\n")
 
 
-def exclude_or_include_configs(included: str, excluded: str, config_files: List[str]) -> List[str]:
+def exclude_or_include_configs(included: str, excluded: str, config_files):
     if included != "" and excluded != "":
         raise ValueError("One of the arguments --include, --exclude should NOT be given.")
 
@@ -37,7 +36,7 @@ def exclude_or_include_configs(included: str, excluded: str, config_files: List[
     return filtered_paths
 
 
-def filter_paths(config_files, unfiltered: str, must_include: bool) -> List[str]:
+def filter_paths(config_files, unfiltered: str, must_include: bool):
     unfiltered_paths = unfiltered.strip().split(',')
     filtered_paths = filter(lambda config_file:
                             any(filter_file in config_file for filter_file in unfiltered_paths) == must_include,
@@ -46,7 +45,7 @@ def filter_paths(config_files, unfiltered: str, must_include: bool) -> List[str]
     return list(filtered_paths)
 
 
-def print_final_config_paths(config_paths: List[str]) -> None:
+def print_final_config_paths(config_paths) -> None:
     print(">>> Included config files:")
     for path in config_paths:
         print(f"\t- {path}")

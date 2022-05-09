@@ -1,30 +1,32 @@
-from typing import Any, Dict, List, Optional, Tuple  # Typing
+import gc
 
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from datasets import Metric, load_metric
+# from datasets import Metric, load_metric
+from datasets import load_metric
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from transformers.modeling_outputs import Seq2SeqModelOutput  # Typing
 from yacs.config import CfgNode  # Typing
 
 from modeling.Exceptions import OptimizerNotFound
 from solver.build import get_ada_factor_optimizer, get_adam_optimizer
+from utils.logger import return_gpu_memory
 from utils.model import ids_to_clean_text
 
 
 class T5System(pl.LightningModule):
-    def __init__(self, cfg: CfgNode, tokenizer: T5Tokenizer):
+    def __init__(self, cfg, tokenizer):
         super().__init__()
-        self.model: T5ForConditionalGeneration = T5ForConditionalGeneration\
+        self.model = T5ForConditionalGeneration\
             .from_pretrained(cfg.MODEL.PRETRAINED_MODEL_NAME)
-        self.optimizer_name: str = cfg.SOLVER.OPTIMIZER_NAME
-        self.lr: float = cfg.SOLVER.BASE_LR
-        self.max_generated_size: int = cfg.MODEL.MAX_OUTPUT_TOKENS
-        self.tokenizer: T5Tokenizer = tokenizer
-        self.bleu_metric: Metric = load_metric('bleu', experiment_id="validation")
+        self.optimizer_name = cfg.SOLVER.OPTIMIZER_NAME
+        self.lr = cfg.SOLVER.BASE_LR
+        self.max_generated_size = cfg.MODEL.MAX_OUTPUT_TOKENS
+        self.tokenizer = tokenizer
+        self.bleu_metric = load_metric('bleu', experiment_id=f"{cfg.WANDB.GROUP}-{cfg.WANDB.RUN_NAME}")
 
-    def _step(self, batch: Dict[str, Any]) -> float:
+    def _step(self, batch):
         # In order for our T5 model to return a loss we must pass labels
         labels = batch["target_ids"]
 
@@ -41,8 +43,7 @@ class T5System(pl.LightningModule):
         loss = outputs[0]
         return loss
 
-    def _generate_text(self, batch: Dict[str, torch.LongTensor])\
-            -> torch.LongTensor:
+    def _generate_text(self, batch):
         generated_ids = self.model.generate(
             batch["source_ids"],
             attention_mask=batch["source_mask"],
@@ -57,7 +58,7 @@ class T5System(pl.LightningModule):
 
         return generated_ids
 
-    def _generative_step(self, batch: Dict[str, torch.LongTensor]) -> Dict[str, float]:
+    def _generative_step(self, batch):
         generated_ids = self._generate_text(batch)
         preds = ids_to_clean_text(self.tokenizer, generated_ids)
         targets = ids_to_clean_text(self.tokenizer, batch["target_ids"])
@@ -74,16 +75,17 @@ class T5System(pl.LightningModule):
         gen_len = np.mean(list(map(len, generated_ids)))
 
         base_metrics = {'val_loss': loss, "bleu": bleu_score}
+        # base_metrics = {'val_loss': loss}
         base_metrics.update(gen_len=gen_len, preds=preds)
 
         return base_metrics
 
     def forward(
-            self, input_ids: List[List[int]],
-            attention_mask: Optional[List[List[int]]] = None,
-            decoder_input_ids: Optional[List[List[int]]] = None,
-            decoder_attention_mask: Optional[List[List[int]]] = None,
-            labels: Optional[List[List[int]]] = None
+            self, input_ids,
+            attention_mask=None,
+            decoder_input_ids=None,
+            decoder_attention_mask=None,
+            labels=None
     ) -> Seq2SeqModelOutput:
         return self.model(
             input_ids,
@@ -93,19 +95,22 @@ class T5System(pl.LightningModule):
             labels=labels,
         )
 
-    def training_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
+    def training_step(self, batch, batch_idx):
+        gc.collect()
         loss = self._step(batch)
         self.log('train_loss', loss)
+
+        print(f"\nStep GPU free memory: {return_gpu_memory()}\n")
         return {"loss": loss}
 
-    def validation_step(self, batch: Dict[str, torch.LongTensor], batch_idx: int) -> Dict[str, float]:
+    def validation_step(self, batch, batch_idx):
         base_metrics = self._generative_step(batch)
         self.log('val_loss', base_metrics['val_loss'], on_epoch=True, prog_bar=True)
         self.log('bleu', base_metrics['bleu'], on_epoch=True)
 
         return base_metrics
 
-    def configure_optimizers(self) -> torch.optim.Optimizer:
+    def configure_optimizers(self):
         optimizer_creators = {
             'Adam': get_adam_optimizer,
             'AdaFactor': get_ada_factor_optimizer

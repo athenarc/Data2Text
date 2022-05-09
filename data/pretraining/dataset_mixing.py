@@ -59,7 +59,7 @@ def mix_datasets():
     }
 
     OUTPUT_DIR = 'storage/datasets/pretrain/all_tasks'
-    batches_numb = 1
+    batches_numb = 10
     datapoints_per_file = 200_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
@@ -68,7 +68,11 @@ def mix_datasets():
         stored_datapoints = []
         for task, ratio in ratios.items():
             for _ in range(int(datapoints_per_file * ratio)):
-                stored_datapoints.append(next(task_generators[task]))
+                try:
+                    stored_datapoints.append(next(task_generators[task]))
+                except StopIteration:
+                    print(task, _)
+                    raise StopIteration
 
         # Shuffle since the tasks are ordered
         random.shuffle(stored_datapoints)

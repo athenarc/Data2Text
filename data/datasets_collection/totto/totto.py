@@ -1,15 +1,14 @@
+import glob
 import json
-from typing import Any, Dict, List, Tuple  # Typing
 
 from torch.utils.data import Dataset
 from transformers import BatchEncoding, T5Tokenizer  # Typing
-from yacs.config import CfgNode  # Typing
 
 from tools.enums import Mode
 
 
 class Totto(Dataset):
-    def __init__(self, cfg: CfgNode, type_path: Mode, tokenizer: T5Tokenizer):
+    def __init__(self, cfg, type_path, tokenizer):
         if type_path == Mode.TRAIN:
             dataset_path = cfg.DATASET.TRAIN
         elif type_path == Mode.VALIDATION:
@@ -18,9 +17,18 @@ class Totto(Dataset):
             raise ValueError("Supported type_paths: train, validation")
 
         self.mode = type_path
-        with open(dataset_path, encoding="utf-8") as f:
-            self.dataset: List[Dict] = json.load(f)
-            # self.dataset = self.dataset[:int(len(self.dataset) * 0.01)]
+        if dataset_path[-1] != '/':
+            # Case that the dataset is a single file
+            with open(dataset_path, encoding="utf-8") as f:
+                self.dataset = json.load(f)
+        else:
+            # Case that the dataset is a directory of files
+            self.dataset = []
+            dataset_paths = glob.glob(dataset_path + "/*")
+            for path in dataset_paths:
+                with open(path, encoding="utf-8") as f:
+                    single_dataset = json.load(f)
+                self.dataset.extend(single_dataset)
 
         self.input_length: int = cfg.MODEL.MAX_INPUT_TOKENS
         self.output_length: int = cfg.MODEL.MAX_OUTPUT_TOKENS
@@ -29,7 +37,7 @@ class Totto(Dataset):
     def __len__(self) -> int:
         return len(self.dataset)
 
-    def convert_to_features(self, example_batch: Dict) -> Tuple[BatchEncoding, BatchEncoding]:
+    def convert_to_features(self, example_batch):
         """ Transform the input strings into token ids using the T5 tokenizer """
 
         # Tokenize contexts and questions (as pairs of inputs)
@@ -68,7 +76,7 @@ class Totto(Dataset):
     #     return {"source_ids": source_ids, "source_mask": src_mask,
     #             "target_ids": target_ids, "target_mask": target_mask}
 
-    def __getitem__(self, index: int) -> Dict[str, Any]:
+    def __getitem__(self, index):
         source, targets = self.convert_to_features(self.dataset[index])
 
         # if self.mode is Mode.TRAIN:

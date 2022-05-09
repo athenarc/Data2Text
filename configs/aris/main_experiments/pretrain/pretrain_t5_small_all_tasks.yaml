@@ -13,22 +13,22 @@ SOLVER:
 
 WANDB:
   RUN_NAME: "Pretrain t5-small | All pretrain tasks"
-  GROUP: "Pretrain"
-  TAGS: ["Pretrain", "t5-small"]
+  GROUP: "ARIS | Pretrain"
+  TAGS: ["Pretrain", "t5-small", "aris"]
   MODE: "offline"
   NOTES: ""
 
 DATASET:
   VALIDATION: ""
   EVALUATION: ""
-  TRAIN: "storage/datasets/pretrain/all_tasks/pretrain_file_0.json"
+  TRAIN: "storage/datasets/pretrain/all_tasks/"
 
 DATALOADER:
   NUM_WORKERS: 11
 
 INPUT:
-  TRAIN_BATCH_SIZE: 8
-  TEST_BATCH_SIZE: 8
+  TRAIN_BATCH_SIZE: 24
+  TEST_BATCH_SIZE: 24
 
 OUTPUT:
   CHECKPOINTS_DIR: "storage/checkpoints/pretrained/all_tasks/t5_small/"

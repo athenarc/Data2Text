@@ -8,10 +8,11 @@ from config import cfg
 from tools.evaluate_net import evaluate
 from tools.pretrain_net import pretrain
 from tools.train_net import train
-from utils.logger import setup_logger
+from utils.logger import return_gpu_memory, setup_logger
 
 
 def main():
+    print("START")
     parser = argparse.ArgumentParser(description="Data2Text Model Training.")
     parser.add_argument(
         "--config_file", default="", help="path to config file", type=str
@@ -37,7 +38,7 @@ def main():
 
     # Initialization of the wandb for experiment orchestration
     run = wandb.init(project="data2text",
-                     job_type=args.job_type,
+                     job_type="pretrain",
                      group=cfg.WANDB.GROUP,
                      dir=cfg.OUTPUT.WANDB_LOGS_DIR,
                      name=cfg.WANDB.RUN_NAME,
@@ -47,11 +48,13 @@ def main():
                      config=cfg
                      )
 
+    print(f"Starting GPU free memory: {return_gpu_memory()}\n")
+
     if args.job_type == "train":
         train(cfg)
     elif args.job_type == "evaluate":
         evaluate(cfg, run)
-    elif args.job_type == "pretrain":
+    if args.job_type == "pretrain":
         pretrain(cfg)
 
 

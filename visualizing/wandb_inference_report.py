@@ -1,4 +1,5 @@
 import random
+import string
 from collections import defaultdict
 from dataclasses import InitVar, dataclass, field
 from typing import Dict, List, Tuple  # Typing
@@ -34,7 +35,8 @@ class InferenceEvaluation:
 
     def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator, gruen_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
-                                            references=[[tokenizer.tokenize(targets) for targets in self.targets]])['bleu']
+                                            references=[[tokenizer.tokenize(targets) for targets in self.targets]])[
+            'bleu']
 
         self.bertscore = bertscore_calculator.compute(predictions=[self.predicted],
                                                       references=[self.targets], lang="en")['f1'][0]
@@ -54,7 +56,7 @@ class InferenceEvaluation:
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
                self.html_source, self.bleu, self.bertscore, \
-               self.parent, self.gruen, self.source
+               self.parent, self.source
 
     @staticmethod
     def get_field_names_in_order() -> List[str]:
@@ -89,8 +91,10 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                   tokenizer: transformers.PreTrainedTokenizer) \
         -> List[InferenceEvaluation]:
     # Initialize 🤗 datasets metrics
-    bleu_calculator = datasets.load_metric('bleu', experiment_id="debug")
-    bertscore_calculator = datasets.load_metric('bertscore', experiment_id="debug")
+    bleu_calculator = datasets.load_metric('bleu', experiment_id=''.join(random.choice(string.ascii_letters)
+                                                                         for _ in range(10)))
+    bertscore_calculator = datasets.load_metric('bertscore', experiment_id=''.join(random.choice(string.ascii_letters)
+                                                                                   for _ in range(10)))
     gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
 
     inference_evaluations = []
@@ -114,8 +118,8 @@ def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: L
     zipped_inf_targets_source = list(zip(inferences, targets, sources))
     inference_evaluations = create_inferences_evaluations(zipped_inf_targets_source, tokenizer)
 
-    # Table example inferences on a sample of size 100
-    sample_inferences_stored = random.sample(inference_evaluations, min(100, len(inference_evaluations)))
+    # Table example inferences on a sample of the first 100 datapoints
+    sample_inferences_stored = inference_evaluations[:min(100, len(inference_evaluations))]
     inference_examples_on_table = create_inference_examples_table(sample_inferences_stored)
 
     # Aggregated metrics on the whole evaluation set
