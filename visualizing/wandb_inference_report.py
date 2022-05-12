@@ -56,7 +56,7 @@ class InferenceEvaluation:
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
                self.html_source, self.bleu, self.bertscore, \
-               self.parent, self.source
+               self.parent, self.gruen, self.source
 
     @staticmethod
     def get_field_names_in_order() -> List[str]:
@@ -79,9 +79,11 @@ def create_inference_examples_table(inference_evaluations: List[InferenceEvaluat
 
 def calculate_aggregated_metrics(inference_evaluations: List[InferenceEvaluation]) -> Dict[str, float]:
     aggregated_metrics_dict = defaultdict(lambda: [0, 0])  # Sum of statistic, population
+
+    # We skip all the datapoints that the metric failed to be calculated
     for inference_eval in inference_evaluations:
         for metric, value in inference_eval.get_float_metrics().items():
-            aggregated_metrics_dict[metric][0] += value if value != -1 else 0  # Statistic
+            aggregated_metrics_dict[metric][0] += value if value != -1 else 0  # Metric value
             aggregated_metrics_dict[metric][1] += 1 if value != -1 else 0  # Population
 
     return {k: v[0] / v[1] for k, v in aggregated_metrics_dict.items()}
@@ -95,6 +97,8 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                                                          for _ in range(10)))
     bertscore_calculator = datasets.load_metric('bertscore', experiment_id=''.join(random.choice(string.ascii_letters)
                                                                                    for _ in range(10)))
+
+    # Read COLA model used for GRUEN
     gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
 
     inference_evaluations = []
@@ -119,7 +123,7 @@ def create_inference_report_on_wandb(run: Run, inferences: List[str], targets: L
     inference_evaluations = create_inferences_evaluations(zipped_inf_targets_source, tokenizer)
 
     # Table example inferences on a sample of the first 100 datapoints
-    sample_inferences_stored = inference_evaluations[:min(100, len(inference_evaluations))]
+    sample_inferences_stored = inference_evaluations[:min(400, len(inference_evaluations))]
     inference_examples_on_table = create_inference_examples_table(sample_inferences_stored)
 
     # Aggregated metrics on the whole evaluation set
