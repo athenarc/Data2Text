@@ -4,8 +4,8 @@ services:
     image: darelab-pull.docker.imsi.athenarc.gr/mxydas/qr2t/nginx
     container_name: qr2t_nginx
     restart: unless-stopped
-    ports:
-      - "8081"
+    expose:
+      - 80
     networks:
       - app
       - traefik
