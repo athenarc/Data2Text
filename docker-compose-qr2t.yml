@@ -24,7 +24,7 @@ services:
 #    ports:
 #      - "8501"
     environment:
-      - STREAMLIT_BROWSER_SERVER_ADDRESS=https://darelab.imsi.athenarc.gr/qr2t
+      - STREAMLIT_BROWSER_SERVER_ADDRESS=front/qr2t
       - STREAMLIT_SERVER_ENABLE_CORS=false
       - STREAMLIT_SERVER_ENABLE_WEBSOCKET_COMPRESSION=false
       - STREAMLIT_SERVER_ENABLE_WEB_SOCKET_COMPRESSION=false
