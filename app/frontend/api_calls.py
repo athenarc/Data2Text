@@ -1,5 +1,6 @@
 import pandas as pd
 import requests
+import streamlit as st
 from settings import read_settings_file
 from tenacity import (retry, retry_if_exception_type, stop_after_attempt,
                       wait_fixed)
@@ -8,6 +9,7 @@ BACKEND_HOST = read_settings_file()['BACKEND_HOST']  # back
 BACKEND_PORT = read_settings_file()['BACKEND_PORT']  # 4557
 
 
+@st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def get_table_names():
     try:
@@ -17,6 +19,7 @@ def get_table_names():
     return tables.json()['tables']
 
 
+@st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def preview_table(table_name, table_canvas):
     try:
@@ -30,6 +33,7 @@ def preview_table(table_name, table_canvas):
     table_canvas.dataframe(df)
 
 
+@st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def explain_query(query, nl_query):
     try:
