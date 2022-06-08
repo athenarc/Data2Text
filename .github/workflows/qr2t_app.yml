@@ -41,7 +41,7 @@ jobs:
         id: docker_build_front
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./app/frontend/
           push: true
           tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_FRONT }}:latest
           file: ./app/frontend/Dockerfile
