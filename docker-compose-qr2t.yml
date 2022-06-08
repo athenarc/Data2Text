@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     ports:
       - "8501"
+    environment:
+      - STREAMLIT_SERVER_ADDRESS=https://darelab.imsi.athenarc.gr/qr2t
     networks:
       - app
       - traefik
