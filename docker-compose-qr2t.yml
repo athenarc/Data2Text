@@ -2,12 +2,17 @@ version: "3.9"
 services:
   front:
     build: app/frontend/
-    ports:
-      - "8501:8501"
+    expose:
+      - 8501
     networks:
       - app
+      - traefik
     depends_on:
       - back
+    labels:
+      - traefik.enable=true # enable this docker on traefik
+      - traefik.http.routers.qr2t.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t`) # url
+      - traefik.http.routers.qr2t.middlewares=redirect_to_https@file # add the middleware to redirect to https
   back:
     build: .
     extra_hosts:
@@ -17,8 +22,10 @@ services:
     networks:
       - app
     volumes:
-      - /home/mikexydas/PycharmProjects/Data2Text/storage:/app/storage
-#      - /home/mikexydas/.cache:/app/.cache
+      - home/mxydas/qr2t/storage:/app/storage
 networks:
   app:
       driver: bridge
+  traefik:
+    name: traefik
+    external: true

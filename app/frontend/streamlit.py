@@ -19,17 +19,25 @@ if show_preview:
 
 st.text("")
 st.text("")
-st.markdown("**Input Query**")
-input_query = st.text_area("", value="SELECT acronym, start_year FROM projects WHERE start_year=2016")
+
+col1, col2 = st.columns([1.5, 1])
+with col1:
+    st.markdown("**Input Query**")
+    input_query = st.text_area("", value="SELECT Name, Age from titanic WHERE Sex=\"male\"")
+
+with col2:
+    st.markdown("**Explain the query in NL (Optional)**")
+    nl_query = st.text_area("", value="Find the name and age of a male passenger")
+
 
 query_explanation = ""
 explanation_area = st.empty()
 if st.button("Execute"):
     with st.spinner('Executing...'):
-        query_explanation = explain_query(input_query)
+        query_explanation = explain_query(input_query, nl_query)
 
 if query_explanation != "":
-    st.markdown(f"Query explanation: **{query_explanation}**")
+    st.markdown(f"Results verbalisation: **{query_explanation}**")
 
 
 # if __name__ == '__main__':

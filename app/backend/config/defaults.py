@@ -48,3 +48,13 @@ _C.SOLVER.LOG_PERIOD = 50
 # ---------------------------------------------------------------------------- #
 _C.MISC = CN()
 _C.MISC.LOGGER_LEVEL = "INFO"
+
+# ---------------------------------------------------------------------------- #
+# Wandb options
+# ---------------------------------------------------------------------------- #
+_C.WANDB = CN()
+_C.WANDB.MODE = "online"
+_C.WANDB.TAGS = None
+_C.WANDB.RUN_NAME = "APP"
+_C.WANDB.GROUP = "APP"
+_C.WANDB.NOTES = "No description provided."

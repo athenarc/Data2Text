@@ -9,7 +9,7 @@ from utils.model import add_batch_dim
 
 
 class InferenceController:
-    """"
+    """
     This module and the backend package in general is coupled with the rest of the repo.
     Eg. from modeling.T5Module import T5System
     In the future the app code and the model development code should have the least possible

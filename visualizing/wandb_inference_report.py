@@ -31,9 +31,9 @@ class InferenceEvaluation:
     tokenizer: InitVar[transformers.PreTrainedTokenizer] = None
     bleu_calculator: InitVar[datasets.metric.Metric] = None
     bertscore_calculator: InitVar[datasets.metric.Metric] = None
-    gruen_calculator: InitVar[Gruen] = None
+    # gruen_calculator: InitVar[Gruen] = None
 
-    def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator, gruen_calculator):
+    def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
                                             references=[[tokenizer.tokenize(targets) for targets in self.targets]])[
             'bleu']
@@ -45,30 +45,31 @@ class InferenceEvaluation:
             clean_predicted = self.predicted.lower().translate(str.maketrans('', '', string.punctuation)).split()
             clean_references = [target.lower().translate(str.maketrans('', '', string.punctuation)).split()
                                 for target in self.targets]
+
             _, _, self.parent, _ = parent_calc(predictions=clean_predicted,
                                                references=clean_references,
                                                tables=tables_to_parent_format([self.source]))
         except ValueError:
             self.parent = -1
 
-        try:
-            self.gruen = gruen_calculator.compute(predictions=[self.predicted])[0]
-        except ValueError:
-            self.gruen = -1
+        # try:
+        #     self.gruen = gruen_calculator.compute(predictions=[self.predicted])[0]
+        # except ValueError:
+        #     self.gruen = -1
 
     def to_tuple(self):
         return self.predicted, " | ".join(self.targets), \
                self.html_source, self.bleu, self.bertscore, \
-               self.parent, self.gruen, self.source
+               self.parent, self.source
 
     @staticmethod
     def get_field_names_in_order() -> List[str]:
         """ There is hard coupling between this function and to_tuple above"""
-        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "PARENT", "GRUEN", "Source"]
+        return ["Predicted", "Target", "HTML Source", "BLEU", "BertScore", "PARENT", "Source"]
 
     def get_float_metrics(self) -> Dict[str, float]:
         """ Returns the metrics that can then be aggregated """
-        return {"bleu": self.bleu, "bertscore": self.bertscore, "PARENT": self.parent, "GRUEN": self.gruen}
+        return {"bleu": self.bleu, "bertscore": self.bertscore, "PARENT": self.parent}
 
 
 def create_inference_examples_table(inference_evaluations: List[InferenceEvaluation]):
@@ -102,7 +103,7 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                                                                    for _ in range(10)))
 
     # Read COLA model used for GRUEN
-    gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
+    # gruen_calculator = Gruen('storage/checkpoints/metrics/cola/')
 
     inference_evaluations = []
     for inference, targets, source in tqdm(zipped_inf_targets_source, desc="Metric calculation:"):
@@ -111,8 +112,8 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                              source,
                                              tokenizer=tokenizer,
                                              bleu_calculator=bleu_calculator,
-                                             bertscore_calculator=bertscore_calculator,
-                                             gruen_calculator=gruen_calculator)
+                                             bertscore_calculator=bertscore_calculator,)
+                                             # gruen_calculator=gruen_calculator)
         inference_evaluations.append(inference_eval)
 
     return inference_evaluations

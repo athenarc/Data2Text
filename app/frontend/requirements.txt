@@ -1,5 +1,6 @@
 requests
-streamlit==0.88.0
+streamlit==1.10
 pandas
 pyyaml
 tenacity
+protobuf~=3.19.0
