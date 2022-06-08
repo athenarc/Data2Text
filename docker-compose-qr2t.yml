@@ -8,6 +8,7 @@ services:
       - "8501"
     environment:
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_ENABLE_CORS = false
     networks:
       - app
       - traefik
