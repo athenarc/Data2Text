@@ -13,6 +13,12 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  DOCKER_REGISTRY: darelab.docker.imsi.athenarc.gr
+  DOCKER_USER: builder
+  DOCKER_REPO_FRONT: mxydas/qr2t/front
+  DOCKER_REPO_BACK: mxydas/qr2t/back
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "ci"
@@ -23,6 +29,30 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+
+      - name: Login to ATHENA registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ secrets.DARELAB_DOCKER_PASSWORD_BUILDER }}
+
+      - name: Build and push front
+        id: docker_build_front
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_FRONT }}:latest
+          file: ./app/frontend/Dockerfile
+
+      - name: Build and push back
+        id: docker_build_back
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_BACK }}:latest
 
       - name: Deploy to Darelab
         uses: wshihadeh/docker-deployment-action@v2
