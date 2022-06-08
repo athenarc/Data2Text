@@ -19,10 +19,10 @@ services:
     image: darelab-pull.docker.imsi.athenarc.gr/mxydas/qr2t/back
     container_name: qr2t_back
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
     ports:
-      - "4557:4557"
+      - "4557"
     networks:
       - app
     volumes:
