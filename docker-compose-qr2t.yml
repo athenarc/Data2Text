@@ -5,7 +5,7 @@ services:
     container_name: qr2t_nginx
     restart: unless-stopped
     ports:
-      - "80:8081"
+      - "8081:80"
     networks:
       - app
       - traefik
