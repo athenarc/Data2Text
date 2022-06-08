@@ -18,6 +18,7 @@ env:
   DOCKER_USER: builder
   DOCKER_REPO_FRONT: mxydas/qr2t/front
   DOCKER_REPO_BACK: mxydas/qr2t/back
+  DOCKER_REPO_NGINX: mxydas/qr2t/nginx
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -53,6 +54,14 @@ jobs:
           context: .
           push: true
           tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_BACK }}:latest
+
+      - name: Build and push nginx
+        id: docker_build_nginx
+        uses: docker/build-push-action@v3
+        with:
+          context: ./app/nginx/
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_NGINX }}:latest
 
       - name: Deploy to Darelab
         uses: wshihadeh/docker-deployment-action@v2
