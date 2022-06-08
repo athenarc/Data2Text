@@ -25,7 +25,7 @@ services:
 #      - "8501"
     environment:
 #      - STREAMLIT_SERVER_ADDRESS=https://darelab.imsi.athenarc.gr/qr2t
-       - STREAMLIT_BASE_URL_PATH="qr2t"
+       - STREAMLIT_SERVER_BASE_URL_PATH=qr2t
     networks:
       - app
     depends_on:
