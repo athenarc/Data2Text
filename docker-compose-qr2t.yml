@@ -7,7 +7,7 @@ services:
     ports:
       - "8501"
     environment:
-      - STREAMLIT_SERVER_ADDRESS=https://darelab.imsi.athenarc.gr/qr2t
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
     networks:
       - app
       - traefik
@@ -15,7 +15,7 @@ services:
       - back
     labels:
       - traefik.enable=true # enable this docker on traefik
-      - traefik.http.routers.qr2t.rule= Host(`darelab.imsi.athenarc.gr`) && Path(`/qr2t`) # url
+      - traefik.http.routers.qr2t.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t`) # url
       - traefik.http.routers.qr2t.middlewares=redirect_to_https@file # add the middleware to redirect to https
   back:
     image: darelab-pull.docker.imsi.athenarc.gr/mxydas/qr2t/back
