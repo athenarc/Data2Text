@@ -22,7 +22,7 @@ services:
     networks:
       - app
     volumes:
-      - home/mxydas/qr2t/storage:/app/storage
+      - /home/mxydas/qr2t/storage:/app/storage
 
 networks:
   app:
@@ -32,4 +32,4 @@ networks:
     external: true
 
 volumes:
-  static-data:
+  static: {}
