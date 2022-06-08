@@ -6,6 +6,9 @@ COPY . .
 RUN pip install -r requirements.txt
 
 RUN chmod +x ./startup.sh
+
+EXPOSE 8501
+
 ENTRYPOINT ["/bin/bash", "./startup.sh", "config/prod.yaml"]
 
 # Build
