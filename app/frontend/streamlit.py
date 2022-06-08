@@ -20,6 +20,7 @@ if show_preview:
 st.text("")
 st.text("")
 
+
 col1, col2 = st.columns([1.5, 1])
 with col1:
     st.markdown("**Input Query**")
@@ -40,5 +41,5 @@ if query_explanation != "":
     st.markdown(f"Results verbalisation: **{query_explanation}**")
 
 
-if __name__ == '__main__':
-    explain_query("SELECT Name FROM Titanic WHERE PassengerId=1")
+# if __name__ == '__main__':
+#     explain_query("SELECT Name FROM Titanic WHERE PassengerId=1")
