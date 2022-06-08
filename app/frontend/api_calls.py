@@ -19,7 +19,6 @@ def get_table_names():
     return tables.json()['tables']
 
 
-@st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def preview_table(table_name, table_canvas):
     try:
