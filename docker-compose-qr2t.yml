@@ -23,9 +23,13 @@ services:
       - app
     volumes:
       - home/mxydas/qr2t/storage:/app/storage
+
 networks:
   app:
       driver: bridge
   traefik:
     name: traefik
     external: true
+
+volumes:
+  static-data:
