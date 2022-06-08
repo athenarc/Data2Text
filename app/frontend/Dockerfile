@@ -10,7 +10,6 @@ RUN chmod +x ./startup.sh
 EXPOSE 8501
 
 ENTRYPOINT ["/bin/bash", "./startup.sh", "config/prod.yaml"]
-#CMD streamlit run streamlit.py
 
 # Build
 # docker build -t d2t-front:latest .

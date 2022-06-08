@@ -1,12 +1,5 @@
-import time
-
 import streamlit as st
 from api_calls import explain_query, get_table_names, preview_table
-from settings import read_settings_file
-
-# Manually waiting for the backend to start
-# time.sleep(read_settings_file()['STARTUP_WAIT_SEC'])
-
 
 st.title('Query Results to Text')
 selected_table = st.sidebar.selectbox('Choose a table:', get_table_names(), index=0)
@@ -39,7 +32,3 @@ if st.button("Execute"):
 
 if query_explanation != "":
     st.markdown(f"Results verbalisation: **{query_explanation}**")
-
-
-# if __name__ == '__main__':
-#     explain_query("SELECT Name FROM Titanic WHERE PassengerId=1")
