@@ -9,7 +9,7 @@ FASTAPI:
   WORKERS: 1
   DEBUG: False
   RELOAD: False
-  HOST: '0.0.0.0'
+  HOST: 'localhost'
   PORT: 4557
   API_ROOT: "qr2t_back"
 
