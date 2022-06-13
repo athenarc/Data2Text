@@ -6,10 +6,10 @@ router = APIRouter()
 
 
 @router.get("/tables")
-def available_tables(query_explainer=Depends(get_query_explainer)):
-    return {"tables": query_explainer.db_controller.get_table_names()}
+async def available_tables(url_conn: str, query_explainer=Depends(get_query_explainer)):
+    return {"tables": await query_explainer.db_controller.get_table_names(url_conn)}
 
 
 @router.get("/tables/{table_name}")
-async def table_preview(table_name: str, query_explainer=Depends(get_query_explainer)):
-    return {"table_sample": query_explainer.db_controller.preview_table(table_name)}
+async def table_preview(url_conn: str, table_name: str, query_explainer=Depends(get_query_explainer)):
+    return {"table_sample": await query_explainer.db_controller.preview_table(url_conn, table_name)}

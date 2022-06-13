@@ -7,7 +7,7 @@ from app.backend.controller.shared_objects import cfg
 from app.backend.routers.add_routes import initialize_routes
 
 # logging.basicConfig()
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 
 app = FastAPI()
 initialize_routes(app)

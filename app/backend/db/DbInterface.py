@@ -8,28 +8,24 @@ class DbInterface(ABC):
     but this interface could be expanded to other relational and non-relational DBs.
     """
     @abstractmethod
-    def query_with_res_cols(self, query: str):
+    async def query_with_res_cols(self, conn_url: str, query: str):
         """ Executes the query and along with the results (rows) it also returns the names of the columns. """
 
     @abstractmethod
-    def get_table_names(self) -> List[str]:
+    async def get_table_names(self, conn_url: str) -> List[str]:
         """ Returns the table names of the database we have connected to. """
 
     @abstractmethod
-    def get_table_cols(self, table_name: str) -> List[str]:
+    async def get_table_cols(self, conn_url: str, table_name: str) -> List[str]:
         """ Returns the column names of the given table_name. """
 
     @abstractmethod
-    def get_pks_of_table(self, table_name: str) -> List[str]:
+    async def get_pks_of_table(self, conn_url: str, table_name: str) -> List[str]:
         """ Returns a list of the primary keys of the given table. """
 
     @abstractmethod
-    def preview_table(self, table: str, limit: int = 10):
+    async def preview_table(self, conn_url: str, table: str, limit: int = 10):
         """ Returns the first `limit` rows of the given `table` """
-
-    @abstractmethod
-    def shutdown(self) -> None:
-        """ Do any cleanup if necessary. Eg. close the connection."""
 
 
 class DbException(Exception):

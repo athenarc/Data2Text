@@ -15,13 +15,13 @@ from app.backend.processing.process_query_results import query_results_to_totto
 class QueryResultsExplainer:
     def __init__(self, cfg):
         # self.db_controller: DbInterface = MySqlController(cfg.DB.CREDENTIALS)  # Could be sqlite, MySQL currently
-        self.db_controller: DbInterface = SqliteController(cfg.DB.PATH)
+        self.db_controller: DbInterface = SqliteController()
         self.inference_controller = InferenceController(cfg)
 
-    def explain_query_results(self, query: str, nl_query: Optional[str] = "") -> str:
+    async def explain_query_results(self, conn_url: str, query: str, nl_query: Optional[str] = "") -> str:
         try:
             query_res_in_totto = query_results_to_totto(
-                execute_transformed_query(self.db_controller, query),
+                await execute_transformed_query(conn_url, self.db_controller, query),
                 nl_query
             )
         except DbException as e:

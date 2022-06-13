@@ -9,10 +9,11 @@ router = APIRouter()
 
 
 class Query(BaseModel):
+    conn_url: str
     query: str
     nl_query: Optional[str] = ""
 
 
 @router.post("/explain_query")
-def explain_query(query: Query, query_explainer=Depends(get_query_explainer)):
-    return {"explanation": query_explainer.explain_query_results(query.query, query.nl_query)}
+async def explain_query(query: Query, query_explainer=Depends(get_query_explainer)):
+    return {"explanation": await query_explainer.explain_query_results(query.conn_url, query.query, query.nl_query)}

@@ -11,3 +11,5 @@ mo-sql-parsing==5.58.21262
 sentencepiece==0.1.96
 torchmetrics==0.6.2
 protobuf~=3.19.0
+databases==0.6.0
+aiosqlite==0.17.0

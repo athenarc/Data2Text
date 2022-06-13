@@ -12,9 +12,5 @@ FASTAPI:
   HOST: '0.0.0.0'
   PORT: 4557
 
-DB:
-  PATH: "storage/app_data/tables.db"
-  CREDENTIALS: "app/backend/config/credentials.yaml"
-
 MISC:
   LOGGER_LEVEL: "INFO"

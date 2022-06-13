@@ -1,59 +1,49 @@
 import sqlite3
 from typing import List
 
+from databases import Database
+
 from app.backend.db.DbInterface import DbException, DbInterface
 
 
 class SqliteController(DbInterface):
-    def __init__(self, db_path):
-        self.db_path = db_path
 
-    def shutdown(self):
-        """No cleanup is needed since we connect every time we perform a query."""
-        pass
+    async def query_with_res_cols(self, conn_url, query):
+        database = Database(conn_url)
+        await database.connect()
+        one_row = await database.fetch_one(query=query)
+        res = await database.fetch_all(query=query)
+        res_with_cols = dict(one_row._mapping)
 
-    def query_with_res_cols(self, query):
-        con = sqlite3.connect(self.db_path)
-        cur = con.cursor()
+        desc = [col_name for col_name in res_with_cols.keys()]
+        # values = [val for val in list(res_with_cols.values())]
 
-        try:
-            cur.execute(query)
-            res = cur.fetchall()
-        except sqlite3.OperationalError as e:
-            raise DbException(f"{e}")
-        desc = [d[0] for d in cur.description]
-        con.close()
+        await database.disconnect()
 
         return res, desc
 
-    def get_table_names(self) -> List[str]:
-        candidate_tables, _ = self.query_with_res_cols("SELECT name FROM sqlite_master WHERE type='table';")
+    async def get_table_names(self, conn_url) -> List[str]:
+        candidate_tables, _ = await self.query_with_res_cols(conn_url,
+                                                             "SELECT name FROM sqlite_master WHERE type='table';")
         # Many tables do not have a meaningful name but instead an id eg. table_12_42
         # We cannot use our model on them since the table name is important information
         return [table[0] for table in candidate_tables if "table_" not in table[0] and table[0] != 'sqlite_master']
 
-    def get_table_cols(self, table_name: str) -> List[str]:
-        table_info, _ = self.query_with_res_cols(f'PRAGMA table_info({table_name});')
+    async def get_table_cols(self, conn_url, table_name: str) -> List[str]:
+        table_info, _ = self.query_with_res_cols(conn_url, f'PRAGMA table_info({table_name});')
         table_cols = [table_col[1] for table_col in table_info]
 
         return table_cols
 
-    def get_pks_of_table(self, table_name: str) -> List[str]:
+    async def get_pks_of_table(self, conn_url, table_name: str) -> List[str]:
         pks_of_table_query = f"""
                 SELECT l.name
                 FROM pragma_table_info('books') AS l
                 WHERE l.pk = 1;
                 """
-        table_pks = self.query_with_res_cols(pks_of_table_query)
+        table_pks = await self.query_with_res_cols(conn_url, pks_of_table_query)
         return list(table_pks[0][0])
 
-    def preview_table(self, table: str, limit: int = 10):
-        rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
+    async def preview_table(self, conn_url, table: str, limit: int = 10):
+        rows, cols = await self.query_with_res_cols(conn_url, f"SELECT * FROM {table} LIMIT {limit}")
         return {"table": table, "header": cols, "row": rows}
-
-
-if __name__ == '__main__':
-    sqlite_con = SqliteController("../../../storage/app_data/tables.db")
-    # table_cols_debug = sqlite_con.get_table_cols('Titanic')
-    # print(sqlite_con.query_with_res_cols("SELECT * FROM titanic"))
-    print(sqlite_con.get_pks_of_table('books'))

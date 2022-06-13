@@ -11,13 +11,13 @@ from app.backend.processing.process_query.clause_extractors import (
     find_where_cols, is_aggregate_query)
 
 
-def execute_transformed_query(db_controller: DbInterface, raw_query: str):
+async def execute_transformed_query(conn_url: str, db_controller: DbInterface, raw_query: str):
     # We check if the original query has any errors
     logging.debug("Executing original query.")
-    _ = db_controller.query_with_res_cols(raw_query)
+    _ = await db_controller.query_with_res_cols(conn_url, raw_query)
 
     new_query_str, tables = transform_query(raw_query)
-    query_res = db_controller.query_with_res_cols(new_query_str)
+    query_res = await db_controller.query_with_res_cols(conn_url, new_query_str)
 
     return {"tables_name": tables, "col_names": query_res[1], "rows": query_res[0]}
 
