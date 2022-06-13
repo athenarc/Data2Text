@@ -1,4 +1,4 @@
 BACKEND_HOST: back
 BACKEND_PORT: 4557
 STARTUP_WAIT_SEC: 30
-DATABASE_URL: "sqlite://////app/storage/dbs/tables.db"
+DATABASE_URL: "sqlite://///app/storage/dbs/tables.db"
