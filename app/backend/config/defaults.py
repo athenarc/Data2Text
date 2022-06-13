@@ -25,6 +25,7 @@ _C.FASTAPI.DEBUG = True
 _C.FASTAPI.RELOAD = True
 _C.FASTAPI.HOST = '0.0.0.0'
 _C.FASTAPI.PORT = 4557
+_C.FASTAPI.API_ROOT = "qr2t_back"
 
 # ---------------------------------------------------------------------------- #
 # Database Info

@@ -14,6 +14,6 @@ class Query(BaseModel):
     nl_query: Optional[str] = ""
 
 
-@router.post("/explain_query")
+@router.post("/qr2t_back/explain_query")
 async def explain_query(query: Query, query_explainer=Depends(get_query_explainer)):
     return {"explanation": await query_explainer.explain_query_results(query.conn_url, query.query, query.nl_query)}

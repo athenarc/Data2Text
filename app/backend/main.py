@@ -9,11 +9,13 @@ from app.backend.routers.add_routes import initialize_routes
 # logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
-app = FastAPI()
+app = FastAPI(openapi_url=f"/{cfg.FASTAPI.API_ROOT}/openapi.json",
+              docs_url=f"/{cfg.FASTAPI.API_ROOT}/docs",
+              redoc_url=f"/{cfg.FASTAPI.API_ROOT}/redoc")
 initialize_routes(app)
 
 
-@app.get("/health")
+@app.get("/qr2t_back/health")
 def health_check():
     return {"message": "App has initialised and is running"}
 
