@@ -36,6 +36,11 @@ services:
       - app
     volumes:
       - /home/mxydas/qr2t/storage:/app/storage
+    labels:
+      - traefik.enable=true # enable this docker on traefik
+      - traefik.http.routers.qr2t_back.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t_back`) # url
+      - traefik.http.routers.qr2t_back.middlewares=redirect_to_https@file # add the middleware to redirect to https
+
 
 networks:
   app:
