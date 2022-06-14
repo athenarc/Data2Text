@@ -31,7 +31,7 @@ services:
     container_name: qr2t_back
     restart: unless-stopped
     expose:
-      - 4557
+      - 8013
     networks:
       - app
       - traefik
