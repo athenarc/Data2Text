@@ -11,59 +11,10 @@ from sshtunnel import SSHTunnelForwarder
 from app.backend.db.DbInterface import DbException, DbInterface
 
 
-@contextmanager
-def get_connection(*args, **kwargs):
-    """ A context manager that opens and closes the MySQL connection """
-    connection = pymysql.connect(*args, **kwargs)
-    try:
-        yield connection
-    finally:
-        connection.close()
-
-
 class MySqlController(DbInterface):
-    def __init__(self, credentials_path: str):
-        with open(credentials_path, 'r') as stream:
-            self.credentials = yaml.safe_load(stream)
-
-        # Currently the tunneling code is not working on DARELAB. Interestingly, it works on other remote
-        # servers. Fix: use ssh tunneling on the terminal.
-        # self.tunnel = self._open_ssh_tunnel()
-
-    def _open_ssh_tunnel(self) -> SSHTunnelForwarder:
-        """Open an SSH tunnel and connect using a username and password."""
-        tunnel = SSHTunnelForwarder(
-            (self.credentials['MYSQL']['SSH_HOST'],
-             self.credentials['MYSQL']['SSH_PORT']),
-            ssh_username=self.credentials['MYSQL']['SSH_USERNAME'],
-            ssh_password=self.credentials['MYSQL']['SSH_PASSWORD'],
-            remote_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
-                                 self.credentials['MYSQL']['DATABASE_PORT']),
-            local_bind_address=(self.credentials['MYSQL']['DATABASE_HOST'],
-                                self.credentials['MYSQL']['DATABASE_PORT'])
-
-        )
-
-        tunnel.start()
-        return tunnel
-
-    def _mysql_connection_args(self) -> Dict:
-        """Return the connection arguments as a dict that will then be used as kwargs from
-        the connection context manager"""
-
-        connection_args = {
-            "host": self.credentials['MYSQL']['DATABASE_HOST'],
-            "user": self.credentials['MYSQL']['DATABASE_USERNAME'],
-            "passwd": self.credentials['MYSQL']['DATABASE_PASSWORD'],
-            "db": self.credentials['MYSQL']['DATABASE_NAME'],
-            "port": self.credentials['MYSQL']['DATABASE_PORT']
-        }
-
-        return connection_args
-
-    def shutdown(self) -> None:
-        """ Close the mysql connection and the tunnel"""
-        # self.tunnel.close()
+    # def __init__(self, credentials_path: str):
+    #     with open(credentials_path, 'r') as stream:
+    #         self.credentials = yaml.safe_load(stream)
 
     def query_with_res_cols(self, query: str):
         try:
