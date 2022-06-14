@@ -17,7 +17,7 @@ initialize_routes(app)
 
 @app.get("/qr2t_back/health")
 def health_check():
-    return {"message": "App has initialised and is running"}
+    return {"message": "App has initialised and is running."}
 
 
 def main():

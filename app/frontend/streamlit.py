@@ -21,7 +21,7 @@ with col1:
 
 with col2:
     st.markdown("**Explain the query in NL (Optional)**")
-    nl_query = st.text_area("", value="Find the name and age of a male passenger")
+    nl_query = st.text_area("", value="Find the name and age of a male passenger.")
 
 
 query_explanation = ""
