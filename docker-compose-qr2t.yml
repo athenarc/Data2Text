@@ -8,13 +8,13 @@ services:
       - 80
     networks:
       - app
-      - traefik
+#      - traefik
     depends_on:
       - front
-    labels:
-      - traefik.enable=true # enable this docker on traefik
-      - traefik.http.routers.qr2t.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t`) # url
-      - traefik.http.routers.qr2t.middlewares=redirect_to_https@file # add the middleware to redirect to https
+#    labels:
+#      - traefik.enable=true # enable this docker on traefik
+#      - traefik.http.routers.qr2t.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t`) # url
+#      - traefik.http.routers.qr2t.middlewares=redirect_to_https@file # add the middleware to redirect to https
 
   front:
     image: darelab-pull.docker.imsi.athenarc.gr/mxydas/qr2t/front
