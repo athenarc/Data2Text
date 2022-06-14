@@ -1,6 +1,9 @@
 import streamlit as st
 from api_calls import explain_query, get_table_names, preview_table
 
+st.set_page_config(page_title='QR2T',
+                   page_icon='favicon.png')
+
 st.title('Query Results to Text')
 selected_table = st.sidebar.selectbox('Choose a table:', get_table_names(), index=0)
 
