@@ -1,6 +1,7 @@
 # This dockerfile creates the backend image (app/backend/). However, it needs modules like
 # modeling, utils, etc. so I have moved it to the root of the project.
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+#FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM python:3.8
 
 RUN pip3 install torch==1.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
