@@ -13,3 +13,5 @@ torchmetrics==0.6.2
 protobuf~=3.19.0
 databases==0.6.0
 aiosqlite==0.17.0
+fastapi==0.70.1
+uvicorn==0.16.0
