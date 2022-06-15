@@ -1,74 +1,63 @@
-from contextlib import contextmanager
 from typing import Dict, List
 
-import pandas as pd
-import pandas.io.sql
-import pymysql
-import sshtunnel
-import yaml
-from sshtunnel import SSHTunnelForwarder
+from databases import Database
 
 from app.backend.db.DbInterface import DbException, DbInterface
 
 
 class MySqlController(DbInterface):
-    # def __init__(self, credentials_path: str):
-    #     with open(credentials_path, 'r') as stream:
-    #         self.credentials = yaml.safe_load(stream)
 
-    def query_with_res_cols(self, query: str):
-        try:
-            with get_connection(**self._mysql_connection_args()) as con:
-                res = pd.read_sql_query(query, con)
-        except pandas.io.sql.DatabaseError as e:
-            raise DbException(f"ERROR: {e}")
-        return list(res.itertuples(index=False, name=None)), list(res.columns)
+    async def query_with_res_cols(self, conn_url: str, query: str):
+        database = Database(conn_url)
+        await database.connect()
 
-    def get_table_names(self) -> List[str]:
+        one_row = await database.fetch_one(query=query)
+        res = await database.fetch_all(query=query)
+        res_with_cols = dict(one_row._mapping)
+
+        desc = [col_name for col_name in res_with_cols.keys()]
+
+        await database.disconnect()
+
+        return res, desc
+
+    @staticmethod
+    def find_db_name(conn_url: str):
+        return conn_url.split('/')[-1]
+
+    async def get_table_names(self, conn_url: str) -> List[str]:
         table_query = f"""
         SELECT table_name
         FROM INFORMATION_SCHEMA.TABLES
-        WHERE table_schema = \'{self.credentials['MYSQL']['DATABASE_NAME']}\';
+        WHERE table_schema = \'{self.find_db_name(conn_url)}\';
         """
 
-        with get_connection(**self._mysql_connection_args()) as con:
-            table_names = pd.read_sql_query(table_query, con)
-        return list(table_names.TABLE_NAME)
+        table_names, _ = await self.query_with_res_cols(conn_url, table_query)
 
-    def get_table_cols(self, table_name: str) -> List[str]:
+        return [table[0] for table in table_names]
+
+    async def get_table_cols(self, conn_url: str, table_name: str) -> List[str]:
         table_cols_query = f"""
         SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = \'{self.credentials['MYSQL']['DATABASE_NAME']}\' AND TABLE_NAME = \'{table_name}\';
+        WHERE TABLE_SCHEMA = \'{self.find_db_name(conn_url)}\' AND TABLE_NAME = \'{table_name}\';
         """
-        with get_connection(**self._mysql_connection_args()) as con:
-            table_cols = pd.read_sql_query(table_cols_query, con)
-        return list(table_cols.COLUMN_NAME)
+        table_cols, _ = await self.query_with_res_cols(conn_url, table_cols_query)
 
-    def get_pks_of_table(self, table_name: str) -> List[str]:
+        return [table_col[0] for table_col in table_cols]
+
+    async def get_pks_of_table(self, conn_url: str, table_name: str) -> List[str]:
         pks_of_table_query = f"""
         SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = '{self.credentials['MYSQL']['DATABASE_NAME']}'
+        WHERE TABLE_SCHEMA = '{self.find_db_name(conn_url)}'
           AND TABLE_NAME = '{table_name}'
           AND COLUMN_KEY = 'PRI';
         """
-        with get_connection(**self._mysql_connection_args()) as con:
-            table_pks = pd.read_sql_query(pks_of_table_query, con)
-        return list(table_pks.COLUMN_NAME)
+        pks, _ = await self.query_with_res_cols(conn_url, pks_of_table_query)
 
-    def preview_table(self, table: str, limit: int = 10):
-        rows, cols = self.query_with_res_cols(f"SELECT * FROM {table} LIMIT {limit}")
-        return {"table": table, "header": cols, "row": rows}
+        return [pk[0] for pk in pks]
 
-
-if __name__ == '__main__':
-    mysql_controller = MySqlController("../config/credentials.yaml")
-    # res_rows, desc = mysql_controller.query_with_res_cols("SELECT * FROM projects LIMIT 10")
-    # print(res_rows)
-    # print(desc)
-    #
-    # print(mysql_controller.get_table_names())
-    # print(mysql_controller.get_table_cols("projects"))
-    # print(mysql_controller.preview_table("projects"))
-    print(mysql_controller.get_pks_of_table('projects'))
+    async def preview_table(self, conn_url: str, table: str, limit: int = 10):
+        res, desc = await self.query_with_res_cols(conn_url, f"SELECT * FROM {table} LIMIT {limit}")
+        return {"table": table, "header": desc, "row": res}

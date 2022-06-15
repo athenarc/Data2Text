@@ -11,12 +11,12 @@ class SqliteController(DbInterface):
     async def query_with_res_cols(self, conn_url, query):
         database = Database(conn_url)
         await database.connect()
+
         one_row = await database.fetch_one(query=query)
         res = await database.fetch_all(query=query)
         res_with_cols = dict(one_row._mapping)
 
         desc = [col_name for col_name in res_with_cols.keys()]
-        # values = [val for val in list(res_with_cols.values())]
 
         await database.disconnect()
 
