@@ -15,8 +15,11 @@ from app.backend.processing.process_query_results import query_results_to_totto
 class QueryResultsExplainer:
     def __init__(self, cfg):
         # self.db_controller: DbInterface = MySqlController(cfg.DB.CREDENTIALS)  # Could be sqlite, MySQL currently
-        self.db_controller: DbInterface = SqliteController()
+        self.db_controller: Optional[DbInterface] = None
         self.inference_controller = InferenceController(cfg)
+
+    def set_db_controller(self, db_interface: DbInterface):
+        self.db_controller = db_interface
 
     async def explain_query_results(self, conn_url: str, query: str, nl_query: Optional[str] = "") -> str:
         try:
