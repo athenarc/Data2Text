@@ -73,6 +73,7 @@ def transform_query(raw_query: str) -> Tuple[str, str]:
     new_query = query_injectors.verbalise_aggregates(new_query, tables)
 
     # We transform back the Dict query representation to a string query
+    print(new_query)
     new_query_str = mo_sql_parsing.format(new_query)
     logging.debug(f"Transformed query: {new_query_str}")
 

@@ -178,7 +178,10 @@ def return_select_math_op_cols(clause, op) -> Set[str]:
 
 def return_distinct_cols(clause) -> Set[str]:
     if isinstance(clause['value']['distinct'], Dict):
-        return {clause['value']['distinct']['value']}
+        if isinstance(clause['value']['distinct']['value'], Dict):
+            return {list(clause['value']['distinct']['value'].values())[0]}
+        else:
+            return {clause['value']['distinct']['value']}
     else:
         return {col['value'] for col in clause['value']['distinct']}
 
