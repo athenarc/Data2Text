@@ -82,9 +82,9 @@ def read_cordis_queries():
 
 
 class TestQueryTransformationIntegration:
-    @pytest.mark.parametrize('query,expected', read_cordis_queries())
-    def test_transform_query_on_cordis(self, query: str, expected: Tuple[str, str]):
-        assert query_pipeline.transform_query(query) == expected
+    # @pytest.mark.parametrize('query,expected', read_cordis_queries())
+    # def test_transform_query_on_cordis(self, query: str, expected: Tuple[str, str]):
+    #     assert query_pipeline.transform_query(query) == expected
 
     @pytest.mark.slow
     def test_spider_queries_smoke_test(self):

@@ -25,6 +25,7 @@ async def execute_transformed_query(conn_url: str, db_controller: DbInterface, r
 def transform_query(raw_query: str) -> Tuple[str, str]:
     logging.debug(f"Original query: {raw_query}")
     raw_query = raw_query.replace('"', '\'')
+    raw_query = raw_query.replace('DISTINCT', '')
 
     query = mo_sql_parsing.parse(raw_query)
     if not isinstance(query['select'], List):
@@ -73,7 +74,6 @@ def transform_query(raw_query: str) -> Tuple[str, str]:
     new_query = query_injectors.verbalise_aggregates(new_query, tables)
 
     # We transform back the Dict query representation to a string query
-    print(new_query)
     new_query_str = mo_sql_parsing.format(new_query)
     logging.debug(f"Transformed query: {new_query_str}")
 
