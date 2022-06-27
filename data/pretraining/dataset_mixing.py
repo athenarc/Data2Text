@@ -5,35 +5,35 @@ import random
 from tqdm import tqdm
 
 
-def datapoint_generator_creation(directory, prefix):
-    def datapoint_generator(directory, prefix):
-        files = glob.glob(f"{directory}/*")
+def datapoint_generator_creation(file_path, prefix):
+    def datapoint_generator(file_path, prefix):
+        with open(file_path, 'r') as inp:
+            datapoints = json.load(inp)
 
-        for file in files:
-            with open(file, 'r') as inp:
-                datapoints = json.load(inp)
-
-            for datapoint in datapoints:
-                # This is the format used when finetuning on ToTTo
+        for datapoint in datapoints:
+            # This is the format used when finetuning on ToTTo
+            if 'subtable_and_metadata' in datapoint:
+                yield datapoint
+            else:
                 yield {
-                    'subtable_and_metadata': f"{prefix}{datapoint['totto_task']}",
+                    'subtable_and_metadata': f"{prefix}{datapoint['task']}",
                     'final_sentence': datapoint['target']
                 }
 
-    return datapoint_generator(directory, prefix)
+    return datapoint_generator(file_path, prefix)
 
 
 def prefix_creator(task_name: str) -> str:
-    if task_name == "C4_MASKING_TASK_DIR":
-        return "<c4_masking>"
-    elif task_name == "WDC_COLUMN_MASKING":
-        return "<wdc_masking>"
-    elif task_name == "WDC_COLUMN_TYPE":
-        return "<wdc_type>"
-    elif task_name == "WDC_COLUMN_MIXING":
-        return "<wdc_mixing>"
-    elif task_name == "WDC_CONTENT_MASKING":
-        return "<wdc_content>"
+    if task_name == "TOTTO_ORIGINAL_TASK":
+        return ""
+    elif task_name == "TOTTO_COLUMN_MASKING":
+        return "<erosion>"
+    elif task_name == "TOTTO_COLUMN_ADDING":
+        return "<erosion>"
+    elif task_name == "TOTTO_COLUMN_MIXING":
+        return "<erosion>"
+    elif task_name == "TOTTO_VALUE_MASKING":
+        return "<value>"
 
 
 def create_dict_of_task_generators(dataset_paths):
@@ -43,24 +43,24 @@ def create_dict_of_task_generators(dataset_paths):
 
 def mix_datasets():
     dataset_dir_paths = {
-        'C4_MASKING_TASK_DIR': 'storage/datasets/c4/masked',
-        'WDC_COLUMN_MASKING': 'storage/datasets/wdc/column_masking',
-        'WDC_COLUMN_TYPE': 'storage/datasets/wdc/column_type',
-        'WDC_COLUMN_MIXING': 'storage/datasets/wdc/column_mixing',
-        'WDC_CONTENT_MASKING': 'storage/datasets/wdc/content_masking'
+        'TOTTO_ORIGINAL_TASK': 'storage/datasets/compact_input/totto/train.json',
+        'TOTTO_COLUMN_MIXING': 'storage/datasets/compact_input/pretrain_totto/tasks/column_mixing.json',
+        'TOTTO_COLUMN_MASKING': 'storage/datasets/compact_input/pretrain_totto/tasks/column_masking.json',
+        'TOTTO_COLUMN_ADDING': 'storage/datasets/compact_input/pretrain_totto/tasks/added_columns.json',
+        'TOTTO_VALUE_MASKING': 'storage/datasets/compact_input/pretrain_totto/tasks/value_masking.json'
     }
 
     ratios = {
-        'C4_MASKING_TASK_DIR': 0.2,
-        'WDC_COLUMN_MASKING': 0.2,
-        'WDC_COLUMN_TYPE': 0.2,
-        'WDC_COLUMN_MIXING': 0.2,
-        'WDC_CONTENT_MASKING': 0.2
+        'TOTTO_ORIGINAL_TASK': 0.2,
+        'TOTTO_COLUMN_MIXING': 0.2,
+        'TOTTO_COLUMN_MASKING': 0.2,
+        'TOTTO_COLUMN_ADDING': 0.2,
+        'TOTTO_VALUE_MASKING': 0.2
     }
 
-    OUTPUT_DIR = 'storage/datasets/pretrain/all_tasks'
-    batches_numb = 10
-    datapoints_per_file = 200_000
+    OUTPUT_DIR = 'storage/datasets/compact_input/pretrain_totto/combined'
+    batches_numb = 1
+    datapoints_per_file = 400_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
 
@@ -77,7 +77,7 @@ def mix_datasets():
         # Shuffle since the tasks are ordered
         random.shuffle(stored_datapoints)
 
-        with open(f"{OUTPUT_DIR}/pretrain_file_{which_batch}.json", 'w') as outfile:
+        with open(f"{OUTPUT_DIR}/totto_auxiliary_tasks_file_{which_batch}.json", 'w') as outfile:
             json.dump(stored_datapoints, outfile)
 
 

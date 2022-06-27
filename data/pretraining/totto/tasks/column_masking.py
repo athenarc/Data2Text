@@ -38,7 +38,7 @@ def mask_columns_of_table(table, mixing_rate):
     }
 
 
-def totto_column_mixing_task(disable_tqdm=True):
+def totto_column_masking_task(disable_tqdm=True):
     TOTTO_FILTERED_FILE = "storage/datasets/compact_input/totto/train.json"
     TOTTO_COLUMN_MASKING_FILE = "storage/datasets/compact_input/pretrain_totto/tasks/column_masking.json"
     MASKING_RATE = 0.35
@@ -65,4 +65,4 @@ def totto_column_mixing_task(disable_tqdm=True):
 
 
 if __name__ == '__main__':
-    totto_column_mixing_task(disable_tqdm=False)
+    totto_column_masking_task(disable_tqdm=False)
