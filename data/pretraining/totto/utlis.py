@@ -31,3 +31,14 @@ def extract_concise_table_attributes(table):
     }
 
     return ret_attributes
+
+
+def serialize_table(table_attributes):
+    table_content = ""
+    for ind, cell in enumerate(table_attributes['cells']):
+        def serialize_cell():
+            return f"<col{ind}> {cell['col']} | {cell['type']} | {cell['value']} "
+
+        table_content += serialize_cell()
+
+    return f"<query> {table_attributes['query']} <table> {table_attributes['table']} {table_content}"

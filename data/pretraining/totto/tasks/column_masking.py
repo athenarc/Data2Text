@@ -4,21 +4,21 @@ from tqdm import tqdm
 
 from data.pretraining.totto.utlis import (extract_concise_table_attributes,
                                           serialize_table)
-from data.pretraining.wdc.tasks.column_mixing import create_mixin_pairs
+from data.pretraining.wdc.tasks.column_masking import \
+    find_indexes_of_masked_columns
 
 
-def mix_columns_of_table(table, mixing_rate):
+def mask_columns_of_table(table, mixing_rate):
     table_attributes = extract_concise_table_attributes(table)
 
-    mixin_pairs = create_mixin_pairs(len(table_attributes['cells']), mixing_rate)
-    # print(mixin_pairs)
+    masked_cols = set(find_indexes_of_masked_columns(len(table_attributes['cells']), mixing_rate))
 
     new_cells = []
     for ind, cell in enumerate(table_attributes['cells']):
         new_cells.append({
             'type': cell['type'],
             'value': cell['value'],
-            'col': table_attributes['cells'][mixin_pairs[ind]]['col'] if ind in mixin_pairs else cell['col']
+            'col': '[MASK]' if ind in masked_cols else cell['col']
         })
 
     new_table_attributes = {
@@ -26,7 +26,6 @@ def mix_columns_of_table(table, mixing_rate):
         "query": table_attributes['query'],
         "cells": new_cells
     }
-    # print(new_table_attributes)
 
     def create_target():
         extract_cols = [cell['col'] for cell in table_attributes['cells']]
@@ -41,28 +40,28 @@ def mix_columns_of_table(table, mixing_rate):
 
 def totto_column_mixing_task(disable_tqdm=True):
     TOTTO_FILTERED_FILE = "storage/datasets/compact_input/totto/train.json"
-    TOTTO_COLUMN_MIXING_FILE = "storage/datasets/compact_input/pretrain_totto/tasks/column_mixing.json"
-    MIXING_RATE = 0.55
+    TOTTO_COLUMN_MASKING_FILE = "storage/datasets/compact_input/pretrain_totto/tasks/column_masking.json"
+    MASKING_RATE = 0.35
 
-    print("ToTTo | Column mixing")
+    print("ToTTo | Column masking")
 
     with open(TOTTO_FILTERED_FILE) as f:
         datapoints = json.load(f)
 
-    mixed_datapoints = []
+    masked_datapoints = []
 
     for datapoint in tqdm(datapoints, disable=disable_tqdm):
         try:
-            mixed_datapoint = mix_columns_of_table(datapoint['subtable_and_metadata'], MIXING_RATE)
+            masked_datapoint = mask_columns_of_table(datapoint['subtable_and_metadata'], MASKING_RATE)
         except IndexError:
             continue
 
-        mixed_datapoints.append(mixed_datapoint)
+        masked_datapoints.append(masked_datapoint)
 
-    with open(TOTTO_COLUMN_MIXING_FILE, 'w') as outfile:
-        json.dump(mixed_datapoints, outfile)
+    with open(TOTTO_COLUMN_MASKING_FILE, 'w') as outfile:
+        json.dump(masked_datapoints, outfile)
 
-    print(f"DONE: Percentage of datapoints included {int(len(mixed_datapoints) / len(datapoints) * 100)}%")
+    print(f"DONE: Percentage of datapoints included {int(len(masked_datapoints) / len(datapoints) * 100)}%")
 
 
 if __name__ == '__main__':

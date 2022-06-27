@@ -15,7 +15,7 @@ def find_number_of_maskings(total_cols, mixing_rate) -> int:
     return math.ceil(total_cols * mixing_rate) if total_cols > 1 else 0
 
 
-def find_indexes_of_mixed_columns(total_cols, mixing_rate) -> List[int]:
+def find_indexes_of_masked_columns(total_cols, mixing_rate) -> List[int]:
     return sorted(random.sample(range(total_cols), find_number_of_maskings(total_cols, mixing_rate)))
 
 
@@ -30,7 +30,7 @@ def create_target(cols, mask_inds) -> str:
 
 
 def create_cols_with_masks(cols, mixing_rate) -> Tuple[List[str], str]:
-    masked_col_inds = find_indexes_of_mixed_columns(len(cols), mixing_rate)
+    masked_col_inds = find_indexes_of_masked_columns(len(cols), mixing_rate)
 
     cols_with_masks = []
     mask_counter = 0
