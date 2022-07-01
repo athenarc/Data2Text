@@ -49,7 +49,7 @@ def mask_table_values(table, masking_rate):
 def totto_value_masking_task(disable_tqdm=True):
     TOTTO_FILTERED_FILE = "storage/datasets/compact_input/totto/train.json"
     TOTTO_MASKED_CELL_VALUES_FILE = "storage/datasets/compact_input/pretrain_totto/tasks/value_masking.json"
-    MASKING_RATE = 0.55
+    MASKING_RATE = 0.3
 
     print("ToTTo | Value masking")
 

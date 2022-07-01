@@ -29,7 +29,7 @@ def mask_columns_of_table(table, mixing_rate):
 
     def create_target():
         extract_cols = [cell['col'] for cell in table_attributes['cells']]
-        return f"<S>{'<S>'.join(extract_cols)}<S>"
+        return f"<S> {' <S> '.join(extract_cols)} <S>"
 
     return {
         "original": table,
@@ -41,7 +41,7 @@ def mask_columns_of_table(table, mixing_rate):
 def totto_column_masking_task(disable_tqdm=True):
     TOTTO_FILTERED_FILE = "storage/datasets/compact_input/totto/train.json"
     TOTTO_COLUMN_MASKING_FILE = "storage/datasets/compact_input/pretrain_totto/tasks/column_masking.json"
-    MASKING_RATE = 0.35
+    MASKING_RATE = 0.3
 
     print("ToTTo | Column masking")
 

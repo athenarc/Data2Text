@@ -30,7 +30,7 @@ def mix_columns_of_table(table, mixing_rate):
 
     def create_target():
         extract_cols = [cell['col'] for cell in table_attributes['cells']]
-        return f"<S>{'<S>'.join(extract_cols)}<S>"
+        return f"<S> {' <S> '.join(extract_cols)} <S>"
 
     return {
         "original": table,

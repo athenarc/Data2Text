@@ -60,7 +60,7 @@ def mix_datasets():
 
     OUTPUT_DIR = 'storage/datasets/compact_input/pretrain_totto/combined'
     batches_numb = 1
-    datapoints_per_file = 400_000
+    datapoints_per_file = 360_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
 

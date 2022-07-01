@@ -57,7 +57,7 @@ def add_columns_on_table(table, max_added_columns, tables):
 
     def create_target():
         extract_cols = [cell['col'] for cell in table_attributes['cells']]
-        return f"<S>{'<S>'.join(extract_cols)}<S>"
+        return f"<S> {' <S> '.join(extract_cols)} <S>"
 
     return {
         "original": table,
