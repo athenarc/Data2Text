@@ -22,7 +22,7 @@ DATASET:
 WANDB:
   RUN_NAME: "Finetune"
   GROUP: "CI | ARIS | T5-small | QR2T"
-  MODE: "online"
+  MODE: "offline"
   NOTES: ""
 
 DATALOADER:
