@@ -13,9 +13,9 @@ SOLVER:
   BASE_LR: 0.001
 
 DATASET:
-  TRAIN: "storage/datasets/aris/totto/train.json"
-  VALIDATION: "storage/datasets/aris/totto/dev.json"
-  EVALUATION: "storage/datasets/aris/totto/dev.json"
+  TRAIN: "storage/datasets/compact_input/aris/totto/train.json"
+  VALIDATION: "storage/datasets/compact_input/aris/totto/dev.json"
+  EVALUATION: "storage/datasets/compact_input/aris/totto/dev.json"
 
 WANDB:
   RUN_NAME: "totto"

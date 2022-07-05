@@ -21,7 +21,7 @@ WANDB:
 DATASET:
   VALIDATION: ""
   EVALUATION: ""
-  TRAIN: "storage/datasets/compact_input/auxiliary/totto_auxiliary_tasks_file_0.json"
+  TRAIN: "storage/datasets/compact_input/compact_input/auxiliary/totto_auxiliary_tasks_file_0.json"
 
 DATALOADER:
   NUM_WORKERS: 11

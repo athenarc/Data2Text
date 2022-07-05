@@ -15,9 +15,9 @@ SOLVER:
 
 
 DATASET:
-  TRAIN: "storage/datasets/qr2t/train.json"
-  VALIDATION: "storage/datasets/qr2t/dev.json"
-#  EVALUATION: "storage/datasets/totto/filtered/evaluation.json"
+  TRAIN: "storage/datasets/compact_input/qr2t/train.json"
+  VALIDATION: "storage/datasets/compact_input/qr2t/dev.json"
+#  EVALUATION: "storage/datasets/compact_input/totto/filtered/evaluation.json"
 
 WANDB:
   RUN_NAME: "Finetune"
