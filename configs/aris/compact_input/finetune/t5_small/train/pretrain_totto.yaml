@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/compact_input/pretrained/t5_small/epoch=0-step=79999.ckpt"
+  PATH_TO_CHECKPOINT: "/users/pa21/mxydas/projects/Data2Text/storage/checkpoints/compact_input/pretrained/t5_small/epoch=0-step=14999.ckpt"
 
 OUTPUT:
   CHECKPOINTS_DIR: "storage/checkpoints/compact_input/finetuned/t5_small/pretrained_totto"
