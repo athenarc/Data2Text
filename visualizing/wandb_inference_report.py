@@ -46,8 +46,8 @@ class InferenceEvaluation:
             clean_references = [target.lower().translate(str.maketrans('', '', string.punctuation)).split()
                                 for target in self.targets]
 
-            _, _, self.parent, _ = parent_calc(predictions=clean_predicted,
-                                               references=clean_references,
+            _, _, self.parent, _ = parent_calc(predictions=[clean_predicted],
+                                               references=[clean_references],
                                                tables=tables_to_parent_format([self.source]))
         except ValueError:
             self.parent = -1

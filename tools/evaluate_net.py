@@ -80,7 +80,7 @@ def evaluate(cfg: CfgNode, wandb_run: Run) -> None:
         eval_set = json.load(f)
 
     inferences = [inference_controller.inference(datapoint['subtable_and_metadata'])
-                  for datapoint in tqdm(eval_set)]
+                  for datapoint in tqdm(eval_set[:5])]
 
     targets = [datapoint['final_sentence'] for datapoint in eval_set]
     if type(targets[0]) is str:
