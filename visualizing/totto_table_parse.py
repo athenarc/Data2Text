@@ -1,9 +1,16 @@
 import re
 
 
-def get_single_table_attribute(source: str, section: str) -> str:
+def get_table_title(source: str) -> str:
     try:
-        return re.search(fr".*<{section}>(.*)</{section}>", source).group(1)
+        return re.search(r"<table> (.*?) <col", source).group(1)
+    except AttributeError:
+        return ""
+
+
+def get_table_query(source: str) -> str:
+    try:
+        return re.search(r"<query> (.*?) <table>", source).group(1)
     except AttributeError:
         return ""
 
@@ -11,10 +18,10 @@ def get_single_table_attribute(source: str, section: str) -> str:
 def parse_totto_format(source: str):
     # We parse each part of the datapoint separately
     ret_dict = {
-        "page_title": get_single_table_attribute(source, "page_title"),
-        "section_title": get_single_table_attribute(source, "section_title"),
-        "cell_values": list(re.findall("<cell>(.*?)<col_header>", source)),
-        "header_values": list(re.findall("<col_header>(.*?)</col_header>", source))
+        "title": get_table_title(source),
+        "query": get_table_query(source),
+        "cell_values": list(re.findall(r"> .*? \| .*? \| (.*?) ", source)),
+        "columns": list(re.findall(r"> .*? \| .*? \| (.*?) ", source))
     }
 
     return ret_dict
@@ -38,7 +45,7 @@ def html_section_creator(page_title, section_title):
 def to_valid_html(source):
     parsed_table = parse_totto_format(source)
 
-    html_section = html_section_creator(parsed_table["page_title"], parsed_table["section_title"])
-    html_table = html_table_creator(parsed_table["header_values"], parsed_table["cell_values"])
+    html_section = html_section_creator(parsed_table["title"], parsed_table["query"])
+    html_table = html_table_creator(parsed_table["columns"], parsed_table["cell_values"])
 
     return html_section + html_table

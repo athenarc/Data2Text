@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/finetuned/t5_small/pretrained_totto/epoch=8-step=45440.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/finetuned/t5_small/pretrained_totto/epoch=6-step=35342.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
@@ -16,9 +16,9 @@ WANDB:
   NOTES: ""
 
 DATASET:
-  VALIDATION: "storage/datasets/compact_input/aris/cordis/curated_cordis_with_query.json"
-  EVALUATION: "storage/datasets/compact_input/aris/cordis/curated_cordis_with_query.json"
-  TRAIN: "storage/datasets/compact_input/aris/totto/filtered_sampled/train.json"
+  VALIDATION: "storage/datasets/compact_input/cordis/curated_cordis_with_query.json"
+  EVALUATION: "storage/datasets/compact_input/cordis/curated_cordis_with_query.json"
+  TRAIN: "storage/datasets/compact_input/totto/filtered_sampled/train.json"
 
 DATALOADER:
   NUM_WORKERS: 11

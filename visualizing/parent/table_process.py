@@ -4,12 +4,13 @@ from typing import List, Tuple
 
 
 def parse_source(source: str) -> List[Tuple[str, str]]:
+    source = source + "<" # Trick for the regex to work
     # Get the title
-    title = re.search(r"<page_title> (.*?) </page_title>", source).group(1)
+    title = re.search(r"<table> (.*?) <col", source).group(1)
 
     # Get the cell columns names, values
-    col_values = re.findall(r"<cell> (.*?) <col_header>", source)
-    col_names = re.findall(r"<col_header> (.*?) </col_header>", source)
+    col_values = re.findall(r"\d> .*? \| .*? \| (.*?) <", source)
+    col_names = re.findall(r"\d> (.*?) \| .*? \| .*? <", source)
 
     if len(col_names) != len(col_values):
         raise ValueError(f"Could not parse source: {source}")

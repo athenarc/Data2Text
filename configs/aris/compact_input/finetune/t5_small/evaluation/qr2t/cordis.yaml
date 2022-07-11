@@ -16,9 +16,9 @@ WANDB:
   NOTES: ""
 
 DATASET:
-  VALIDATION: "storage/datasets/compact_input/aris/cordis/curated_cordis_with_query.json"
-  EVALUATION: "storage/datasets/compact_input/aris/cordis/curated_cordis_with_query.json"
-  TRAIN: "storage/datasets/compact_input/aris/totto/filtered_sampled/train.json"
+  VALIDATION: "storage/datasets/compact_input/cordis/curated_cordis_with_query.json"
+  EVALUATION: "storage/datasets/compact_input/cordis/curated_cordis_with_query.json"
+  TRAIN: "storage/datasets/compact_input/totto/filtered_sampled/train.json"
 
 DATALOADER:
   NUM_WORKERS: 11
