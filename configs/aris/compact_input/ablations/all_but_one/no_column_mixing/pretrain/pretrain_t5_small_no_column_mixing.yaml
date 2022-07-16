@@ -1,0 +1,34 @@
+MODEL:
+  MAX_INPUT_TOKENS: 512
+  MAX_OUTPUT_TOKENS: 64
+  TOKENIZER_NAME: "t5-small"
+  PRETRAINED_MODEL_NAME: "t5-small"
+  PATH_TO_CHECKPOINT: ""
+
+SOLVER:
+  OPTIMIZER_NAME: "AdaFactor"
+  BASE_LR: 0.001
+  CHECKPOINT_PERIOD: 5000
+  MAX_EPOCHS: 1
+
+WANDB:
+  RUN_NAME: "Pretrain t5-small | No column mixing"
+  GROUP: "All but one | CI | ARIS | Pretrain"
+  TAGS: ["ci", "pretrain", "t5-small", "aris", "ablation"]
+  MODE: "offline"
+  NOTES: ""
+
+DATASET:
+  VALIDATION: ""
+  EVALUATION: ""
+  TRAIN: "storage/datasets/compact_input/auxiliary/ablations/all_but_one/no_column_mixing_task.json"
+
+DATALOADER:
+  NUM_WORKERS: 11
+
+INPUT:
+  TRAIN_BATCH_SIZE: 24
+  TEST_BATCH_SIZE: 24
+
+OUTPUT:
+  CHECKPOINTS_DIR: "storage/checkpoints/compact_input/ablations/all_but_one/no_column_mixing/pretrain/"

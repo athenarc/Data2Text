@@ -49,7 +49,7 @@ class InferenceEvaluation:
             _, _, self.parent, _ = parent_calc(predictions=[clean_predicted],
                                                references=[clean_references],
                                                tables=tables_to_parent_format([self.source]))
-        except ValueError:
+        except (ValueError, ZeroDivisionError):
             self.parent = -1
 
         # try:

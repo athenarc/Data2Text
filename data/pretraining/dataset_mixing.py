@@ -50,17 +50,25 @@ def mix_datasets():
         'TOTTO_VALUE_MASKING': 'storage/datasets/compact_input/pretrain_totto/tasks/value_masking.json'
     }
 
+    # ratios = {
+    #     'TOTTO_ORIGINAL_TASK': 0.2,
+    #     'TOTTO_COLUMN_MIXING': 0.2,
+    #     'TOTTO_COLUMN_MASKING': 0.2,
+    #     'TOTTO_COLUMN_ADDING': 0.2,
+    #     'TOTTO_VALUE_MASKING': 0.2
+    # }
     ratios = {
-        'TOTTO_ORIGINAL_TASK': 0.2,
-        'TOTTO_COLUMN_MIXING': 0.2,
-        'TOTTO_COLUMN_MASKING': 0.2,
-        'TOTTO_COLUMN_ADDING': 0.2,
-        'TOTTO_VALUE_MASKING': 0.2
+        'TOTTO_ORIGINAL_TASK': 0,
+        'TOTTO_COLUMN_MIXING': 0,
+        'TOTTO_COLUMN_MASKING': 0,
+        'TOTTO_COLUMN_ADDING': 0,
+        'TOTTO_VALUE_MASKING': 1
     }
 
-    OUTPUT_DIR = 'storage/datasets/compact_input/pretrain_totto/combined'
+    OUTPUT_FILE = 'storage/datasets/compact_input/pretrain_totto/ablations/only_one/value_masking_task.json'
     batches_numb = 1
-    datapoints_per_file = 360_000
+    # datapoints_per_file = 360_000
+    datapoints_per_file = 70_000
 
     task_generators = create_dict_of_task_generators(dataset_dir_paths)
 
@@ -77,7 +85,7 @@ def mix_datasets():
         # Shuffle since the tasks are ordered
         random.shuffle(stored_datapoints)
 
-        with open(f"{OUTPUT_DIR}/totto_auxiliary_tasks_file_{which_batch}.json", 'w') as outfile:
+        with open(f"{OUTPUT_FILE}", 'w') as outfile:
             json.dump(stored_datapoints, outfile)
 
 
