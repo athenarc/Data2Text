@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "TO BE FILLED"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/compact_input/ablations/all_but_one/no_column_adding/pretrain/epoch=0-step=9999.ckpt"
 
 OUTPUT:
   CHECKPOINTS_DIR: "storage/checkpoints/compact_input/ablations/all_but_one/no_column_adding/finetune/pre_totto/"

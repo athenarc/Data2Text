@@ -22,8 +22,7 @@ def start_trainer(cfg: CfgNode, train_dataloader: DataLoader,
         model = T5System(cfg, tokenizer)
 
     # Callbacks
-    checkpoint = ModelCheckpoint(dirpath=cfg.OUTPUT.CHECKPOINTS_DIR, monitor="val_loss",
-                                 save_top_k=4, every_n_epochs=cfg.SOLVER.CHECKPOINT_PERIOD)
+    checkpoint = ModelCheckpoint(dirpath=cfg.OUTPUT.CHECKPOINTS_DIR, monitor="val_loss", save_top_k=4)
 
     # Set directory that wandb will store its runs
     wandb_logger = pl_loggers.WandbLogger(save_dir=f"{cfg.OUTPUT.WANDB_LOGS_DIR}wandb/")
@@ -35,7 +34,7 @@ def start_trainer(cfg: CfgNode, train_dataloader: DataLoader,
 
     trainer = pl.Trainer(max_epochs=cfg.SOLVER.MAX_EPOCHS,
                          callbacks=[checkpoint], gpus=cfg.MODEL.GPUS_NUMB,
-                         logger=wandb_logger, log_every_n_steps=cfg.SOLVER.LOG_PERIOD)
+                         logger=wandb_logger, log_every_n_steps=200)
 
     trainer.fit(model,
                 train_dataloaders=train_dataloader,
