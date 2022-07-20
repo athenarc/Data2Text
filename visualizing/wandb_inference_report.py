@@ -5,7 +5,7 @@ from dataclasses import InitVar, dataclass, field
 from typing import Dict, List, Tuple  # Typing
 
 import datasets
-import sacrebleu
+# import sacrebleu
 import transformers
 import wandb
 # from sacrebleu import BLEU
