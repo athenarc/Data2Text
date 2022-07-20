@@ -1,0 +1,17 @@
+<View>
+  <Header value="NL Query"/>
+  <Text name="text1" value="$text"/>
+  <Header value="Query Results"/>
+  <Table name="table" value="$res"/>
+  <Header value="Verbalisation"/>
+  <Text name="text2" value="$text"/>
+  <View style="box-shadow: 2px 2px 5px #999; padding: 20px; margin-top: 2em; border-radius: 5px;">
+    <Header value="Choose text sentiment"/>
+    <Choices name="sentiment" toName="text2" choice="multiple" showInLine="true">
+      <Choice value="Correct"/>
+      <Choice value="Erroneous"/>
+      <Choice value="Omision"/>
+      <Choice value="Hallucination"/>
+    </Choices>
+  </View>
+</View>

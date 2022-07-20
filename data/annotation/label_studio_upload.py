@@ -14,7 +14,7 @@ ANNOTATORS = [
     "Katerina",
     "Antonis",
     "Anna",
-    "Apostolis",
+    "Dimitris",
     "Mike"
 ]
 ANNOTATIONS_DIR = 'storage/datasets/spider/annotations/label_studio/'

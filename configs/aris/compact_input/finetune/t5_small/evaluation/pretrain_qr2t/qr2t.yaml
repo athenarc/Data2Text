@@ -11,7 +11,7 @@ SOLVER:
 
 WANDB:
   RUN_NAME: "qr2t"
-  GROUP: "CI | ARIS | T5-small | Pretrain | QR2T"
+  GROUP: "TEST | CI | ARIS | T5-small | Pretrain | QR2T"
   MODE: "online"
   NOTES: ""
 

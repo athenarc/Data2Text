@@ -5,8 +5,10 @@ from dataclasses import InitVar, dataclass, field
 from typing import Dict, List, Tuple  # Typing
 
 import datasets
+import sacrebleu
 import transformers
 import wandb
+from sacrebleu import BLEU
 from tqdm import tqdm
 from wandb.wandb_run import Run  # Typing
 
@@ -31,12 +33,16 @@ class InferenceEvaluation:
     tokenizer: InitVar[transformers.PreTrainedTokenizer] = None
     bleu_calculator: InitVar[datasets.metric.Metric] = None
     bertscore_calculator: InitVar[datasets.metric.Metric] = None
+
     # gruen_calculator: InitVar[Gruen] = None
 
     def __post_init__(self, tokenizer, bleu_calculator, bertscore_calculator):
         self.bleu = bleu_calculator.compute(predictions=[tokenizer.tokenize(self.predicted)],
                                             references=[[tokenizer.tokenize(targets) for targets in self.targets]])[
             'bleu']
+
+        # self.bleu = bleu_calculator.corpus_score(hypotheses=[self.predicted],
+        #                                          references=[[targets for targets in self.targets]]).score / 100
 
         self.bertscore = bertscore_calculator.compute(predictions=[self.predicted],
                                                       references=[self.targets], lang="en")['f1'][0]
@@ -99,6 +105,7 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
     # Initialize 🤗 datasets metrics
     bleu_calculator = datasets.load_metric('bleu', experiment_id=''.join(random.choice(string.ascii_letters)
                                                                          for _ in range(10)))
+    # bleu_calculator = BLEU()
     bertscore_calculator = datasets.load_metric('bertscore', experiment_id=''.join(random.choice(string.ascii_letters)
                                                                                    for _ in range(10)))
 
@@ -112,8 +119,8 @@ def create_inferences_evaluations(zipped_inf_targets_source: List[Tuple[str, Lis
                                              source,
                                              tokenizer=tokenizer,
                                              bleu_calculator=bleu_calculator,
-                                             bertscore_calculator=bertscore_calculator,)
-                                             # gruen_calculator=gruen_calculator)
+                                             bertscore_calculator=bertscore_calculator, )
+        # gruen_calculator=gruen_calculator)
         inference_evaluations.append(inference_eval)
 
     return inference_evaluations

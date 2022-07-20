@@ -15,7 +15,7 @@ SOLVER:
 DATASET:
   TRAIN: "storage/datasets/compact_input/totto/filtered/train.json"
   VALIDATION: "storage/datasets/compact_input/totto/dev.json"
-  EVALUATION: "storage/datasets/compact_input/totto/dev.json"
+  EVALUATION: "storage/datasets/compact_input/totto/evaluation.json"
 
 WANDB:
   RUN_NAME: "totto"

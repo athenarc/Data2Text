@@ -3,23 +3,23 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/finetuned/t5_small/totto/epoch=4-step=25244.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/finetuned/t5_small/pretrained_qr2t/epoch=4-step=259.ckpt"
 
-OUTPUT:
-  CHECKPOINTS_DIR: "storage/checkpoints/full_entities/t5_small"
+#OUTPUT:
+#  CHECKPOINTS_DIR: "storage/checkpoints/full_entities/t5_small"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
   BASE_LR: 0.001
 
 DATASET:
-  TRAIN: "storage/datasets/compact_input/totto/filtered/train.json"
+  TRAIN: "storage/datasets/compact_input/totto/train.json"
   VALIDATION: "storage/datasets/compact_input/totto/dev.json"
   EVALUATION: "storage/datasets/compact_input/totto/evaluation.json"
 
 WANDB:
   RUN_NAME: "totto"
-  GROUP: "CI | ARIS | T5-small | ToTTo"
+  GROUP: "No value masking | CI | ARIS | T5-small | Pretrain | QR2T"
   MODE: "online"
   NOTES: ""
 
