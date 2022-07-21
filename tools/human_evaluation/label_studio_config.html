@@ -1,17 +1,70 @@
 <View>
-  <Header value="NL Query"/>
-  <Text name="text1" value="$text"/>
-  <Header value="Query Results"/>
-  <Table name="table" value="$res"/>
-  <Header value="Verbalisation"/>
-  <Text name="text2" value="$text"/>
   <View style="box-shadow: 2px 2px 5px #999; padding: 20px; margin-top: 2em; border-radius: 5px;">
-    <Header value="Choose text sentiment"/>
-    <Choices name="sentiment" toName="text2" choice="multiple" showInLine="true">
-      <Choice value="Correct"/>
-      <Choice value="Erroneous"/>
-      <Choice value="Omision"/>
-      <Choice value="Hallucination"/>
+    <Header value="NL Query"/>
+    <Text name="text1" value="$nl_query"/>
+    <View style="margin-top:30px;">
+      <Header value="Query Results"/>
+    </View>
+    <Text name="table_title" value="$table_title"/>
+    <Table name="table" value="$results_table"/>
+    <View style="margin-top:30px;">
+      <Header value="Verbalisation"/>
+    </View>
+    <Text name="verbalisation" value="$inference"/>
+  </View>
+  <View style="box-shadow: 2px 2px 5px #999; padding: 20px; margin-top: 2em; border-radius: 5px;">
+    <Header value="Evaluation"/>
+    <View style="margin-top:18px;">
+      <Text name="text23" value="$model"/>
+    </View>
+    <Choices name="correctness" toName="verbalisation" choice="single" showInLine="true">
+      <Choice value="Incorrect"/>
+      <Choice value="Adequate"/>
+      <Choice value="Perfect"/>
     </Choices>
+    <Text name="text3" value="$inference"/>
+    <Choices name="fluency" toName="verbalisation" choice="single" showInLine="true">
+      <Choice value="Not fluent"/>
+      <Choice value="Adequate"/>
+      <Choice value="Perfect"/>
+    </Choices>
+    <View style="margin-top:30px;">
+      <Header value="Error Analysis"/>
+    </View>
+    <View style="display: flex; margin-bottom: 25px">
+      <View style="flex: 33%">
+        <Text name="text4" value="$inference"/>
+        <Number name="syntax_errors" toName="verbalisation" max="10"/>
+      </View>
+      <View style="flex: 33%; margin-left: 1em">
+        <Text name="text6" value="$inference"/>
+        <Number name="value_usage_error" toName="verbalisation" max="10"/>
+      </View>
+      <View style="flex: 33%; margin-left: 2em">
+        <Text name="text7" value="$inference"/>
+        <Number name="omisions" toName="verbalisation" max="10"/>
+      </View>
+    </View>
+    <View style="display: flex; margin-bottom: 30px">
+      <View style="flex: 33%">
+        <Text name="text8" value="$inference"/>
+        <Number name="altered_values" toName="verbalisation" max="10"/>
+      </View>
+      <View style="flex: 33%; margin-left: 1em">
+        <Text name="text9" value="$inference"/>
+        <Number name="added_attributes" toName="verbalisation" max="10"/>
+      </View>
+      <View style="flex: 33%; margin-left: 2em">
+        <Text name="text10" value="$inference"/>
+        <Number name="other" toName="verbalisation" max="10"/>
+      </View>
+    </View>
+    <View>
+      <Header value="Comment (Optional)" maxSubmissions="1"/>
+      <TextArea name="comment" toName="verbalisation">
+      </TextArea>
+    </View>
   </View>
 </View>
+<!-- { "data": {"text": "This is a great 3D movie that delivers everything almost right in your face."}
+} -->

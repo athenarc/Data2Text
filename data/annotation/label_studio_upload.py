@@ -1,4 +1,3 @@
-import glob
 import json
 
 import requests
@@ -6,18 +5,6 @@ import yaml
 
 with open('data/annotation/secret.yml', 'r') as stream:
     AUTH_TOKEN = yaml.safe_load(stream)['AUTH_TOKEN']
-
-ANNOTATORS = [
-    "Stavroula",
-    "Giorgos",
-    "Chris",
-    "Katerina",
-    "Antonis",
-    "Anna",
-    "Dimitris",
-    "Mike"
-]
-ANNOTATIONS_DIR = 'storage/datasets/spider/annotations/label_studio/'
 
 
 def get_all_projects():
@@ -35,24 +22,24 @@ def delete_all_projects():
                             headers={'Authorization': f'Token {AUTH_TOKEN}'})
 
 
-def load_label_config():
-    with open('data/annotation/label_studio_config.html', 'r') as file:
+def load_label_config(config_file):
+    with open(config_file, 'r') as file:
         config = file.read()
     return config
 
 
-def create_project_parameters(annotator):
+def create_project_parameters(annotator, config_file):
     return {
         "title": annotator,
-        "label_config": load_label_config()
+        "label_config": load_label_config(config_file)
     }
 
 
-def create_projects():
-    for annotator in ANNOTATORS:
+def create_projects(annotators, config_file):
+    for annotator in annotators:
         _ = requests.post('https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/',
                           headers={'Authorization': f'Token {AUTH_TOKEN}'},
-                          json=create_project_parameters(annotator))
+                          json=create_project_parameters(annotator, config_file))
 
 
 def match_file_names_with_id():
@@ -60,9 +47,10 @@ def match_file_names_with_id():
     return {proj['title']: proj['id'] for proj in projects}
 
 
-def import_data():
+def import_data(annotations_dir):
     for annotator, proj_id in match_file_names_with_id().items():
-        files = {'file': (f'{ANNOTATIONS_DIR}{annotator}.json', open(f'{ANNOTATIONS_DIR}{annotator}.json', 'r'))}
+        print(f'{annotations_dir}{annotator}.json')
+        files = {'file': (f'{annotations_dir}{annotator}.json', open(f'{annotations_dir}{annotator}.json', 'r'))}
 
         _ = requests.post(f'https://darelab.imsi.athenarc.gr/qr2t_annotation/api/projects/{proj_id}/import',
                             headers={'Authorization': f'Token {AUTH_TOKEN}'},
@@ -70,14 +58,27 @@ def import_data():
 
 
 if __name__ == '__main__':
+    ANNOTATORS = [
+        "Stavroula",
+        "George",
+        "Chris",
+        "Katerina",
+        "Antonis",
+        "Anna",
+        "Dimitris",
+        "Mike"
+    ]
+    ANNOTATIONS_DIR = 'storage/results/human_evaluation/qr2t/per_annotator/'
+    CONFIG_FILE = 'tools/human_evaluation/label_studio_config.html'
+
     print(">>> Deleting projects...", end='')
     delete_all_projects()
     print('Done')
 
     print(">>> Creating projects...", end='')
-    create_projects()
+    create_projects(ANNOTATORS, CONFIG_FILE)
     print('Done')
 
     print(">>> Importing tasks...", end='')
-    import_data()
+    import_data(ANNOTATIONS_DIR)
     print('Done')

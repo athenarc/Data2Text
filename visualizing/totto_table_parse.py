@@ -21,7 +21,7 @@ def parse_totto_format(source: str):
         "title": get_table_title(source),
         "query": get_table_query(source),
         "cell_values": list(re.findall(r"> .*? \| .*? \| (.*?) ", source)),
-        "columns": list(re.findall(r"> .*? \| .*? \| (.*?) ", source))
+        "columns": list(re.findall(r"\d> (.*?) \| .*? \| .*? ", source))
     }
 
     return ret_dict
