@@ -55,7 +55,7 @@ def extract_type(cell_value):
         return 'STRING'
 
 
-def extract_datapoint_attributes(datapoint):
+def extract_totto_datapoint_attributes(datapoint):
     cells = find_list_of_cells(datapoint)
     cells_info = []
     for cell in cells:
@@ -70,14 +70,14 @@ def extract_datapoint_attributes(datapoint):
         })
 
     return {
-        "table_title": find_table(datapoint),
+        "title": find_table(datapoint),
         "query": find_section(datapoint),
         "cells": cells_info
     }
 
 
 def datapoint_attributes_to_compact(datapoint):
-    datapoint_attributes = extract_datapoint_attributes(datapoint)
+    datapoint_attributes = extract_totto_datapoint_attributes(datapoint)
 
     table_content = ""
     for ind, cell in enumerate(datapoint_attributes['cells']):

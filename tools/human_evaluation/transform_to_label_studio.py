@@ -3,12 +3,20 @@ import json
 import random
 from collections import defaultdict
 
+from data.datasets_collection.concise_input.totto_to_compact import \
+    extract_totto_datapoint_attributes
 from visualizing.totto_table_parse import parse_totto_format
 
 
 def parse_evaluation_point(datapoint):
-    extracted_info = parse_totto_format(datapoint)
-    results_table = {col: value for col, value in zip(extracted_info['columns'], extracted_info['cell_values'])}
+    if '<col_header>' not in datapoint:
+        # QR2T Input
+        extracted_info = parse_totto_format(datapoint)
+        results_table = {col: value for col, value in zip(extracted_info['columns'], extracted_info['cell_values'])}
+    else:
+        # ToTTo input
+        extracted_info = extract_totto_datapoint_attributes(datapoint)
+        results_table = {res['col']: res['value'] for res in extracted_info['cells']}
 
     return {
         'table_title': extracted_info['title'],
@@ -23,10 +31,15 @@ def create_evaluation_points_from_file(file_path):
     model_name = file_path.split('/')[-1][:-5]
 
     evaluation_points = []
-    for datapoint in datapoints:
+    for ind, datapoint in enumerate(datapoints):
         evaluation_point = parse_evaluation_point(datapoint[6])
+        if '<cell>' in evaluation_point['table_title']:
+            print(evaluation_point)
+            break
+        evaluation_point['id'] = ind
         evaluation_point['model'] = model_name
         evaluation_point['inference'] = datapoint[0]
+
         evaluation_points.append(evaluation_point)
 
     return evaluation_points

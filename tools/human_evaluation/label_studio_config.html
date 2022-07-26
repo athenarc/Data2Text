@@ -13,58 +13,66 @@
     <Text name="verbalisation" value="$inference"/>
   </View>
   <View style="box-shadow: 2px 2px 5px #999; padding: 20px; margin-top: 2em; border-radius: 5px;">
-    <Header value="Evaluation"/>
-    <View style="margin-top:18px;">
-      <Text name="text23" value="$model"/>
-    </View>
+    <Header value="Correctness"/>
     <Choices name="correctness" toName="verbalisation" choice="single" showInLine="true">
       <Choice value="Incorrect"/>
       <Choice value="Adequate"/>
       <Choice value="Perfect"/>
     </Choices>
-    <Text name="text3" value="$inference"/>
+	<Header value="Fluency"/>
     <Choices name="fluency" toName="verbalisation" choice="single" showInLine="true">
       <Choice value="Not fluent"/>
       <Choice value="Adequate"/>
       <Choice value="Perfect"/>
     </Choices>
-    <View style="margin-top:30px;">
+    <View style="margin-top:30px; margin-bottom:15px;">
       <Header value="Error Analysis"/>
     </View>
-    <View style="display: flex; margin-bottom: 25px">
+    <View style="display: flex; margin-bottom: 15px">
       <View style="flex: 33%">
-        <Text name="text4" value="$inference"/>
+        <HyperText name="p6">
+          <p>Syntax Errors</p>
+        </HyperText>
         <Number name="syntax_errors" toName="verbalisation" max="10"/>
       </View>
       <View style="flex: 33%; margin-left: 1em">
-        <Text name="text6" value="$inference"/>
+        <HyperText style="font-family: Brush Script MT" name="p4">
+          <p>Value Usage Errors</p>
+        </HyperText>
         <Number name="value_usage_error" toName="verbalisation" max="10"/>
       </View>
       <View style="flex: 33%; margin-left: 2em">
-        <Text name="text7" value="$inference"/>
+        <HyperText name="p5">
+          <p>Omisions</p>
+        </HyperText>
         <Number name="omisions" toName="verbalisation" max="10"/>
       </View>
     </View>
-    <View style="display: flex; margin-bottom: 30px">
+    <View style="display: flex; margin-bottom: 10px">
       <View style="flex: 33%">
-        <Text name="text8" value="$inference"/>
+        <HyperText name="p1">
+          <p>Altered Values</p>
+        </HyperText>
         <Number name="altered_values" toName="verbalisation" max="10"/>
       </View>
       <View style="flex: 33%; margin-left: 1em">
-        <Text name="text9" value="$inference"/>
+        <HyperText name="p2">
+          <p>Added Attributes</p>
+        </HyperText>
         <Number name="added_attributes" toName="verbalisation" max="10"/>
       </View>
       <View style="flex: 33%; margin-left: 2em">
-        <Text name="text10" value="$inference"/>
+        <HyperText name="p3">
+          <p>Other</p>
+        </HyperText>
         <Number name="other" toName="verbalisation" max="10"/>
       </View>
     </View>
-    <View>
+    <View style="margin-top: 25px">
       <Header value="Comment (Optional)" maxSubmissions="1"/>
       <TextArea name="comment" toName="verbalisation">
       </TextArea>
     </View>
   </View>
-</View>
-<!-- { "data": {"text": "This is a great 3D movie that delivers everything almost right in your face."}
+</View><!-- { "data": {"text": "This is a great 3D movie that delivers everything almost right in your face."}
 } -->
