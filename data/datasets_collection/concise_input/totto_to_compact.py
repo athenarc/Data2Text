@@ -86,7 +86,7 @@ def datapoint_attributes_to_compact(datapoint):
 
         table_content += serialize_cell()
 
-    return f"<query> {datapoint_attributes['query']} <table> {datapoint_attributes['table_title']} {table_content}"
+    return f"<query> {datapoint_attributes['query']} <table> {datapoint_attributes['title']} {table_content}"
 
 
 def datapoints_to_compact(input_path, output_path):
@@ -101,5 +101,5 @@ def datapoints_to_compact(input_path, output_path):
 
 
 if __name__ == '__main__':
-    datapoints_to_compact('storage/datasets/aris/cordis/curated_cordis_with_query.json',
-                          'storage/datasets/compact_input/cordis/curated_cordis_with_query.json')
+    datapoints_to_compact('storage/datasets/aris/totto/train.json',
+                          'storage/datasets/compact_input/ablation/no_nl_query/totto/train.json')

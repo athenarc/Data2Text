@@ -17,10 +17,12 @@ def get_table_query(source: str) -> str:
 
 def parse_totto_format(source: str):
     # We parse each part of the datapoint separately
+    cell_values = list(re.findall(r"> .*? \| .*? \| (.*?) <", source))
+    cell_values.append(source.split('|')[-1][1:-1])
     ret_dict = {
         "title": get_table_title(source),
         "query": get_table_query(source),
-        "cell_values": list(re.findall(r"> .*? \| .*? \| (.*?) ", source)),
+        "cell_values": cell_values,
         "columns": list(re.findall(r"\d> (.*?) \| .*? \| .*? ", source))
     }
 

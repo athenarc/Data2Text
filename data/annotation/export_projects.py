@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from data.annotation.label_studio_upload import AUTH_TOKEN, get_all_projects
 
-ANNOTATION_STORE_DIR = 'storage/datasets/spider/annotations/label_studio/exports/'
+ANNOTATION_STORE_DIR = 'storage/results/human_evaluation/qr2t/evaluated/'
 
 
 def export_all_annotations():
