@@ -3,7 +3,7 @@ MODEL:
   MAX_OUTPUT_TOKENS: 64
   TOKENIZER_NAME: "t5-small"
   PRETRAINED_MODEL_NAME: "t5-small"
-  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/finetuned/t5_small/pretrained_qr2t/epoch=4-step=259.ckpt"
+  PATH_TO_CHECKPOINT: "storage/checkpoints/aris/compact_input/ablations/no_nl_query/aux_qr2t/epoch=3-step=207.ckpt"
 
 SOLVER:
   OPTIMIZER_NAME: "AdaFactor"
