@@ -69,8 +69,11 @@ class T5System(pl.LightningModule):
         targets = list(map(lambda x: [self.tokenizer.tokenize(x)], targets))
         preds = list(map(lambda x: self.tokenizer.tokenize(x), preds))
 
-        bleu_score = self.bleu_metric.compute(
-            predictions=preds, references=targets)['bleu']
+        try:
+            bleu_score = self.bleu_metric.compute(
+                predictions=preds, references=targets)['bleu']
+        except ZeroDivisionError:
+            bleu_score = 0
 
         gen_len = np.mean(list(map(len, generated_ids)))
 
