@@ -65,8 +65,8 @@ def transform_wikisql_to_totto(annotations_path: str, save_path: str, use_query:
 
 if __name__ == '__main__':
     # The paths below expect the sys.path to be the project root
-    ANNOTATIONS_PATH = "storage/datasets/qr2t_benchmark/dev.json"
-    TOTTO_SAVE_PATH = "storage/datasets/totto/qr2t_to_totto/dev.json"
+    ANNOTATIONS_PATH = "storage/datasets/cordis_inode/to_wiki_sql/train.json"
+    TOTTO_SAVE_PATH = "storage/datasets/cordis_inode/to_totto/train.json"
     USE_QUERY = True
 
     transform_wikisql_to_totto(ANNOTATIONS_PATH, TOTTO_SAVE_PATH, USE_QUERY)

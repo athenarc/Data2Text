@@ -101,5 +101,5 @@ def datapoints_to_compact(input_path, output_path):
 
 
 if __name__ == '__main__':
-    datapoints_to_compact('storage/datasets/aris/totto/train.json',
-                          'storage/datasets/compact_input/ablation/no_nl_query/totto/train.json')
+    datapoints_to_compact('storage/datasets/cordis_inode/to_totto/train.json',
+                          'storage/datasets/cordis_inode/to_compact/train.json')
