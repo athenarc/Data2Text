@@ -5,22 +5,20 @@ from databases import Database
 from app.backend.db.DbInterface import DbException, DbInterface
 
 
-class MySqlController(DbInterface):
+class PostgresController(DbInterface):
 
     async def query_with_res_cols(self, conn_url: str, query: str):
         database = Database(conn_url)
         await database.connect()
 
-        one_row = await database.fetch_one(query=query)
+        res_with_cols = await database.fetch_one(query=query)
         res = await database.fetch_all(query=query)
-        res_with_cols = dict(one_row._mapping)
 
-        desc = [col_name for col_name in res_with_cols.keys()]
-        print(res)
-        print(desc)
+        cols = dict(res_with_cols._mapping)
 
-        await database.disconnect()
-        return res, desc
+        # TODO: Fix format
+
+        return res[0], list(cols.keys())
 
     @staticmethod
     def find_db_name(conn_url: str):
@@ -29,8 +27,8 @@ class MySqlController(DbInterface):
     async def get_table_names(self, conn_url: str) -> List[str]:
         table_query = f"""
         SELECT table_name
-        FROM INFORMATION_SCHEMA.TABLES
-        WHERE table_schema = \'{self.find_db_name(conn_url)}\';
+        FROM information_schema.tables
+        WHERE table_schema != 'information_schema' AND table_name NOT LIKE 'pg%'
         """
 
         table_names, _ = await self.query_with_res_cols(conn_url, table_query)
@@ -39,25 +37,16 @@ class MySqlController(DbInterface):
 
     async def get_table_cols(self, conn_url: str, table_name: str) -> List[str]:
         table_cols_query = f"""
-        SELECT COLUMN_NAME
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = \'{self.find_db_name(conn_url)}\' AND TABLE_NAME = \'{table_name}\';
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_name = '{table_name}'
         """
         table_cols, _ = await self.query_with_res_cols(conn_url, table_cols_query)
 
         return [table_col[0] for table_col in table_cols]
 
     async def get_pks_of_table(self, conn_url: str, table_name: str) -> List[str]:
-        pks_of_table_query = f"""
-        SELECT COLUMN_NAME
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = '{self.find_db_name(conn_url)}'
-          AND TABLE_NAME = '{table_name}'
-          AND COLUMN_KEY = 'PRI';
-        """
-        pks, _ = await self.query_with_res_cols(conn_url, pks_of_table_query)
-
-        return [pk[0] for pk in pks]
+        return []
 
     async def preview_table(self, conn_url: str, table: str, limit: int = 10):
         res, desc = await self.query_with_res_cols(conn_url, f"SELECT * FROM {table} LIMIT {limit}")
