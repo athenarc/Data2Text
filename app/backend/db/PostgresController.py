@@ -14,11 +14,10 @@ class PostgresController(DbInterface):
         res_with_cols = await database.fetch_one(query=query)
         res = await database.fetch_all(query=query)
 
+        res_list = [tuple(cell for cell in row[0:]) for row in res]
         cols = dict(res_with_cols._mapping)
 
-        # TODO: Fix format
-
-        return res[0], list(cols.keys())
+        return res_list, list(cols.keys())
 
     @staticmethod
     def find_db_name(conn_url: str):
