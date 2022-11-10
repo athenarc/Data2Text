@@ -1,0 +1,42 @@
+name: LabelStudioWorkflowInode
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push
+  push:
+    branches: [ master ]
+    paths:
+      - 'docker-compose-label-studio-inode.yml'
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "ci"
+  label-studio-ci:
+    # The type of runner that the job will run on
+    runs-on: [self-hosted]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy to Darelab
+        uses: wshihadeh/docker-deployment-action@v2
+        with:
+          remote_docker_host: ci@darelab.imsi.athenarc.gr
+          remote_docker_port: 15000
+          ssh_private_key: ${{ secrets.DARELAB_CI_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.DARELAB_CI_SSH_PUBLIC_KEY }}
+          deployment_mode: docker-compose
+          copy_stack_file: true
+          deploy_path: /home/ci/mxydas/inode_evaluation
+          stack_file_name: docker-compose-label-studio.yml
+          pull_images_first: true
+          args: up -d

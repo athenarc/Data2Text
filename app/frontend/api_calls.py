@@ -38,7 +38,7 @@ def preview_table(table_name, table_canvas):
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def explain_query(query, nl_query):
     try:
-        nl_res = requests.post(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/explain_query",
+        nl_res = requests.post(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/verbalise_query",
                                json={"conn_url": DATABASE_URL, "query": query, "nl_query": nl_query})
     except requests.exceptions.ConnectionError as e:
         raise ConnectionError(f"Failed to connect to backend on http://{BACKEND_HOST}:{BACKEND_PORT}.") from e
