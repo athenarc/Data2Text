@@ -57,9 +57,12 @@ def transform_query(raw_query: str) -> Tuple[str, str]:
 
     added_cols = where_cols.union(group_by_cols).union(order_by_cols)
 
+    new_query = query
+
     # Inject in SELECT, WHERE and GROUP BY columns that do not appear in SELECT already
     # E.g. SELECT c1 FROM t1 WHERE c2=1 -> SELECT c1, c2 FROM t2 WHERE c2=1
-    new_query = query_injectors.add_injected_cols_to_sel(query, sel_cols, added_cols)
+    if len(group_by_cols) == 0 and not is_aggregate_query(query):
+        new_query = query_injectors.add_injected_cols_to_sel(new_query, sel_cols, added_cols)
 
     # We currently inject LIMIT 1 to all queries since we cannot verbalise multiple rows
     new_query = query_injectors.add_limit_1(new_query)

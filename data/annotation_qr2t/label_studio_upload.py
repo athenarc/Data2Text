@@ -3,7 +3,7 @@ import json
 import requests
 import yaml
 
-with open('data/annotation/secret.yml', 'r') as stream:
+with open('data/annotation_qr2t/secret.yml', 'r') as stream:
     AUTH_TOKEN = yaml.safe_load(stream)['AUTH_TOKEN']
 
 
@@ -65,11 +65,10 @@ if __name__ == '__main__':
         "Katerina",
         "Antonis",
         "Anna",
-        "Dimitris",
         "Mike"
     ]
-    ANNOTATIONS_DIR = 'storage/results/human_evaluation/qr2t/per_annotator/'
-    CONFIG_FILE = 'tools/human_evaluation/label_studio_config.html'
+    ANNOTATIONS_DIR = 'storage/datasets/cordis_inode/original/label_studio/not_labelled/'
+    CONFIG_FILE = 'data/annotation_cordis/label_studio_config.html'
 
     print(">>> Deleting projects...", end='')
     delete_all_projects()

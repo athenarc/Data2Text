@@ -5,10 +5,11 @@ import numpy as np
 from mo_parsing.exceptions import ParseException
 from tqdm import tqdm
 
-from data.annotation import query_categorization
-from data.annotation.annotator_split import assign_annotators, confirm_overlap
-from data.annotation.filter_queries import filter_benchmark
-from data.annotation.spider_db_query import create_transformed_benchmark
+from data.annotation_qr2t import query_categorization
+from data.annotation_qr2t.annotator_split import (assign_annotators,
+                                                  confirm_overlap)
+from data.annotation_qr2t.filter_queries import filter_benchmark
+from data.annotation_qr2t.spider_db_query import create_transformed_benchmark
 from utils.query_pattern_recognition import ExtractException, QueryInfo
 
 

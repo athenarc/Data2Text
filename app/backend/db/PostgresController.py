@@ -12,10 +12,17 @@ class PostgresController(DbInterface):
         await database.connect()
 
         res_with_cols = await database.fetch_one(query=query)
+
+        if res_with_cols is None:
+            await database.disconnect()
+            return None, None
+
         res = await database.fetch_all(query=query)
 
         res_list = [tuple(cell for cell in row[0:]) for row in res]
         cols = dict(res_with_cols._mapping)
+
+        await database.disconnect()
 
         return res_list, list(cols.keys())
 

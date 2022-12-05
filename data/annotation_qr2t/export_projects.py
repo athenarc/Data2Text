@@ -6,9 +6,10 @@ import requests
 import yaml
 from tqdm import tqdm
 
-from data.annotation.label_studio_upload import AUTH_TOKEN, get_all_projects
+from data.annotation_qr2t.label_studio_upload import (AUTH_TOKEN,
+                                                      get_all_projects)
 
-ANNOTATION_STORE_DIR = 'storage/results/human_evaluation/qr2t/evaluated/'
+ANNOTATION_STORE_DIR = 'storage/datasets/cordis_inode/original/label_studio/labelled/'
 
 
 def export_all_annotations():
