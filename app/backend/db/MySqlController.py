@@ -16,8 +16,6 @@ class MySqlController(DbInterface):
         res_with_cols = dict(one_row._mapping)
 
         desc = [col_name for col_name in res_with_cols.keys()]
-        print(res)
-        print(desc)
 
         await database.disconnect()
         return res, desc

@@ -41,7 +41,7 @@ services:
   app:
     stdin_open: true
     tty: true
-    image: heartexlabs/label-studio:latest
+    image: heartexlabs/label-studio:v1.5.0
     ports:
       - "8080"
     depends_on:
