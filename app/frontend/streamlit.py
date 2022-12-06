@@ -20,11 +20,11 @@ st.text("")
 col1, col2 = st.columns([1.5, 1])
 with col1:
     st.markdown("**Input Query**")
-    input_query = st.text_area("", value="SELECT Name, Age from titanic WHERE Sex=\"male\"")
+    input_query = st.text_area("", value="SELECT start_year, end_year FROM projects WHERE acronym='OPTIMALT'")
 
 with col2:
     st.markdown("**Explain the query in NL (Optional)**")
-    nl_query = st.text_area("", value="Find the name and age of a male passenger.")
+    nl_query = st.text_area("", value="When did the project OPTIMALT started and ended?")
 
 
 query_explanation = ""
