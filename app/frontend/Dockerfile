@@ -3,6 +3,8 @@ FROM python:3.8-slim
 WORKDIR frontend/
 
 COPY . .
+COPY /home/mxydas/qr2t/frontend/.env .
+
 RUN pip install -r requirements.txt
 
 RUN chmod +x ./startup.sh

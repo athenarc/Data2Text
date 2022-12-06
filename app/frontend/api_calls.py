@@ -14,7 +14,8 @@ DATABASE_URL = read_settings_file()['DATABASE_URL']
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def get_table_names():
     try:
-        tables = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables?url_conn={DATABASE_URL}")
+        tables = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables",
+                              params={'url_conn': DATABASE_URL})
     except requests.exceptions.ConnectionError as e:
         raise ConnectionError(f"Failed to connect to backend on http://{BACKEND_HOST}:{BACKEND_PORT}.") from e
     return tables.json()['tables']
@@ -23,8 +24,8 @@ def get_table_names():
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def preview_table(table_name, table_canvas):
     try:
-        table_sample = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables/{table_name}"
-                                    f"?url_conn={DATABASE_URL}").json()['table_sample']
+        table_sample = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables/{table_name}",
+                                    params={'url_conn': DATABASE_URL}).json()['table_sample']
     except requests.exceptions.ConnectionError as e:
         raise ConnectionError(f"Failed to connect to backend on http://{BACKEND_HOST}:{BACKEND_PORT}.") from e
     cols = table_sample['header']
@@ -37,6 +38,8 @@ def preview_table(table_name, table_canvas):
 @st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def explain_query(query, nl_query):
+    query = query.replace('"', '\'')
+    nl_query = nl_query.replace('"', '\'')
     try:
         nl_res = requests.post(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/verbalise_query",
                                json={"conn_url": DATABASE_URL, "query": query, "nl_query": nl_query})
