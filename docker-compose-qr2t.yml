@@ -21,7 +21,7 @@ services:
     container_name: qr2t_front
     restart: unless-stopped
     volumes:
-      - /home/mxydas/qr2t/frontend:/frontend
+      - /home/mxydas/qr2t/frontend:/frontend/storage
     networks:
       - app
     depends_on:
