@@ -14,7 +14,7 @@ def read_settings_file():
     with open(args.config_file) as file:
         settings = yaml.full_load(file)
 
-    credentials = dotenv_values(settings['ENV_FILE'])
+    credentials = dotenv_values('.env')
     settings['DATABASE_URL'] = credentials['DATABASE_URL']
 
     return settings

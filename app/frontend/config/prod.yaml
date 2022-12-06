@@ -1,4 +1,3 @@
 BACKEND_HOST: back
 BACKEND_PORT: 8013
 STARTUP_WAIT_SEC: 30
-ENV_FILE: /home/mxydas/qr2t/frontend/.env
