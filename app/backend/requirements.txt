@@ -18,3 +18,4 @@ asyncmy==0.2.5
 asyncpg==0.26.0
 fastapi==0.70.1
 uvicorn==0.16.0
+SQLAlchemy==1.4.37
