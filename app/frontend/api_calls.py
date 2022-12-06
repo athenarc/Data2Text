@@ -13,6 +13,7 @@ DATABASE_URL = read_settings_file()['DATABASE_URL']
 @st.cache
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def get_table_names():
+    print(DATABASE_URL)
     try:
         tables = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables",
                               params={'url_conn': DATABASE_URL})
@@ -23,6 +24,7 @@ def get_table_names():
 
 @retry(wait=wait_fixed(5), stop=stop_after_attempt(15), retry=retry_if_exception_type(ConnectionError))
 def preview_table(table_name, table_canvas):
+    print(DATABASE_URL)
     try:
         table_sample = requests.get(f"http://{BACKEND_HOST}:{BACKEND_PORT}/qr2t_back/tables/{table_name}",
                                     params={'url_conn': DATABASE_URL}).json()['table_sample']
