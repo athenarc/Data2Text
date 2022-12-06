@@ -39,8 +39,6 @@ services:
       - traefik
     volumes:
       - /home/mxydas/qr2t/storage:/app/storage
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     labels:
       - traefik.enable=true # enable this docker on traefik
       - traefik.http.routers.qr2t_back.rule= Host(`darelab.imsi.athenarc.gr`) && PathPrefix(`/qr2t_back`) # url
