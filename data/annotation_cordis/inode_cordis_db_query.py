@@ -52,7 +52,7 @@ async def gather_annotation_info(cordis_query, db_controller):
 
     try:
         res, cols = await db_controller.query_with_res_cols(
-            "postgresql+asyncpg://postgres:vdS83DJSQz2xQ@testbed.inode.igd.fraunhofer.de:18001/cordis_2021_09",
+            "conn_string",
             transformed_query
         )
     except (exceptions.InvalidTextRepresentationError, exceptions.UndefinedTableError):
