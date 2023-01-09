@@ -34,5 +34,6 @@ class QueryResultsExplainer:
 
         logging.debug(query_res_in_totto)
         nl_explanation = self.inference_controller.inference(query_res_in_totto)
+        logging.info(f"Verbalisation: {nl_explanation}")
 
         return nl_explanation
