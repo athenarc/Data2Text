@@ -15,13 +15,13 @@ SOLVER:
 
 
 DATASET:
-  VALIDATION: "storage/datasets/cordis_inode/to_compact/train.json"
-  EVALUATION: "storage/datasets/cordis_inode/to_compact/train.json"
+  VALIDATION: "storage/datasets/cordis_inode/to_compact/dev.json"
+  EVALUATION: "storage/datasets/cordis_inode/to_compact/eval.json"
   TRAIN: "storage/datasets/cordis_inode/to_compact/train.json"
 
 WANDB:
   RUN_NAME: "Finetune"
-  GROUP: "CORDIS INODE | T5-small | ToTTo | QR2T | Cordis"
+  GROUP: "NEW | CORDIS INODE | T5-small | ToTTo | QR2T | Cordis"
   MODE: "online"
   NOTES: ""
 
