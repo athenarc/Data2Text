@@ -1,0 +1,2161 @@
+[[AdvancedFormat]]
+
+[[Block:Verbalisation0]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Get panel descriptions from research domain Life Sciences
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): erc_panels, erc_research_domains
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_panels description</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_research_domains description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics</td><td style="border: 1px solid black; padding: 12px; text-align: center">Life Sciences</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The panel description is Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics and the research domain is Life Sciences.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation1]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the title of projects with costs higher than a million
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">High level Integrated SEnsor for NanoToxicity Screening</td><td style="border: 1px solid black; padding: 12px; text-align: center">6332825</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project with cost 6332825 is High level Integrated SEnsor for NanoToxicity Screening.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation2]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    institutions and funding received in descending order
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): institutions, project_members
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>sum of ec_contribution</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">1981924959.0699916</td><td style="border: 1px solid black; padding: 12px; text-align: center">Centre national de la recherche scientifique</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The Centre national de la recherche scientifique has a sum of eccontribution of 1981924959.0699916
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation3]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the full name of people being investigators in projects that began in 2014
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, people
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>people full_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Jonathan Gershuny</td><td style="border: 1px solid black; padding: 12px; text-align: center">2014</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Jonathan Gershuny started in 2014
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation4]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find projects whose subject area is “Mathematics and Statistics”
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_subject_areas, subject_areas
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>t1 title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>subject_areas title</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Immersive interface technologies for life-cycle human-oriented activities in interactive aircraft-related virtual products</td><td style="border: 1px solid black; padding: 12px; text-align: center">Mathematics and Statistics</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The subject area of Mathematics and Statistics is Immersive interface technologies for life-cycle human-oriented activities in interactive aircraft-related virtual products
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation5]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the title of projects with costs higher than 1000000
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">High level Integrated SEnsor for NanoToxicity Screening</td><td style="border: 1px solid black; padding: 12px; text-align: center">6332825</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project with cost 6332825 is High level Integrated SEnsor for NanoToxicity Screening.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation6]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find member name and role code of project members in project GTBB
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): project_members, projects, project_member_roles
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_member_roles code</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_members member_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">GTBB</td><td style="border: 1px solid black; padding: 12px; text-align: center">coordinator</td><td style="border: 1px solid black; padding: 12px; text-align: center">THE CHANCELLOR, MASTERS AND SCHOLARS OF THE UNIVERSITY OF OXFORD</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project member named "GTBB" has the role code coordinator, MASTERS AND SCHOLARS OF THE UNIVERSITY OF OXFORD
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation7]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the titles of projects that started before 2016
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Enabling the interoperability of cytometric data – a novel bioinformatics approach for revealing systems level understanding of cell cycle dynamics</td><td style="border: 1px solid black; padding: 12px; text-align: center">2010</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Enabling the interoperability of cytometric data – a novel bioinformatics approach for revealing systems level understanding of cell cycle dynamics started in 2010.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation8]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the code and title of the funding scheme which funded the highest number of projects.
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): funding_schemes
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>code</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">MSCA-IF-EF-ST</td><td style="border: 1px solid black; padding: 12px; text-align: center">Standard EF</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The code MSCA-IF-EF-ST is Standard EF.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation9]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show total cost of project with title Theseus
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Theseus</td><td style="border: 1px solid black; padding: 12px; text-align: center">71429</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project with title Theseus has a total cost of 71429
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation10]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find institutions from the region of Nordjylland
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): institutions, eu_territorial_units
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>eu_territorial_units description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Aalborg Universitet</td><td style="border: 1px solid black; padding: 12px; text-align: center">Nordjylland</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The institution Aalborg Universitet is from the region of Nordjylland
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation11]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me topic titles which contain the word 'climate'
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): topics
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Water cycle under future climate</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Water cycle under future climate is a topic with the word "climate"
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation12]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the country name of all institutes.
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): countries, institutions
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Switzerland</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The country name is Switzerland
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation13]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the title of the project with the highest total cost
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Implementation of activities described in the Roadmap to Fusion during Horizon 2020 through a Joint programme of the members of the EUROfusion consortium</td><td style="border: 1px solid black; padding: 12px; text-align: center">856961937.57</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project with the highest total cost is 856961937.57
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation14]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me topic titles which starts with 'Raw materials'
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): topics
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Raw materials partnerships</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Raw materials partnerships is a topics that starts with "Raw materials"
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation15]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the full title of the program which is called 'Transport' in short.
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): programmes
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>short_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">SOCIETAL CHALLENGES - Smart, Green And Integrated Transport</td><td style="border: 1px solid black; padding: 12px; text-align: center">Transport</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The program SOCIETAL CHALLENGES - Smart, Green And Integrated Transport has the title Transport.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation16]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    What is the country code 2 and country code 3 for Andorra?
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): countries
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>country_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>country_code2</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>country_code3</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Andorra</td><td style="border: 1px solid black; padding: 12px; text-align: center">AD</td><td style="border: 1px solid black; padding: 12px; text-align: center">AND</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The country code 2 and country code 3 for Andorra is AD and the country code 3 is AND.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation17]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the total cost of the project Theseus
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Theseus</td><td style="border: 1px solid black; padding: 12px; text-align: center">71429</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project Theseus has a total cost of 71429
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation18]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the acronym of projects with a member from Greece
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_members, institutions, countries
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">RETENTION</td><td style="border: 1px solid black; padding: 12px; text-align: center">Greece</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project with acronym RETENTION is from Greece.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation19]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the project title and member name where the member has a partner role
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_members, project_member_roles
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>member_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_member_roles code</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Advancing intuitive human-machine interaction with human-like social capabilities for education in schools</td><td style="border: 1px solid black; padding: 12px; text-align: center">ASSOCIATION MOBSYA</td><td style="border: 1px solid black; padding: 12px; text-align: center">partner</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The member named ASSOCIATION MOBSYA has a partner role in the project title Advancing intuitive human-machine interaction with human-like social capabilities for education in schools
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation20]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the name of institutions based in Nordjylland
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): institutions, eu_territorial_units
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>eu_territorial_units description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Aalborg Universitet</td><td style="border: 1px solid black; padding: 12px; text-align: center">Nordjylland</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The institution Aalborg Universitet is in Nordjylland.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation21]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the role of ATHENA in project ARGOS
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): project_members, projects, institutions
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_members member_role</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">ARGOS</td><td style="border: 1px solid black; padding: 12px; text-align: center">participant</td><td style="border: 1px solid black; padding: 12px; text-align: center">ATHENA GS3-SECURITY IMPLEMENTATIONS LTD</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The participant role of ATHENA GS3-SECURITY IMPLEMENTS LTD is in project ARGOS.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation22]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Count the projects that started in 2016
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>count of projects</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">4955</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    There are 4955 projects that started in 2016.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation23]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the acronym of projects which have total costs between 100000 and 200000
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">FFABFORCE</td><td style="border: 1px solid black; padding: 12px; text-align: center">173076</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The acronym FFABFORCE has total costs of 173076
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation24]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show names of institutions which are not from France
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): institutions, countries
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Switzerland</td><td style="border: 1px solid black; padding: 12px; text-align: center">Shire International GmbH</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Shire International GmbH is in Switzerland.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation25]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the total costs of all projects
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>sum of total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">144808707894.03223</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The total cost is 144808707894.03223
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation26]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the all different names of people
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): people
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>full_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Zsuzsanna Izsvák</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Zsuzsanna Izsvák is a person.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation27]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    How many projects have an objective which contains 'carbon capturing'?
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>count of projects</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">1</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    There is 1 project.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation28]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Get acronyms of projects beginning in 2018
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">INSPiRE</td><td style="border: 1px solid black; padding: 12px; text-align: center">2018</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The acronym INSPiRE is from 2018
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation29]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the name of principal investigators in projects that started in 2014
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, people
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>people full_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Jonathan Gershuny</td><td style="border: 1px solid black; padding: 12px; text-align: center">2014</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Jonathan Gershuny started in 2014
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation30]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    erc panels and sum of project ec max contribution ordered descending
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): erc_panels, project_erc_panels, projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_panels code</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>sum of ec_max_contribution</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">SH1</td><td style="border: 1px solid black; padding: 12px; text-align: center">427317407.61</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The sum of project ec max contribution ordered descending is 427317407.61
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation31]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the country of all institutes.
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): countries, institutions
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Switzerland</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The country of all institutes is Switzerland
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation32]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    What different research domains do exist?
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): erc_research_domains
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Social Sciences And Humanities</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The research domain is Social Sciences And Humanities
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation33]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    What is the objective of DEEPCARBON?
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>objective</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">DEEPCARBON</td><td style="border: 1px solid black; padding: 12px; text-align: center">The key aspect of the Earth’s deep carbon cycle is how exogene carbon is recycled into the deeper earth via subduction of altered, carbonated, mafic oceanic crust. We aim to use ultrahigh-pressure experimental petrology to investigate the behaviour of subducted carbonate at pressures corresponding to the deep upper mantle, the mantle transition zone and the uppermost lower mantle. Earlier experimental studies showed that some residual crystalline carbonate in oceanic crust remains stable in subducting oceanic crust without decarbonation or melting, and may be transported to very deep levels in the mantle. It may form carbonate eclogite in the upper mantle and carbonate garnetite in the transition zone and uppermost lower mantle. How far carbon can survive this journey to extreme depths depends on the relationship between the pressure-temperature path followed by deeply subducting carbonated oceanic crust and its melting relations and solidus temperatures. We aim to use multi-anvil experimentation at the University of Bristol to determine melting relations in the deep upper mantle, transition zone, and uppermost lower mantle (9-21 GPa) of carbonate eclogite. We will explore the influences of pressure, temperature, oxygen fugacity and key bulk compositional variables such as Na2O/CO2 on very deep subduction of carbonate and on the volumes and compositions, and fates of carbonated partial melts. Fundamental research outcomes will include understanding of (1) the role of bulk composition in determining melting temperatures of deeply subducted, carbonate-bearing oceanic crust, and hence how deep carbonate melting can occur (2) how these carbonate melts interact with surrounding ambient peridotite mantle and what sort of geochemical sources and deeply derived magmas/fluids could be so generated (kimberlites, carbonatites, CH4-fluids), and (3) the formation of sublithospheric diamonds and their mineral inclusion suites.</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The goal of the project "DEEPCARBON" is how exogene carbon is recycled into the deeper earth via subduction of altered, carbonated, mafic oceanic crust. We aim to use ultrahigh-pressure experimental petrology
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation34]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show the acronym and subject area description of projects with subject area “Mathematics and Statistics”
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_subject_areas, subject_areas
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>t1 acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>subject_areas title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>subject_areas description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">VISION</td><td style="border: 1px solid black; padding: 12px; text-align: center">Mathematics and Statistics</td><td style="border: 1px solid black; padding: 12px; text-align: center">Mathematical theory; statistical analysis; operational research; numerical analysis; mathematical modelling. (See also application area)</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The subject area description of projects with subject area VISION is Mathematics and Statistics
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation35]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find titles of projects which started earlier than 2016
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Enabling the interoperability of cytometric data – a novel bioinformatics approach for revealing systems level understanding of cell cycle dynamics</td><td style="border: 1px solid black; padding: 12px; text-align: center">2010</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Enabling the interoperability of cytometric data – a novel bioinformatics approach for revealing systems level understanding of cell cycle dynamics started in 2010.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation36]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    count projects per country with programme short name "Science with and for Society"
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_members, project_programmes, programmes, institutions, countries
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>count of projects</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">1</td><td style="border: 1px solid black; padding: 12px; text-align: center">Armenia</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    Armenia has 1 project.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation37]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find distinct titles of topics of projects that with end year 2014
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_topics, topics
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>t1 end_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">ERC Starting Grant - Evolutionary, population and environmental biology</td><td style="border: 1px solid black; padding: 12px; text-align: center">2014</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    ERC Starting Grant - Evolutionary, population and environmental biology has a subject that ended in 2014.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation38]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Get names of project members who's activity type description is Research Organisations
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): project_members, activity_types
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>member_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>activity_types description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">INNORENEW COE CENTER ODLICNOSTI ZA RAZISKAVE IN INOVACIJE NA PODROCJU OBNOVLJIVIH MATERIALOV IN ZDRAVEGA BIVANJSKEGA OKOLJA</td><td style="border: 1px solid black; padding: 12px; text-align: center">Research Organisations</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The member name is INNORENEW COE CENTER ODLICNOSTI ZA RAZISKAVE IN INOVACIJE NA PODROCJU OBNOVLJIVIH MATERIALOV IN ZDRAVEGA OKOLJA
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation39]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show names of institutions from France or Germany
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): institutions, countries
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>countries country_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Germany</td><td style="border: 1px solid black; padding: 12px; text-align: center">DIPL. PHYS. PEER STRITZINGER GMBH</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The institution DIPL. PHYS. PEER STRITZINGER GMBH is in Germany
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation40]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find project members of type Research Organisations
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): project_members, activity_types
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>member_name</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>activity_types description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">INNORENEW COE CENTER ODLICNOSTI ZA RAZISKAVE IN INOVACIJE NA PODROCJU OBNOVLJIVIH MATERIALOV IN ZDRAVEGA BIVANJSKEGA OKOLJA</td><td style="border: 1px solid black; padding: 12px; text-align: center">Research Organisations</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The member name is INNORENEW COE CENTER ODLICNOSTI ZA RAZISKAVE IN INOVACIJE NA PODROCJU OBNOVLJIVIH MATERIALOV IN ZDRAVEGA OKOLJA
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation41]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find all different topics of projects that ended in 2014
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, project_topics, topics
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>t1 end_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">ERC Starting Grant - Evolutionary, population and environmental biology</td><td style="border: 1px solid black; padding: 12px; text-align: center">2014</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project ERC Starting Grant - Evolutionary, Population and Environmental Biology ended in 2014
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation42]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the title of projects which have an end year and a start year after 2006
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>end_year</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">High level Integrated SEnsor for NanoToxicity Screening</td><td style="border: 1px solid black; padding: 12px; text-align: center">2019</td><td style="border: 1px solid black; padding: 12px; text-align: center">2016</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The project High level Integrated SEnsor for NanoToxicity Screening has an end year of 2019 and started in 2016.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation43]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the number of projects where Thomas Bell was principal investigator
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects, people
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>count of projects and people</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">1</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    There is 1 project where Thomas Bell was principal investigator.
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation44]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Show me the acronyms of projects that started in 2018
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): projects
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>start_year</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">INSPiRE</td><td style="border: 1px solid black; padding: 12px; text-align: center">2018</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The acronym INSPiRE is from 2018
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation45]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find the code of the funding scheme for Framework Partnership Agreement
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): funding_schemes
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>code</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">FPA</td><td style="border: 1px solid black; padding: 12px; text-align: center">Framework Partnership Agreement</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The funding scheme for the Framework Partnership Agreement is FPA
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation46]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Get panel descriptions from research domain life sciences
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): erc_panels, erc_research_domains
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_panels description</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_research_domains description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics</td><td style="border: 1px solid black; padding: 12px; text-align: center">Life Sciences</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The erc_panels description is Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics and Molecular Biophysics and the research domain is Life Sciences
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
+
+[[Block:Verbalisation47]]
+    [[Question:DB]]
+    <strong>NL Query</strong>
+    <br>
+    Find member name and role code of project members in project with acronym GTBB
+
+    [[Question:DB]]
+    <strong>Query Results</strong>
+    <br><br>
+    Table name(s): project_members, projects, project_member_roles
+    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>projects acronym</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_member_roles code</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>project_members member_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">GTBB</td><td style="border: 1px solid black; padding: 12px; text-align: center">coordinator</td><td style="border: 1px solid black; padding: 12px; text-align: center">THE CHANCELLOR, MASTERS AND SCHOLARS OF THE UNIVERSITY OF OXFORD</td></tr></tbody></table>
+
+    [[Question:DB]]
+    <strong>Verbalisation</strong>
+    <br>
+    The member name is "The CHANCELLOR, MASTERS AND SCHOLARS OF THE UNIVERSITY OF OXFORD" and the role code is "GreekBB"
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Correctness</strong>
+    [[Choices]]
+    Correct
+    Incorrect
+
+    [[Question:MC:SingleAnswer]]
+    <strong>Fluency</strong>
+    [[Choices]]
+    Perfect
+    Adequate
+    Not fluent
+
+    [[Question:Matrix]]
+    <strong>Type of Error</strong>
+
+    [[Choices]]
+    Grammar or Syntax Error
+    Omission
+    Hallucination
+    Other
+    [[Answers]]
+    0
+    1
+    2
+    3
+    4+
