@@ -90,6 +90,13 @@ def return_type_of_error():
     """
 
 
+def return_comment_text_entry():
+    return f"""
+    [[Question:TextEntry]]
+    Comment (Optional)
+    """
+
+
 def create_single_block(block_id, annotation):
     block = return_block_header(block_id) + \
             return_nl_query(annotation['nl_query']) + \
@@ -97,7 +104,8 @@ def create_single_block(block_id, annotation):
             return_verbalisation(annotation['verbalisation']) + \
             return_correctness_question() + \
             return_fluency_question() + \
-            return_type_of_error()
+            return_type_of_error() + \
+            return_comment_text_entry()
 
     return block
 
