@@ -1,0 +1,68 @@
+query,logos,eqsplain,provider
+"SELECT *
+FROM projects;",Find everything about projects.,Show all information on projects.,I am the PROVIDER
+"SELECT COUNT(*)
+FROM people;",Find everything about projects.,List the number of people.,I am the PROVIDER
+"SELECT AVG(total_cost)
+FROM projects
+WHERE framework_program = 'H2020';",Find everything about projects.,What is the average total cost of all projects that are part of the H2020 program framework program?,I am the PROVIDER
+"SELECT MAX(end_year)
+FROM projects
+WHERE start_year = 2023 AND total_cost > 1000000;",Find everything about projects.,How many projects are there starting in 2023 that cost more than 1000000?,I am the PROVIDER
+"SELECT countries.name, institutions.name
+FROM countries
+JOIN institutions ON institutions.country_id = countries.unics_id;",Find everything about projects.,What are the country names and institutions of the institutions?,I am the PROVIDER
+"SELECT COUNT(project_members.member_name), projects.title
+FROM projects
+JOIN project_members ON projects.unics_id = project_members.project
+GROUP BY projects.title",Find everything about projects.,Count the number of project members for each project title.,I am the PROVIDER
+"SELECT COUNT(people.full_name), projects.framework_program
+FROM people
+JOIN projects ON projects.principal_investigator=people.unics_id
+GROUP BY projects.framework_program
+HAVING COUNT(people.full_name) > 5;",Find everything about projects.,How many people are associated with different framework programs that have more than 5 projects?,I am the PROVIDER
+"SELECT COUNT(institutions.name), countries.name
+FROM countries
+JOIN institutions ON institutions.country_id = countries.unics_id
+GROUP BY countries.name
+HAVING COUNT(institutions.name) > 20
+ORDER BY COUNT(institutions.name) ASC;",Find everything about projects.,How many institutions have a number of more than 20 institutions together: order by the number of institutions.,I am the PROVIDER
+"SELECT people.full_name, projects.title
+FROM people
+JOIN projects ON projects.principal_investigator=people.unics_id 
+WHERE projects.total_cost > (SELECT AVG(projects.total_cost) FROM projects);",Find everything about projects.,List the full name and title of the people who have a project with a greater total cost than the average.,I am the PROVIDER
+"SELECT name, acronym, short_name, country_id
+FROM institutions;",Find everything about projects.,"List the name, acronym, short name and country id for all institutions.",I am the PROVIDER
+"SELECT COUNT(*), MAX(total_cost), MIN(total_cost)
+FROM projects;",Find everything about projects.,"How many projects are there, with a maximum cost and a minimal cost?",I am the PROVIDER
+"SELECT title, objective, end_year, total_cost
+FROM projects
+WHERE acronym = 'INODE';",Find everything about projects.,"Show the title, abstract, end year and total cost of all INODE projects",I am the PROVIDER
+"SELECT title, objective, end_year, total_cost
+FROM projects
+WHERE start_year = 2023 AND total_cost > 1000000;",Find everything about projects.,"Show the title, abstract, end year, and total cost for all projects whose start year is 2023 and total cost is greater than 1000000.",I am the PROVIDER
+"SELECT institutions.name, countries.name, project_members.city
+FROM project_members
+JOIN institutions ON institutions.unics_id = project_members.institution_id
+JOIN countries ON countries.unics_id = institutions.country_id;",Find everything about projects.,"What are the institution names, countries names, and city of the participants?",I am the PROVIDER
+"SELECT projects.framework_program, COUNT(DISTINCT people.full_name), COUNT(DISTINCT projects.title)
+FROM people
+JOIN projects ON projects.principal_investigator = people.unics_id
+GROUP BY projects.framework_program;",Find everything about projects.,How many people who are principal investigators of projects are there for each program?,I am the PROVIDER
+"SELECT COUNT(institutions.name), COUNT(project_members.city), countries.name
+FROM project_members
+JOIN institutions ON institutions.unics_id = project_members.institution_id
+JOIN countries ON countries.unics_id = institutions.country_id
+GROUP BY countries.name
+HAVING COUNT(project_members.city) > 100;",Find everything about projects.,How many institutions are located in each country that has more than 100 participants?,I am the PROVIDER
+"SELECT COUNT(institutions.name), COUNT(project_members.city), countries.name
+FROM project_members
+JOIN institutions ON institutions.unics_id = project_members.institution_id
+JOIN countries ON countries.unics_id = institutions.country_id
+GROUP BY countries.name
+HAVING COUNT(project_members.city) > 100
+ORDER BY COUNT(project_members.city) DESC;",Find everything about projects.,"Display the number of institutions, the number of participants, and the country name with at least 100 project members, in descending order of the number of participants.",I am the PROVIDER
+"SELECT people.full_name, projects.title, projects.objective, projects.total_cost
+FROM people
+JOIN projects ON projects.principal_investigator=people.unics_id
+WHERE projects.total_cost > (SELECT AVG(projects.total_cost) FROM projects);",Find everything about projects.,"Find the full name, title, abstract, and total cost of projects for which the principal investigator is associated and whose gross cost is greater than the average cost.",I am the PROVIDER
