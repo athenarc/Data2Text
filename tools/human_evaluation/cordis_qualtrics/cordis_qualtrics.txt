@@ -1,145 +1,129 @@
 [[AdvancedFormat]]
 
-[[Block:Verbalisation0]]
+[[Block:Translation1]]
     [[Question:DB]]
-    <strong>NL Query</strong>
+    Query: SELECT COUNT(*)
+FROM people;
     <br>
-    Get panel descriptions from research domain Life Sciences
-
-    [[Question:DB]]
-    <strong>Query Results</strong>
-    <br><br>
-    Table name(s): erc_panels, erc_research_domains
-    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_panels description</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>erc_research_domains description</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics</td><td style="border: 1px solid black; padding: 12px; text-align: center">Life Sciences</td></tr></tbody></table>
-
-    [[Question:DB]]
-    <strong>Verbalisation</strong>
     <br>
-    The panel description is Molecular Biology, Biochemistry, Structural Biology and Molecular Biophysics and the research domain is Life Sciences.
-
-    [[Question:MC:SingleAnswer]]
-    <strong>Correctness</strong>
-    [[Choices]]
-    Correct
-    Incorrect
-
-    [[Question:MC:SingleAnswer]]
-    <strong>Fluency</strong>
-    [[Choices]]
-    Perfect
-    Adequate
-    Not fluent
+    <strong>Please rate the following translations</strong>
 
     [[Question:Matrix]]
-    <strong>Type of Error</strong>
+    Translation: Find everything about projects.
 
     [[Choices]]
-    Grammar or Syntax Error
-    Omission
-    Hallucination
-    Other
+    fluency level
+    precision level
     [[Answers]]
-    0
-    1
-    2
-    3
-    4+
-
-    [[Question:TextEntry]]
-    Comment (Optional)
-
-[[Block:Verbalisation1]]
-    [[Question:DB]]
-    <strong>NL Query</strong>
-    <br>
-    Show the title of projects with costs higher than a million
-
-    [[Question:DB]]
-    <strong>Query Results</strong>
-    <br><br>
-    Table name(s): projects
-    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>title</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>total_cost</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">High level Integrated SEnsor for NanoToxicity Screening</td><td style="border: 1px solid black; padding: 12px; text-align: center">6332825</td></tr></tbody></table>
-
-    [[Question:DB]]
-    <strong>Verbalisation</strong>
-    <br>
-    The project with cost 6332825 is High level Integrated SEnsor for NanoToxicity Screening.
-
-    [[Question:MC:SingleAnswer]]
-    <strong>Correctness</strong>
-    [[Choices]]
-    Correct
-    Incorrect
-
-    [[Question:MC:SingleAnswer]]
-    <strong>Fluency</strong>
-    [[Choices]]
-    Perfect
-    Adequate
-    Not fluent
+    low
+    average
+    high
 
     [[Question:Matrix]]
-    <strong>Type of Error</strong>
+    Translation: List the number of people.
 
     [[Choices]]
-    Grammar or Syntax Error
-    Omission
-    Hallucination
-    Other
+    fluency level
+    precision level
     [[Answers]]
-    0
-    1
-    2
-    3
-    4+
+    low
+    average
+    high
 
-    [[Question:TextEntry]]
-    Comment (Optional)
-
-[[Block:Verbalisation2]]
-    [[Question:DB]]
-    <strong>NL Query</strong>
-    <br>
-    institutions and funding received in descending order
-
-    [[Question:DB]]
-    <strong>Query Results</strong>
-    <br><br>
-    Table name(s): institutions, project_members
-    <table style="border: 1px solid black; padding: 12px; text-align: center"><thead style="border: 1px solid black; padding: 12px; text-align: center"><tr><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>sum of ec_contribution</strong></th><th style="border: 1px solid black; padding: 12px; text-align: center"><strong>institutions institutions_name</strong></th></tr ></thead><tbody style="border: 1px solid black; padding: 12px; text-align: center"><tr><td style="border: 1px solid black; padding: 12px; text-align: center">1981924959.0699916</td><td style="border: 1px solid black; padding: 12px; text-align: center">Centre national de la recherche scientifique</td></tr></tbody></table>
-
-    [[Question:DB]]
-    <strong>Verbalisation</strong>
-    <br>
-    The Centre national de la recherche scientifique has a sum of eccontribution of 1981924959.0699916
-
-    [[Question:MC:SingleAnswer]]
-    <strong>Correctness</strong>
+    [[Question:MC:MultiSelect]]
+    <strong>Choose the correct translation(s)</strong>
     [[Choices]]
-    Correct
-    Incorrect
+    Find everything about projects.
+    List the number of people.
 
-    [[Question:MC:SingleAnswer]]
-    <strong>Fluency</strong>
+    [[Question:MC:MultiSelect]]
+    <strong>Which of the two translations do you like best?</strong>
     [[Choices]]
-    Perfect
-    Adequate
-    Not fluent
+    Find everything about projects.
+    List the number of people.
+
+[[Block:Translation2]]
+    [[Question:DB]]
+    Query: SELECT AVG(total_cost)
+FROM projects
+WHERE framework_program = 'H2020';
+    <br>
+    <br>
+    <strong>Please rate the following translations</strong>
 
     [[Question:Matrix]]
-    <strong>Type of Error</strong>
+    Translation: Find everything about projects.
 
     [[Choices]]
-    Grammar or Syntax Error
-    Omission
-    Hallucination
-    Other
+    fluency level
+    precision level
     [[Answers]]
-    0
-    1
-    2
-    3
-    4+
+    low
+    average
+    high
 
-    [[Question:TextEntry]]
-    Comment (Optional)
+    [[Question:Matrix]]
+    Translation: What is the average total cost of all projects that are part of the H2020 program framework program?
+
+    [[Choices]]
+    fluency level
+    precision level
+    [[Answers]]
+    low
+    average
+    high
+
+    [[Question:MC:MultiSelect]]
+    <strong>Choose the correct translation(s)</strong>
+    [[Choices]]
+    Find everything about projects.
+    What is the average total cost of all projects that are part of the H2020 program framework program?
+
+    [[Question:MC:MultiSelect]]
+    <strong>Which of the two translations do you like best?</strong>
+    [[Choices]]
+    Find everything about projects.
+    What is the average total cost of all projects that are part of the H2020 program framework program?
+
+[[Block:Translation3]]
+    [[Question:DB]]
+    Query: SELECT MAX(end_year)
+FROM projects
+WHERE start_year = 2023 AND total_cost > 1000000;
+    <br>
+    <br>
+    <strong>Please rate the following translations</strong>
+
+    [[Question:Matrix]]
+    Translation: Find everything about projects.
+
+    [[Choices]]
+    fluency level
+    precision level
+    [[Answers]]
+    low
+    average
+    high
+
+    [[Question:Matrix]]
+    Translation: How many projects are there starting in 2023 that cost more than 1000000?
+
+    [[Choices]]
+    fluency level
+    precision level
+    [[Answers]]
+    low
+    average
+    high
+
+    [[Question:MC:MultiSelect]]
+    <strong>Choose the correct translation(s)</strong>
+    [[Choices]]
+    Find everything about projects.
+    How many projects are there starting in 2023 that cost more than 1000000?
+
+    [[Question:MC:MultiSelect]]
+    <strong>Which of the two translations do you like best?</strong>
+    [[Choices]]
+    Find everything about projects.
+    How many projects are there starting in 2023 that cost more than 1000000?

@@ -1,24 +1,27 @@
 import json
 
+import pandas as pd
+
 from tools.human_evaluation.qr2t_benchmark.transform_to_label_studio import \
     parse_evaluation_point
 
 
 def return_block_header(block_id):
-    return f"[[Block:Verbalisation{block_id}]]"
+    return f"[[Block:Verbalisation{block_id + 1}]]"
 
 
 def return_nl_query(nl_query):
     return f"""
     [[Question:DB]]
-    <strong>NL Query</strong>
+    <i>NL Query</i>
+    <br>
     <br>
     {nl_query}
     """
 
 
 def return_query_results(table_names, query_results):
-    styling = 'style="border: 1px solid black; padding: 12px; text-align: center"'
+    styling = 'style="border: 1px solid black; padding: 9px; text-align: center"'
     results_str = f'<table {styling}>'
 
     results_str += f'<thead {styling}><tr>'
@@ -34,7 +37,7 @@ def return_query_results(table_names, query_results):
 
     return f"""
     [[Question:DB]]
-    <strong>Query Results</strong>
+    <i>Query Results</i>
     <br><br>
     Table name(s): {table_names}
     {results_str}
@@ -44,7 +47,8 @@ def return_query_results(table_names, query_results):
 def return_verbalisation(verbalisation):
     return f"""
     [[Question:DB]]
-    <strong>Verbalisation</strong>
+    <i>Verbalisation</i>
+    <br>
     <br>
     {verbalisation}
     """
@@ -52,32 +56,32 @@ def return_verbalisation(verbalisation):
 
 def return_correctness_question():
     return f"""
-    [[Question:MC:SingleAnswer]]
-    <strong>Correctness</strong>
+    [[Question:MC:SingleAnswer:Horizontal]]
+    <strong>Is the verbalisation correct?</strong>
     [[Choices]]
-    Correct
-    Incorrect
+    Yes
+    No
     """
 
 
 def return_fluency_question():
     return f"""
-    [[Question:MC:SingleAnswer]]
-    <strong>Fluency</strong>
+    [[Question:MC:SingleAnswer:Horizontal]]
+    <strong>How fluent is the verbalisation?</strong>
     [[Choices]]
-    Perfect
-    Adequate
     Not fluent
+    Adequate
+    Fluent
     """
 
 
 def return_type_of_error():
     return f"""
     [[Question:Matrix]]
-    <strong>Type of Error</strong>
+    <strong>Choose how many times each error occurred</strong>
 
     [[Choices]]
-    Grammar or Syntax Error
+    Grammar/Syntax Error
     Omission
     Hallucination
     Other
@@ -93,7 +97,7 @@ def return_type_of_error():
 def return_comment_text_entry():
     return f"""
     [[Question:TextEntry]]
-    Comment (Optional)
+    <strong>Additional feedback (optional)</strong>
     """
 
 
@@ -110,14 +114,36 @@ def create_single_block(block_id, annotation):
     return block
 
 
-def create_qualtrics_txt():
+def generate_csv_file():
     with open('cordis_inode.json', 'r') as file:
-        results = json.load(file)
+        results = json.load(file)['data']
+
+    df_dict = {
+        "nl_query": [],
+        "sql_query": [],
+        "results_verbalisation": [],
+        "source": []
+    }
+
+    for res in results:
+        annotation = parse_evaluation_point(res[6])
+        df_dict['nl_query'].append(annotation['nl_query'])
+        df_dict['sql_query'].append("")
+        df_dict['results_verbalisation'].append(res[0])
+        df_dict['source'].append(res[6])
+
+    df = pd.DataFrame.from_dict(df_dict)
+
+    df.to_csv('cordis_evaluation.csv')
+
+
+def create_qualtrics_txt():
+    df = pd.read_csv('./qr2t_cordis_bolzano.csv', header=1)
 
     final_text = "[[AdvancedFormat]]\n\n"
 
-    for block_id, result in enumerate(results['data']):
-        annotation = parse_evaluation_point(result[6])
+    for block_id, result in df[:3].iterrows():
+        annotation = parse_evaluation_point(result[3])
 
         final_text += create_single_block(
             block_id,
@@ -125,7 +151,7 @@ def create_qualtrics_txt():
                 'nl_query': annotation['nl_query'],
                 'table_names': annotation['table_title'],
                 'query_results': annotation['results_table'],
-                'verbalisation': result[0]
+                'verbalisation': result[2]
             }
         )
         final_text += '\n'

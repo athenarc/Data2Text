@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 from dateutil.parser import parse
@@ -51,8 +52,11 @@ def query_results_to_totto(query_results: Dict[str, str], nl_query):
     if len(query_results['rows']) > 1:
         raise DifficultyNotImplemented("Query results with multiple rows cannot be explained yet.")
 
-    for ind, row in enumerate(query_results['rows']):
+    for row in query_results['rows']:
+        ind = 0
         for header, val in zip(query_results['col_names'], row):
             table_cells_str += create_cell(header, val, ind)
+            ind += 1
 
+    logging.info(metadata + table_cells_str)
     return metadata + table_cells_str
