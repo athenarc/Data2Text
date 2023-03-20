@@ -64,6 +64,13 @@ def return_correctness_question():
     """
 
 
+def return_correct_verbalisation_entry():
+    return f"""
+        [[Question:TextEntry:SingleLine]]
+        <strong>Please write the correct verbalisation (optional)</strong>
+        """
+
+
 def return_fluency_question():
     return f"""
     [[Question:MC:SingleAnswer:Horizontal]]
@@ -96,7 +103,7 @@ def return_type_of_error():
 
 def return_comment_text_entry():
     return f"""
-    [[Question:TextEntry]]
+    [[Question:TextEntry:SingleLine]]
     <strong>Additional feedback (optional)</strong>
     """
 
@@ -107,6 +114,7 @@ def create_single_block(block_id, annotation):
             return_query_results(annotation['table_names'], annotation['query_results']) + \
             return_verbalisation(annotation['verbalisation']) + \
             return_correctness_question() + \
+            return_correct_verbalisation_entry() + \
             return_fluency_question() + \
             return_type_of_error() + \
             return_comment_text_entry()
@@ -142,7 +150,7 @@ def create_qualtrics_txt():
 
     final_text = "[[AdvancedFormat]]\n\n"
 
-    for block_id, result in df[:3].iterrows():
+    for block_id, result in df.iterrows():
         annotation = parse_evaluation_point(result[3])
 
         final_text += create_single_block(
