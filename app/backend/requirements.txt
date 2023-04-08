@@ -5,12 +5,12 @@ pandas
 pyyaml
 sshtunnel
 pymysql
-transformers==4.10.0
-datasets==1.11.0
+transformers==4.27.4
+datasets
 mo-sql-parsing==5.58.21262
 sentencepiece==0.1.96
 torchmetrics==0.6.2
-protobuf~=3.19.0
+protobuf==3.19.0
 databases==0.6.0
 aiosqlite==0.17.0
 aiomysql==0.1.1
