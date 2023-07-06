@@ -1,7 +1,9 @@
 import json
 import random
+from collections import Counter, defaultdict
 
 import numpy as np
+import pandas as pd
 from mo_parsing.exceptions import ParseException
 from tqdm import tqdm
 
@@ -11,6 +13,7 @@ from data.annotation_qr2t.annotator_split import (assign_annotators,
 from data.annotation_qr2t.filter_queries import filter_benchmark
 from data.annotation_qr2t.spider_db_query import create_transformed_benchmark
 from utils.query_pattern_recognition import ExtractException, QueryInfo
+from dare_datasets import QR2TBenchmark
 
 
 def categorize_spider(spider_datapoints):
@@ -42,86 +45,63 @@ def categorize_spider(spider_datapoints):
     return datapoints_with_category
 
 
-def sample_queries(category_populations, categorized_spider):
-    random.shuffle(categorized_spider)
-
-    total_gathered = {cat: 0 for cat, _ in category_populations.items()}
-    final_queries = []
-    for datapoint in tqdm(categorized_spider):
-        if total_gathered[datapoint['category']] >= category_populations[datapoint['category']]:
-            continue
-        final_queries.append(datapoint)
-        total_gathered[datapoint['category']] += 1
-
-    return final_queries, total_gathered
-
-
 def create_benchmark_annotations():
-    SPIDER_TRAIN_PATH = "storage/datasets/spider/original/train_spider.json"
-    DB_DIR = "storage/datasets/spider/original/database/"
-    OUTPUT_DIR = "storage/datasets/spider/annotations/label_studio/"
+    metric = 'PARENT'
+    qr2t_benchmark = QR2TBenchmark().get_raw()
+    inferences = pd.read_csv('/home/mikexydas/Downloads/pre_totto_qr2t.csv')
 
-    populations = {
-        "small_select": 560,
-        "large_select": 150,
-        "aggregate": 450,
-        "aggregate_group_by": 150,
-        "join": 350,
-        "join_aggregate": 150
+    query_datapoints = {
+        datapoint['query_description']: datapoint
+        for split in ['train', 'dev', 'eval']
+        for datapoint in qr2t_benchmark[split]
     }
+    score_per_difficulty = defaultdict(list)
 
-    # populations = {
-    #     "small_select": 3000,
-    #     "large_select": 3000,
-    #     "aggregate": 3000,
-    #     "aggregate_group_by": 3000,
-    #     "join": 3000,
-    #     "join_aggregate": 3000
-    # }
+    for _, inf in inferences.iterrows():
+        nl_query = inf['Source'].split(' <table')[0].replace('<query> ', '')
+        diff = query_datapoints[nl_query]['difficulty']
+        score_per_difficulty[diff].append(inf[metric])
 
-    annotators = [
-        "Stavroula",
-        "Giorgos",
-        "Chris",
-        "Katerina",
-        "Antonis",
-        "Anna",
-        "Apostolis",
-        "Mike"
-    ]
-    overlap_ratio = 0.3
+    avg_metrics = {
+        diff: sum(scores) / len(scores)
+        for diff, scores in score_per_difficulty.items()
+    }
+    print(avg_metrics)
+    # difficulties = [
+    #     datapoint['difficulty']
+    #     for split in ['train', 'dev', 'eval']
+    #     for datapoint in qr2t_benchmark[split]
+    # ]
+    # print(Counter(difficulties))
 
-    with open(SPIDER_TRAIN_PATH, 'r') as file:
-        train_datapoints = json.load(file)
-
-    categorized_datapoints = categorize_spider(train_datapoints)
-    filtered_datapoints = filter_benchmark(categorized_datapoints)
-    benchmark_datapoints, final_populations = sample_queries(populations, filtered_datapoints)
-    transformed_benchmark = create_transformed_benchmark(benchmark_datapoints, DB_DIR)
-    benchmark_per_annotator = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
-
-    print("Benchmark creation finished:")
-    for cat, pop in final_populations.items():
-        print(f"{cat}: {pop}")
-
-    class NpEncoder(json.JSONEncoder):
-        """ Needed to encode dictionary fields with numpy types """
-        def default(self, obj):
-            if isinstance(obj, np.integer):
-                return int(obj)
-            if isinstance(obj, np.floating):
-                return float(obj)
-            if isinstance(obj, np.ndarray):
-                return obj.tolist()
-            return super(NpEncoder, self).default(obj)
-
-    for annotator, benchmark in benchmark_per_annotator.items():
-        with open(OUTPUT_DIR + annotator + '.json', 'w') as outfile:
-            json.dump(benchmark, outfile, cls=NpEncoder)
-    # with open(OUTPUT_DIR + 'annotations_sel_aggregate.json', 'w') as outfile:
-    #     json.dump(transformed_benchmark, outfile, cls=NpEncoder)
-    print(">>> Overlaps:")
-    print(confirm_overlap(benchmark_per_annotator))
+    # return categorize_spider(train_datapoints)
+    # filtered_datapoints = filter_benchmark(categorized_datapoints)
+    # benchmark_datapoints, final_populations = sample_queries(populations, filtered_datapoints)
+    # transformed_benchmark = create_transformed_benchmark(benchmark_datapoints, DB_DIR)
+    # benchmark_per_annotator = assign_annotators(transformed_benchmark, annotators, overlap_ratio)
+    #
+    # print("Benchmark creation finished:")
+    # for cat, pop in final_populations.items():
+    #     print(f"{cat}: {pop}")
+    #
+    # class NpEncoder(json.JSONEncoder):
+    #     """ Needed to encode dictionary fields with numpy types """
+    #     def default(self, obj):
+    #         if isinstance(obj, np.integer):
+    #             return int(obj)
+    #         if isinstance(obj, np.floating):
+    #             return float(obj)
+    #         if isinstance(obj, np.ndarray):
+    #             return obj.tolist()
+    #         return super(NpEncoder, self).default(obj)
+    #
+    # for annotator, benchmark in benchmark_per_annotator.items():
+    #     with open(OUTPUT_DIR + annotator + '.json', 'w') as outfile:
+    #         json.dump(benchmark, outfile, cls=NpEncoder)
+    # # with open(OUTPUT_DIR + 'annotations_sel_aggregate.json', 'w') as outfile:
+    # #     json.dump(transformed_benchmark, outfile, cls=NpEncoder)
+    # print(">>> Overlaps:")
+    # print(confirm_overlap(benchmark_per_annotator))
 
 
 if __name__ == '__main__':
