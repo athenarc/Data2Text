@@ -5,3 +5,4 @@ pyyaml
 tenacity
 protobuf~=3.19.0
 python-dotenv==0.19.2
+altair==4.0.0
