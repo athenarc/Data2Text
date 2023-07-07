@@ -36,7 +36,7 @@ jobs:
         with:
           method: jwt
           url: https://vault.athenarc.gr:8200
-          role: github_repo_athenarc_qr2t
+          role: github_repo_athenarc_Data2Text
           secrets: |
             secret/data/docker/registries/darelab/builder password | DARELAB_DOCKER_PASSWORD_BUILDER ;
             secret/data/ssh/darelab/ci private | DARELAB_CI_SSH_PRIVATE_KEY ;
