@@ -23,7 +23,7 @@ class PostgresController(DbInterface):
         cols = dict(res_with_cols._mapping)
 
         await database.disconnect()
-
+        print(res_list, list(cols.keys()))
         return res_list, list(cols.keys())
 
     @staticmethod
