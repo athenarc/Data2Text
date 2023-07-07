@@ -31,6 +31,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+          method: jwt
+          url: https://vault.athenarc.gr:8200
+          role: github_repo_athenarc_data2text
+          secrets: |
+            secret/data/docker/registries/darelab/builder password | DARELAB_DOCKER_PASSWORD_BUILDER ;
+            secret/data/ssh/darelab/ci private | DARELAB_CI_SSH_PRIVATE_KEY ;
+            secret/data/ssh/darelab/ci public | DARELAB_CI_SSH_PUBLIC_KEY ;
+
       - name: Login to ATHENA registry
         uses: docker/login-action@v1
         with:
@@ -63,16 +74,22 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO_NGINX }}:latest
 
-      - name: Deploy to Darelab
-        uses: wshihadeh/docker-deployment-action@v2
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@v0.1.4
         with:
-          remote_docker_host: ci@darelab.imsi.athenarc.gr
-          remote_docker_port: 15000
-          ssh_private_key: ${{ secrets.DARELAB_CI_SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.DARELAB_CI_SSH_PUBLIC_KEY }}
-          deployment_mode: docker-compose
-          copy_stack_file: true
-          deploy_path: /home/ci/mxydas/qr2t
-          stack_file_name: docker-compose-qr2t.yml
-          pull_images_first: true
-          args: up -d
+          host: darelab.athenarc.gr
+          username: ci
+          key: ${{ env.DARELAB_CI_SSH_PRIVATE_KEY }}
+          source: docker-compose-qr2t.yml
+          target: /data/ci/${{ env.DOCKER_REPO }}/
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: darelab.athenarc.gr
+          username: ci
+          key: ${{ env.DARELAB_CI_SSH_PRIVATE_KEY }}
+          script: |
+            docker system prune -af
+            docker compose -f /data/ci/${{ env.DOCKER_REPO }}/docker-compose-qr2t.yml pull
+            docker compose -f /data/ci/${{ env.DOCKER_REPO }}/docker-compose-qr2t.yml up -d

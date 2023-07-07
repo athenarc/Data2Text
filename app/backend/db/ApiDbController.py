@@ -13,8 +13,8 @@ class ApiDbController(DbInterface):
                   "query": query,
                   "database": self.database_name
                 }
-        r = httpx.post(f'{conn_url}/sql/', data=data).json()
-
+        r = httpx.post(f'{conn_url}/sql/', json=data).json()
+        print(r)
         return r['data'], r['columns']
 
     @staticmethod

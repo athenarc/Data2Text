@@ -1,6 +1,7 @@
 import logging
 
 from app.backend.controller.results_explainer import QueryResultsExplainer
+from app.backend.db.ApiDbController import ApiDbController
 from app.backend.db.MySqlController import MySqlController
 from app.backend.db.PostgresController import PostgresController
 from app.backend.db.SqliteController import SqliteController
@@ -13,5 +14,7 @@ def pick_database_interface(conn_url: str, query_explainer: QueryResultsExplaine
         query_explainer.set_db_controller(PostgresController())
     elif "sqlite" in conn_url:
         query_explainer.set_db_controller(SqliteController())
+    elif "https" in conn_url:
+        query_explainer.set_db_controller(ApiDbController())
     else:
         logging.error("Connection url does not use a known database (mysql, sqlite)")
