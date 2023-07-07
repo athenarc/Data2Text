@@ -50,7 +50,7 @@ jobs:
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ env.DOCKER_USER }}
-          password: ${{ secrets.DARELAB_DOCKER_PASSWORD_BUILDER }}
+          password: ${{ env.DARELAB_DOCKER_PASSWORD_BUILDER }}
 
       - name: Build and push front
         id: docker_build_front
