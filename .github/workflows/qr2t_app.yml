@@ -46,7 +46,7 @@ jobs:
             secret/data/ssh/darelab/ci public | DARELAB_CI_SSH_PUBLIC_KEY ;
 
       - name: Login to ATHENA registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ env.DOCKER_USER }}
